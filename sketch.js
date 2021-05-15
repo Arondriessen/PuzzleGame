@@ -299,7 +299,6 @@ function useStep() {
 function isSolved() {
 
   /*
-
   // Check array of puzzle pieces against array of solutions (old / single-solution / manual)
 
   if (JSON.stringify(puzzlePieces) === JSON.stringify(puzzleSolution)) {
@@ -339,103 +338,119 @@ function isSolved() {
       // Endpoints
 
       dir = firstNoMiddle(points);
-
       console.log("Endpoint - Type of piece");
-      console.log(dir + " - Direction 1");
-
-      for (y = 0; y < aSize; y++) {
-
-        console.log(y + " - Secondary loop index -----------------");
-
-        exitSecLoop = 0;
-
-        if (y != i) { // Don't check the same piece twice
-
-          piece2 = pieces[y];
-          continueLoop = 0;
-
-          // Is piece next to main piece?
-
-          if (piece2[1] == piece[1]) {
-
-            if (piece2[0] == (piece[0] - 1)) {
-
-              // Left
-
-              if (dir == "Left") { // Does the main piece connect to this piece?
-
-                continueLoop = 1;
-              }
-            }
-
-            if (piece2[0] == (piece[0] + 1)) {
-
-              // Right
-
-              if (dir == "Right") { // Does the main piece connect to this piece?
-
-                continueLoop = 1;
-              }
-            }
-          }
-
-          if (piece2[0] == piece[0]) {
-
-            if (piece2[1] == (piece[1] - 1)) {
-
-              // Above
-
-              if (dir == "Top") { // Does the main piece connect to this piece?
-
-                continueLoop = 1;
-              }
-            }
-
-            if (piece2[1] == (piece[1] + 1)) {
-
-              // Below
-
-              if (dir == "Bottom") { // Does the main piece connect to this piece?
-
-                continueLoop = 1;
-              }
-            }
-          }
-
-          points2 = piece2[2];
-
-          if (continueLoop == 1) {
-
-            console.log("Piece is next to main piece");
-
-            for (x = 0; x < points2.length; x++) { // Cycle through points
-
-              if (points2[x] == dirOp(dir)) {
-
-                console.log(dirOp(dir) + " - Direction 2");
-
-                // Connection found
-
-                pI = y; // reassign index to restart loop with
-
-                console.log("Connection found (" + (i + 1) + "/" + aSize + ")");
-
-                exitSecLoop = 1;
-                exitMainLoop = 0;
-                break;
-              }
-            }
-          }
-        }
-
-        if (exitSecLoop == 1) { break; }
-      }
 
     } else {
 
       // Regular Pieces
 
       console.log("Regular piece - Type of piece");
+    }
+
+    console.log(dir + " - Direction 1");
+
+    for (y = 0; y < aSize; y++) {
+
+      console.log(y + " - Secondary loop index -----------------");
+
+      exitSecLoop = 0;
+
+      if (y != i) { // Don't check the same piece twice
+
+        piece2 = pieces[y];
+        continueLoop = 0;
+
+        // Is piece next to main piece?
+
+        if (piece2[1] == piece[1]) {
+
+          if (piece2[0] == (piece[0] - 1)) {
+
+            // Left
+
+            if (dir == "Left") { // Does the main piece connect to this piece?
+
+              continueLoop = 1;
+            }
+          }
+
+          if (piece2[0] == (piece[0] + 1)) {
+
+            // Right
+
+            if (dir == "Right") { // Does the main piece connect to this piece?
+
+              continueLoop = 1;
+            }
+          }
+        }
+
+        if (piece2[0] == piece[0]) {
+
+          if (piece2[1] == (piece[1] - 1)) {
+
+            // Above
+
+            if (dir == "Top") { // Does the main piece connect to this piece?
+
+              continueLoop = 1;
+            }
+          }
+
+          if (piece2[1] == (piece[1] + 1)) {
+
+            // Below
+
+            if (dir == "Bottom") { // Does the main piece connect to this piece?
+
+              continueLoop = 1;
+            }
+          }
+        }
+
+        points2 = piece2[2];
+
+        if (continueLoop == 1) {
+
+          console.log("Piece is next to main piece");
+
+          for (x = 0; x < points2.length; x++) { // Cycle through points
+
+            if (points2[x] == dirOp(dir)) {
+
+              console.log(dirOp(dir) + " - Direction 2");
+
+              // Connection found
+
+              console.log("Connection found (" + (i + 1) + "/" + (aSize - 1) + ")");
+
+              pI = y; // reassign index to restart loop with
+              exitSecLoop = 1;
+              exitMainLoop = 0;
+
+              if (points2.length == 2) {
+
+                console.log("//////////////// Level Finished! ////////////////");
+
+                solved = 1;
+                level += 1;
+                storeItem('level', level);
+                nextLevel();
+
+                exitMainLoop = 1;
+
+              } else {
+
+                dir = points2[(((x - 1) * -1) + 1)];
+              }
+
+              break;
+            }
+          }
+        }
+      }
+
+      if (exitSecLoop == 1) { break; }
     }
 
     if (exitMainLoop == 1) { break; }
