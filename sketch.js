@@ -325,7 +325,7 @@ function isSolved() {
 
   for (i = 0; i < aSize; i++) {
 
-    console.log(aSize + "- Number of puzzle pieces");
+    console.log(aSize + " - Number of puzzle pieces");
     console.log(i + " - Main loop index ****************************");
     console.log(pI + " - Puzzle piece index");
 
@@ -355,97 +355,94 @@ function isSolved() {
 
       exitSecLoop = 0;
 
-      if (y != i) { // Don't check the same piece twice
+      piece2 = pieces[y];
+      continueLoop = 0;
 
-        piece2 = pieces[y];
-        continueLoop = 0;
+      // Is piece next to main piece?
 
-        // Is piece next to main piece?
+      if (piece2[1] == piece[1]) {
 
-        if (piece2[1] == piece[1]) {
+        if (piece2[0] == (piece[0] - 1)) {
 
-          if (piece2[0] == (piece[0] - 1)) {
+          // Left
 
-            // Left
+          if (dir == "Left") { // Does the main piece connect to this piece?
 
-            if (dir == "Left") { // Does the main piece connect to this piece?
-
-              continueLoop = 1;
-            }
-          }
-
-          if (piece2[0] == (piece[0] + 1)) {
-
-            // Right
-
-            if (dir == "Right") { // Does the main piece connect to this piece?
-
-              continueLoop = 1;
-            }
+            continueLoop = 1;
           }
         }
 
-        if (piece2[0] == piece[0]) {
+        if (piece2[0] == (piece[0] + 1)) {
 
-          if (piece2[1] == (piece[1] - 1)) {
+          // Right
 
-            // Above
+          if (dir == "Right") { // Does the main piece connect to this piece?
 
-            if (dir == "Top") { // Does the main piece connect to this piece?
-
-              continueLoop = 1;
-            }
+            continueLoop = 1;
           }
+        }
+      }
 
-          if (piece2[1] == (piece[1] + 1)) {
+      if (piece2[0] == piece[0]) {
 
-            // Below
+        if (piece2[1] == (piece[1] - 1)) {
 
-            if (dir == "Bottom") { // Does the main piece connect to this piece?
+          // Above
 
-              continueLoop = 1;
-            }
+          if (dir == "Top") { // Does the main piece connect to this piece?
+
+            continueLoop = 1;
           }
         }
 
-        points2 = piece2[2];
+        if (piece2[1] == (piece[1] + 1)) {
 
-        if (continueLoop == 1) {
+          // Below
 
-          console.log("Piece is next to main piece");
+          if (dir == "Bottom") { // Does the main piece connect to this piece?
 
-          for (x = 0; x < points2.length; x++) { // Cycle through points
+            continueLoop = 1;
+          }
+        }
+      }
 
-            if (points2[x] == dirOp(dir)) {
+      points2 = piece2[2];
 
-              console.log(dirOp(dir) + " - Direction 2");
+      if (continueLoop == 1) {
 
-              // Connection found
+        console.log("Piece is next to main piece");
 
-              console.log("Connection found (" + (i + 1) + "/" + (aSize - 1) + ")");
+        for (x = 0; x < points2.length; x++) { // Cycle through points
 
-              pI = y; // reassign index to restart loop with
-              exitSecLoop = 1;
-              exitMainLoop = 0;
+          if (points2[x] == dirOp(dir)) {
 
-              if (points2.length == 2) {
+            console.log(dirOp(dir) + " - Direction 2");
 
-                console.log("//////////////// Level Finished! ////////////////");
+            // Connection found
 
-                solved = 1;
-                level += 1;
-                storeItem('level', level);
-                nextLevel();
+            console.log("Connection found (" + (i + 1) + "/" + (aSize - 1) + ")");
 
-                exitMainLoop = 1;
+            pI = y; // Reassign index to restart loop with
+            exitSecLoop = 1;
+            exitMainLoop = 0;
 
-              } else {
+            if (points2.length == 2) {
 
-                dir = points2[(((x - 1) * -1) + 1)];
-              }
+              console.log("//////////////// Level Finished! ////////////////");
 
-              break;
+              solved = 1;
+              level += 1;
+              storeItem('level', level);
+              nextLevel();
+
+              exitMainLoop = 1;
+
+            } else {
+
+              dir = points2[(((x - 1) * -1) + 1)];
             }
+
+            break;
           }
         }
       }

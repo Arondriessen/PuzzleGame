@@ -33,10 +33,10 @@ levels = [
   [   // Level 2
 
     [ // Puzzle Pieces
-      [5, 4, ["Middle", "Left"], 0],
       [3, 3, ["Middle", "Right"], 0],
       [2, 1, ["Left", "Middle", "Bottom"], 0],
-      [4, 3, ["Left", "Right"], 0]
+      [4, 3, ["Left", "Middle", "Right"], 0],
+      [5, 4, ["Middle", "Left"], 0]
     ],
 
     [ // Puzzle Solution
@@ -58,10 +58,10 @@ levels = [
   [   // Level 3
 
     [ // Puzzle Pieces
-      [5, 4, ["Middle", "Left"], 0],
       [3, 3, ["Middle", "Right"], 0],
       [3, 1, ["Left", "Middle", "Bottom"], 0],
-      [5, 5, ["Left", "Right"], 0]
+      [5, 5, ["Left", "Middle", "Right"], 0],
+      [5, 4, ["Middle", "Left"], 0]
     ],
 
     [ // Puzzle Solution
@@ -83,10 +83,10 @@ levels = [
   [   // Level 4
 
     [ // Puzzle Pieces
-      [5, 4, ["Middle", "Left"], 0],
       [3, 3, ["Middle", "Right"], 0],
       [3, 1, ["Left", "Middle", "Bottom"], 0],
-      [5, 5, ["Left", "Right"], 0]
+      [5, 5, ["Left", "Middle", "Right"], 0],
+      [5, 4, ["Middle", "Left"], 0]
     ],
 
     [ // Puzzle Solution
