@@ -40,17 +40,20 @@ levelLoaded = 0;
 function setup() {
 
   // Set canvas to viewport size
+
   createCanvas(windowWidth, windowHeight);
 
 
   // Load progression data
+
   level = max(1, getItem('level'));
 
 
   // Load level data from js file
+
   var script = document.createElement('script');
   script.onload = function () {
-    levelData = levels;
+    levelData = levels.slice();
     prepareLevelData();
   };
   script.src = 'levels.js';
@@ -58,9 +61,10 @@ function setup() {
 
 
   // Load UI data from js file
+
   var script = document.createElement('script');
   script.onload = function () {
-    uiData = ui;
+    uiData = ui.slice();
     uiLoaded = 1;
   };
   script.src = 'ui.js';
@@ -76,8 +80,6 @@ function mouseClicked() {
     if (uiHover != 0) { // Is mouse on UI element?
 
       if (uiSelected[18] != 0) { // Does the element have a click function?
-
-        console.log("Play button clicked");
 
         uiSelected[18]();
         uiHover = 0;
@@ -173,6 +175,8 @@ function mouseReleased() {
                   useStep();
                   isSolved();
 
+                  console.log()
+
                 // If its a drag...
                 } else {
 
@@ -234,6 +238,26 @@ function prepareLevelData() {
 
   tiles = levelData[level - 1][0]; // squared = total number of tiles
   puzzlePieces = levelData[level - 1][1];
+  pp = levelData[level - 1][1];
+
+  // Create COPY of (not reference to) the levelData array to avoid modifying it
+
+  puzzlePieces = [pp.length];
+
+  for (i = 0; i < pp.length; i++) { // Cycle through puzzle pieces
+
+    puzzlePieces[i] = [4];
+
+    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+
+      if (typeof pp[i][y] === "object") { // Is it an object? (array)
+
+        puzzlePieces[i][y] = pp[i][y].slice(); // If so make a copy of it
+
+      } else { puzzlePieces[i][y] = pp[i][y]; } // If not set it to the same value
+    }
+  }
+
   endPieces = levelData[level - 1][2];
   steps = levelData[level - 1][3]; // Number of available steps for a puzzle
 
@@ -321,8 +345,7 @@ function isSolved() {
   // Cycle through puzzlepieces and check for contuing points (pathfinding)
   // If it ends at endpoint B it's solved, if it ends earlier it's not.
 
-  pieces = levels[level - 1][1];
-  aSize = pieces.length;
+  aSize = puzzlePieces.length;
   pI = 0;
 
   console.log("//////////////// isSolved ////////////////");
@@ -333,7 +356,7 @@ function isSolved() {
     console.log(i + " - Main loop index ****************************");
     console.log(pI + " - Puzzle piece index");
 
-    piece = pieces[pI]
+    piece = puzzlePieces[pI]
     points = piece[2];
     exitMainLoop = 1;
 
@@ -359,7 +382,7 @@ function isSolved() {
 
       exitSecLoop = 0;
 
-      piece2 = pieces[y];
+      piece2 = puzzlePieces[y];
       continueLoop = 0;
 
       // Is piece next to main piece?
@@ -509,7 +532,7 @@ function draw() {
 
       for (i = 0; i < aa.length; i++) { // Cycle through UI elements
 
-        a = aa[i].slice(); // Load UI element
+        a = aa[i].slice(); // Load UI element (doesn't work without slice for some reason)
 
         for (y = 0; y < a.length; y++) { // Cycle throug element parameters
 
@@ -537,8 +560,6 @@ function draw() {
 
           if ((mouseY > yy) && (mouseY < (yy + a[3]))) {
 
-            console.log("Hovering on " + i);
-
             uiHover = 1;
             uiSelected = a;
 
@@ -555,7 +576,7 @@ function draw() {
         noStroke();
         textAlign(CENTER, CENTER);
 
-        text(a[11], a[0], a[1]);
+        text(a[11], xx + (a[2] / 2), yy + (a[3] / 2));
       }
 
 

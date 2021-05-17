@@ -30,8 +30,12 @@ ui = [
 
     [ // Default State
 
-      [200, 100, 0, 0, 0.5, 0.5, 0, 0, 0, 0, 0, function() { return ("Level " + level); }, 100, 0, 50, "CENTER", "CENTER", 0, 0],
-      [function() { return ((width / 2) - ((mid + 1.4) * tileSize)); }, height / 2, 0, 0, 0.5, 0.5, 0, 0, 0, 0, 0, function() { return steps; }, 100, 0, 50, "CENTER", "CENTER", 0, 0]
+      // Level
+      [160, 100, 0, 0, 0.5, 0.5, 0, 0, 0, 0, 0, function() { return ("Level " + level); }, 60, 0, 50, "CENTER", "CENTER", 0, 0],
+      // Steps
+      [function() { return ((width / 2) - ((mid + 1.4) * tileSize)); }, height / 2, 0, 0, 0.5, 0.5, 0, 0, 0, 0, 0, function() { return steps; }, 100, 0, 50, "CENTER", "CENTER", 0, 0],
+      // Reset
+      [160, height - 100, 280, 100, 0.5, 0.5, 0, 20, 0, 10, 3, "Reset", 60, 0, 50, "CENTER", "CENTER", 0, function() { prepareLevelData(); }]
     ]
   ]
 
