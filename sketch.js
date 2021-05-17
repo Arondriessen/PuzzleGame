@@ -81,7 +81,7 @@ function mouseClicked() {
 
       if (uiSelected[18] != 0) { // Does the element have a click function?
 
-        uiSelected[18]();
+        uiSelected[2][2]();
         uiHover = 0;
       }
     }
@@ -534,49 +534,77 @@ function draw() {
 
         a = aa[i].slice(); // Load UI element (doesn't work without slice for some reason)
 
-        for (y = 0; y < a.length; y++) { // Cycle throug element parameters
+        for (x = 0; x < a.length; x++) { // Cycle through UI groups
 
-          if (typeof a[y] === "function") { // Check if parameter is a function
+          a[x] = a[x].slice();
 
-            if ((y != 17) && (y != 18)) { // Exclude hover/click functions which should stay functions
+          for (y = 0; y < a[x].length; y++) { // Cycle throug element parameters
 
-              a[y] = a[y](); // If it is, store the function's return value
+            if (typeof a[x][y] === "function") { // Check if parameter is a function
+
+              if (((x == 2) && ((y == 1) || (y == 2))) == 0) { // Exclude hover/click functions which should stay functions
+
+                a[x][y] = a[x][y](); // If it is, store the function's return value
+              }
             }
           }
         }
 
-        xx = (a[0] - (a[4] * a[2]));
-        yy = (a[1] - (a[5] * a[3]));
+        xx = (a[0][2] - (a[0][6] * a[0][4]));
+        yy = (a[0][3] - (a[0][7] * a[0][5]));
 
-        fill(a[6], a[7]);
-        stroke(a[8], a[9]);
-        strokeWeight(a[10]);
-        rectMode(CORNER);
-        rect(xx, yy, a[2], a[3]);
+        if (a[0][0] == 1) { // Is element active?
 
-        // Is the mouse on a UI element? (New)
+          fill(a[0][8], a[0][9]);
 
-        if ((mouseX > xx) && (mouseX < (xx + a[2]))) {
+          if (a[0][10] == 1) {
 
-          if ((mouseY > yy) && (mouseY < (yy + a[3]))) {
+            stroke(a[0][11], a[0][12]);
+            strokeWeight(a[0][13]);
 
-            uiHover = 1;
-            uiSelected = a;
+          } else {
 
-            // Button hover effect
-
-            fill(0, 20);
             noStroke();
-            rect(xx, yy, a[2], a[3]);
+          }
+
+          rectMode(CORNER);
+          rect(xx, yy, a[0][4], a[0][5]);
+
+        } else {
+
+          noFill();
+          noStroke();
+        }
+
+        if (a[2][0] == 1) { // Is element active?
+
+          // Is the mouse on a UI element? (New)
+
+          if ((mouseX > xx) && (mouseX < (xx + a[0][4]))) {
+
+            if ((mouseY > yy) && (mouseY < (yy + a[0][5]))) {
+
+              uiHover = 1;
+              uiSelected = a;
+
+              // Button hover effect
+
+              fill(0, 20);
+              noStroke();
+              rect(xx, yy, a[0][4], a[0][5]);
+            }
           }
         }
 
-        textSize(a[12]);
-        fill(a[13], a[14]);
-        noStroke();
-        textAlign(CENTER, CENTER);
+        if (a[1][0] == 1) { // Is element active?
 
-        text(a[11], xx + (a[2] / 2), yy + (a[3] / 2));
+          textSize(a[1][2]);
+          fill(a[1][3], a[1][4]);
+          noStroke();
+          textAlign(CENTER, CENTER);
+
+          text(a[1][1], xx + (a[0][4] / 2), yy + (a[0][5] / 2));
+        }
       }
 
 
