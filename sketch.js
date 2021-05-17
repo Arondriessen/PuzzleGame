@@ -80,6 +80,7 @@ function mouseClicked() {
         console.log("Play button clicked");
 
         uiSelected[18]();
+        uiHover = 0;
       }
     }
   }
@@ -220,7 +221,7 @@ function mouseReleased() {
             }
           }
         }
-        puzzlePieces[clickedPuzzlePiece][3] = 0;
+        puzzlePieces[clickedPuzzlePiece][3] = 0; // gives non-critical error (cannot set property after finishing level) **to_do**
         clickedPuzzlePiece = -1;
         clicked = 0;
       }
@@ -501,49 +502,25 @@ function draw() {
 
   if (uiLoaded == 1) { // Check if UI has loaded yet
 
-    // Main Menu
-
-    if (state == 0) {
-
-      // Draw UI (Old)
-      /*
-      menuX = width / 2;
-      menuY = height / 2;
-      menuTextSize = 60;
-      menuTextBoxW = 280;
-      menuTextBoxH = menuTextSize + 50;
-      menuTextBoxSpacing = 30;
-
-      textSize(menuTextSize);
-      textAlign(CENTER, CENTER);
-
-      fill(0, 10);
-      noFill();
-      stroke(0, 20);
-      strokeWeight(4);
-
-      rect(menuX - (menuTextBoxW / 2), menuY - menuTextBoxH - menuTextBoxSpacing - (menuTextBoxH / 2), menuTextBoxW, menuTextBoxH);
-      rect(menuX - (menuTextBoxW / 2), menuY - (menuTextBoxH / 2), menuTextBoxW, menuTextBoxH);
-      rect(menuX - (menuTextBoxW / 2), menuY + menuTextBoxH + menuTextBoxSpacing - (menuTextBoxH / 2), menuTextBoxW, menuTextBoxH);
-
-      fill(0, 50);
-      noStroke();
-
-      text("Play", menuX, menuY - menuTextBoxH - menuTextBoxSpacing);
-      text("Levels", menuX, menuY);
-      text("Settings", menuX, menuY + menuTextBoxH + menuTextBoxSpacing);
-
-      fill(0, 25);*/
-
-
       // Draw UI (Dynamic)
 
-      aa = uiData[state][0];
+      aa = uiData[state][0]; // Load default state of current state
       uiHover = 0;
 
-      for (i = 0; i < aa.length; i++) {
+      for (i = 0; i < aa.length; i++) { // Cycle through UI elements
 
-        a = uiData[state][0][i];
+        a = aa[i].slice(); // Load UI element
+
+        for (y = 0; y < a.length; y++) { // Cycle throug element parameters
+
+          if (typeof a[y] === "function") { // Check if parameter is a function
+
+            if ((y != 17) && (y != 18)) { // Exclude hover/click functions which should stay functions
+
+              a[y] = a[y](); // If it is, store the function's return value
+            }
+          }
+        }
 
         xx = (a[0] - (a[4] * a[2]));
         yy = (a[1] - (a[5] * a[3]));
@@ -551,14 +528,8 @@ function draw() {
         fill(a[6], a[7]);
         stroke(a[8], a[9]);
         strokeWeight(a[10]);
+        rectMode(CORNER);
         rect(xx, yy, a[2], a[3]);
-
-        textSize(a[12]);
-        fill(a[13], a[14]);
-        textAlign(CENTER, CENTER);
-
-        text(a[11], a[0], a[1]);
-
 
         // Is the mouse on a UI element? (New)
 
@@ -570,53 +541,22 @@ function draw() {
 
             uiHover = 1;
             uiSelected = a;
+
+            // Button hover effect
+
+            fill(0, 20);
+            noStroke();
+            rect(xx, yy, a[2], a[3]);
           }
         }
+
+        textSize(a[12]);
+        fill(a[13], a[14]);
+        noStroke();
+        textAlign(CENTER, CENTER);
+
+        text(a[11], a[0], a[1]);
       }
-
-
-      // Is the mouse on a UI element? (Old)
-
-      menuState = 0;
-      /*
-      if (mouseX > (menuX - (menuTextBoxW / 2))) {
-
-        if (mouseX < (menuX + (menuTextBoxW / 2))) {
-
-          if (mouseY > (menuY - ((menuTextBoxH * 1.5) + menuTextBoxSpacing))) {
-
-            if (mouseY < (menuY - ((menuTextBoxH / 2) + menuTextBoxSpacing))) {
-
-              // PLay Button
-
-              menuState = 1;
-              rect(menuX - (menuTextBoxW / 2), menuY - menuTextBoxH - menuTextBoxSpacing - (menuTextBoxH / 2), menuTextBoxW, menuTextBoxH);
-
-            } else if (mouseY > (menuY - menuTextBoxH / 2)) {
-
-              if (mouseY < (menuY + menuTextBoxH / 2)) {
-
-                // Levels Button
-
-                menuState = 2;
-                rect(menuX - (menuTextBoxW / 2), menuY - (menuTextBoxH / 2), menuTextBoxW, menuTextBoxH);
-              }
-
-              if (mouseY > (menuY + ((menuTextBoxH / 2) + menuTextBoxSpacing))) {
-
-                if (mouseY < (menuY + ((menuTextBoxH * 1.5) + menuTextBoxSpacing))) {
-
-                  // Settings Button
-
-                  menuState = 3;
-                  rect(menuX - (menuTextBoxW / 2), menuY + menuTextBoxH + menuTextBoxSpacing - (menuTextBoxH / 2), menuTextBoxW, menuTextBoxH);
-                }
-              }
-            }
-          }
-        }
-      }*/
-    }
 
 
     // Levels Menu
@@ -728,24 +668,6 @@ function draw() {
           let posX = tilePos[0][endPieces[i][1] - 1][endPieces[i][0] - 1];
           let posY = tilePos[1][endPieces[i][1] - 1][endPieces[i][0] - 1];
           quad(posX, posY - (tileSize / 8), posX + (tileSize / 8), posY, posX, posY + (tileSize / 8), posX - (tileSize / 8), posY);
-        }
-
-
-
-        // Draw UI
-
-        textSize(100);
-        textAlign(LEFT, CENTER);
-        fill(0, 50);
-        text("Level " + level, tileSize, 1.2 * tileSize);
-
-        textSize(100);
-        textAlign(CENTER, CENTER);
-        fill(0, 50);
-        if (solved < 1) {
-          text(steps, (width / 2) - ((mid + 1.4) * tileSize), height / 2);
-        } else {
-          text("Yay!", (width / 2) - ((mid + 1.4) * tileSize), height / 2);
         }
       }
     }
