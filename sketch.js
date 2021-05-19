@@ -567,8 +567,18 @@ function draw() {
             noStroke();
           }
 
+          // Draw element box
+
           rectMode(CORNER);
-          rect(xx, yy, a[0][4], a[0][5]);
+
+          if (a[0][1] == 1) {
+
+            rect(xx, yy, a[0][4], a[0][5]);
+
+          } else if (a[0][1] == 2) {
+
+            circle(xx + (a[0][4] / 2), yy + (a[0][5] / 2), a[0][4]);
+          }
 
         } else {
 
@@ -598,12 +608,18 @@ function draw() {
 
         if (a[1][0] == 1) { // Is element active?
 
+          // Draw element text
+
           textSize(a[1][2]);
           fill(a[1][3], a[1][4]);
           noStroke();
-          textAlign(CENTER, CENTER);
+          textAlign(LEFT, TOP);
 
-          text(a[1][1], xx + (a[0][4] / 2), yy + (a[0][5] / 2));
+          hA = ((a[0][4] * a[1][5]) - (textWidth(a[1][1]) * a[1][5]));
+          vA =((a[0][5] * a[1][6]) - (a[1][2] * a[1][6]));
+          vC = (a[1][2] / 14); // Small vertical correction for centering
+
+          text(a[1][1], xx + hA, yy + vA + vC);
         }
       }
 
