@@ -77,11 +77,12 @@ function mouseClicked() {
 
   if (uiLoaded == 1) { // Check if UI has loaded yet
 
-    if (uiHover != 0) { // Is mouse on UI element?
+    if (uiHover == 1) { // Is mouse on UI element?
 
-      if (uiSelected[18] != 0) { // Does the element have a click function?
+      if (uiSelected[3][0] == 1) { // Does the element have a click function?
 
-        uiSelected[2][2]();
+        console.log(uiSelectedIndex);
+        uiSelected[3][2]();
         uiHover = 0;
       }
     }
@@ -458,9 +459,12 @@ function isSolved() {
               console.log("//////////////// Level Finished! ////////////////");
 
               solved = 1;
-              level += 1;
-              storeItem('level', level);
-              nextLevel();
+
+              if (typeof levelData[level] !== "undefined") { // Check if there is a next level
+
+                storeItem('level', level + 1);
+                uiData[state][1][0] = 1;
+              }
 
               exitMainLoop = 1;
 
@@ -515,6 +519,8 @@ function dirOp(dir) {
 
 
 function nextLevel() {
+
+  level += 1;
   prepareLevelData();
 }
 
@@ -527,99 +533,146 @@ function draw() {
 
       // Draw UI (Dynamic)
 
-      aa = uiData[state][0]; // Load default state of current state
       uiHover = 0;
 
-      for (i = 0; i < aa.length; i++) { // Cycle through UI elements
+      for (s = 0; s < uiData[state].length; s++) { // Cycle through UI states (starting with the default one)
 
-        a = aa[i].slice(); // Load UI element (doesn't work without slice for some reason)
+        aa = uiData[state][s]; // Load state
 
-        for (x = 0; x < a.length; x++) { // Cycle through UI groups
+        if (aa[0] == 1) {
 
-          a[x] = a[x].slice();
+          for (i = 1; i < aa.length; i++) { // Cycle through UI elements
 
-          for (y = 0; y < a[x].length; y++) { // Cycle throug element parameters
+            a = aa[i].slice(); // Load UI element (doesn't work without slice for some reason)
 
-            if (typeof a[x][y] === "function") { // Check if parameter is a function
+            limit = 2;
+            hNum = 1;
+            vNum = 1;
+            vNum2 = 1;
+            xOff = 0;
+            yOff = 0;
 
-              if (((x == 2) && ((y == 1) || (y == 2))) == 0) { // Exclude hover/click functions which should stay functions
+            if (a[0] == 2) { // Is it a list item?
 
-                a[x][y] = a[x][y](); // If it is, store the function's return value
+              limit = a[1][14]();
+              //hNum = Math.min(a[1][15], limit);
+              hNum = a[1][15];
+              vNum2 = Math.ceil(limit / a[1][15]);
+              vNum = Math.max(vNum2, a[1][16]);
+              xOff = a[1][17];
+              yOff = a[1][18];
+            }
+
+            for (v = 0; v < vNum2; v++) { // Cycle through rows
+
+              for (h = 0; h < hNum; h++) { // Cycle through columns
+
+                if (((v * hNum) + h) == limit) { break; }
+
+                a = aa[i].slice(); // Reload UI element (doesn't work without slice for some reason)
+
+                for (x = 1; x < a.length; x++) { // Cycle through UI parameter groups
+
+                  a[x] = a[x].slice();
+
+                  for (y = 0; y < a[x].length; y++) { // Cycle throug element parameters
+
+                    if (typeof a[x][y] === "function") { // Check if parameter is a function
+
+                      if (((x == 3) && ((y == 1) || (y == 2))) == 0) { // Exclude hover/click functions which should stay functions
+
+                        a[x][y] = a[x][y](); // If it is, store the function's return value
+                      }
+                    }
+                  }
+                }
+
+                xx = (a[1][2] - (a[1][6] * a[1][4])) - ((hNum - 1) * (xOff / 2)) + (xOff * h);
+                yy = (a[1][3] - (a[1][7] * a[1][5])) - ((vNum - 1) * (yOff / 2)) + (yOff * v);
+
+                if (a[1][0] == 1) { // Is box element active?
+
+                  fill(a[1][8], a[1][9]);
+
+                  if (a[1][10] == 1) {
+
+                    stroke(a[1][11], a[1][12]);
+                    strokeWeight(a[1][13]);
+
+                  } else {
+
+                    noStroke();
+                  }
+
+
+                  // Draw element box
+
+                  rectMode(CORNER);
+
+                  if (a[1][1] == 1) {
+
+                    rect(xx, yy, a[1][4], a[1][5]);
+
+                  } else if (a[1][1] == 2) {
+
+                    circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
+                  }
+
+                } else {
+
+                  noFill();
+                  noStroke();
+                }
+
+                if (a[3][0] == 1) { // Is it interactive?
+
+                  // Is the mouse on a UI element? (New)
+
+                  if ((mouseX > xx) && (mouseX < (xx + a[1][4]))) {
+
+                    if ((mouseY > yy) && (mouseY < (yy + a[1][5]))) {
+
+                      uiHover = 1;
+                      uiSelected = a;
+                      uiSelectedIndex = ((v * hNum) + h + 1);
+
+
+                      // Button hover effect
+
+                      fill(0, 20);
+                      noStroke();
+
+                      if (a[1][1] == 1) {
+
+                        rect(xx, yy, a[1][4], a[1][5]);
+
+                      } else if (a[1][1] == 2) {
+
+                        circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
+                      }
+                    }
+                  }
+                }
+
+                if (a[2][0] == 1) { // Is text element active?
+
+
+                  // Draw element text
+
+                  textSize(a[2][2]);
+                  fill(a[2][3], a[2][4]);
+                  noStroke();
+                  textAlign(LEFT, TOP);
+
+                  hA = ((a[1][4] * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
+                  vA =((a[1][5] * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
+                  vC = (a[2][2] / 14); // Small vertical correction for centering
+
+                  text(a[2][1], xx + hA, yy + vA + vC);
+                }
               }
             }
           }
-        }
-
-        xx = (a[0][2] - (a[0][6] * a[0][4]));
-        yy = (a[0][3] - (a[0][7] * a[0][5]));
-
-        if (a[0][0] == 1) { // Is element active?
-
-          fill(a[0][8], a[0][9]);
-
-          if (a[0][10] == 1) {
-
-            stroke(a[0][11], a[0][12]);
-            strokeWeight(a[0][13]);
-
-          } else {
-
-            noStroke();
-          }
-
-          // Draw element box
-
-          rectMode(CORNER);
-
-          if (a[0][1] == 1) {
-
-            rect(xx, yy, a[0][4], a[0][5]);
-
-          } else if (a[0][1] == 2) {
-
-            circle(xx + (a[0][4] / 2), yy + (a[0][5] / 2), a[0][4]);
-          }
-
-        } else {
-
-          noFill();
-          noStroke();
-        }
-
-        if (a[2][0] == 1) { // Is element active?
-
-          // Is the mouse on a UI element? (New)
-
-          if ((mouseX > xx) && (mouseX < (xx + a[0][4]))) {
-
-            if ((mouseY > yy) && (mouseY < (yy + a[0][5]))) {
-
-              uiHover = 1;
-              uiSelected = a;
-
-              // Button hover effect
-
-              fill(0, 20);
-              noStroke();
-              rect(xx, yy, a[0][4], a[0][5]);
-            }
-          }
-        }
-
-        if (a[1][0] == 1) { // Is element active?
-
-          // Draw element text
-
-          textSize(a[1][2]);
-          fill(a[1][3], a[1][4]);
-          noStroke();
-          textAlign(LEFT, TOP);
-
-          hA = ((a[0][4] * a[1][5]) - (textWidth(a[1][1]) * a[1][5]));
-          vA =((a[0][5] * a[1][6]) - (a[1][2] * a[1][6]));
-          vC = (a[1][2] / 14); // Small vertical correction for centering
-
-          text(a[1][1], xx + hA, yy + vA + vC);
         }
       }
 
