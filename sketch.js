@@ -47,6 +47,7 @@ function setup() {
   // Load progression data
 
   level = max(1, getItem('level'));
+  unlocked = max(1, getItem('unlocked'));
 
 
   // Load level data from js file
@@ -54,6 +55,14 @@ function setup() {
   var script = document.createElement('script');
   script.onload = function () {
     levelData = levels.slice();
+
+    // Unlock all levels upto saved level
+
+    for (i = 0; i < (unlocked); i++) {
+
+      levelData[i][0] = 1;
+    }
+
     prepareLevelData();
   };
   script.src = 'levels.js';
@@ -69,6 +78,11 @@ function setup() {
   };
   script.src = 'ui.js';
   document.head.appendChild(script); // or something of the likes
+
+
+  // Set backround colour
+
+  cc = color(random(255), random(255), random(255));
 
 }
 
@@ -237,9 +251,9 @@ function mouseReleased() {
 
 function prepareLevelData() {
 
-  tiles = levelData[level - 1][0]; // squared = total number of tiles
-  puzzlePieces = levelData[level - 1][1];
-  pp = levelData[level - 1][1];
+  tiles = levelData[level - 1][1]; // squared = total number of tiles
+  puzzlePieces = levelData[level - 1][2];
+  pp = levelData[level - 1][2];
 
   // Create COPY of (not reference to) the levelData array to avoid modifying it
 
@@ -259,8 +273,8 @@ function prepareLevelData() {
     }
   }
 
-  endPieces = levelData[level - 1][2];
-  steps = levelData[level - 1][3]; // Number of available steps for a puzzle
+  endPieces = levelData[level - 1][3];
+  steps = levelData[level - 1][4]; // Number of available steps for a puzzle
 
   tilePos = [[], [], []]; // x, y, selected
   tileSpread = 1; // the size of a tile compared to the space it occupies (2 = half size)
@@ -279,7 +293,7 @@ function prepareLevelData() {
   mid = floor(tiles / 2);
   offset = (mid * tileSize);
   tileW = sqrt(sq(tileSize) / 2);
-  cc = color(random(255), random(255), random(255));
+  //cc = color(random(255), random(255), random(255));
   //cc = 120;
 
   // Assign tile positions based on number of tiles and defined spread
@@ -462,7 +476,9 @@ function isSolved() {
 
               if (typeof levelData[level] !== "undefined") { // Check if there is a next level
 
+                levelData[level][0] = 1;
                 storeItem('level', level + 1);
+                if ((level + 1) > unlocked) { unlocked += 1; storeItem('unlocked', unlocked); }
                 uiData[state][1][0] = 1;
               }
 
@@ -556,7 +572,7 @@ function draw() {
 
               limit = a[1][14]();
               //hNum = Math.min(a[1][15], limit);
-              hNum = a[1][15];
+              hNum = Math.min(a[1][15], limit);
               vNum2 = Math.ceil(limit / a[1][15]);
               vNum = Math.max(vNum2, a[1][16]);
               xOff = a[1][17];

@@ -5,6 +5,8 @@ levels = [
 
   [   // Level 1
 
+    1, // State (0 = locked, 1 = unlocked)
+
     3, // Grid Size
 
     [ // Puzzle Pieces
@@ -26,6 +28,8 @@ levels = [
 
   [   // Level 2
 
+    0, // State (0 = locked, 1 = unlocked)
+
     3, // Grid Size
 
     [ // Puzzle Pieces
@@ -45,6 +49,8 @@ levels = [
 
 
   [   // Level 3
+
+    0, // State (0 = locked, 1 = unlocked)
 
     3, // Grid Size
 
@@ -71,71 +77,7 @@ levels = [
 
   [   // Level 4
 
-    7, // Grid Size
-
-    [ // Puzzle Pieces
-      [3, 3, ["Middle", "Bottom"], 0],
-      [3, 4, ["Left", "Middle", "Top"], 0],
-      [4, 3, ["Left", "Middle", "Top"], 0],
-      [4, 4, ["Bottom", "Middle", "Right"], 0],
-      [5, 3, ["Bottom", "Middle", "Right"], 0],
-      [5, 4, ["Middle", "Top"], 0]
-    ],
-
-    [ // End-Pieces
-      [3, 3],
-      [5, 4]
-    ],
-
-    99 // Number of Moves
-  ],
-
-
-  [   // Level 5
-
-    7, // Grid Size
-
-    [ // Puzzle Pieces
-      [3, 3, ["Middle", "Bottom"], 0],
-      [3, 4, ["Left", "Middle", "Top"], 0],
-      [4, 3, ["Left", "Middle", "Top"], 0],
-      [4, 4, ["Bottom", "Middle", "Right"], 0],
-      [5, 3, ["Bottom", "Middle", "Right"], 0],
-      [5, 4, ["Middle", "Top"], 0]
-    ],
-
-    [ // End-Pieces
-      [3, 3],
-      [5, 4]
-    ],
-
-    99 // Number of Moves
-  ],
-
-
-  [   // Level 6
-
-    7, // Grid Size
-
-    [ // Puzzle Pieces
-      [3, 3, ["Middle", "Bottom"], 0],
-      [3, 4, ["Left", "Middle", "Top"], 0],
-      [4, 3, ["Left", "Middle", "Top"], 0],
-      [4, 4, ["Bottom", "Middle", "Right"], 0],
-      [5, 3, ["Bottom", "Middle", "Right"], 0],
-      [5, 4, ["Middle", "Top"], 0]
-    ],
-
-    [ // End-Pieces
-      [3, 3],
-      [5, 4]
-    ],
-
-    99 // Number of Moves
-  ],
-
-
-  [   // Level 7
+    0, // State (0 = locked, 1 = unlocked)
 
     7, // Grid Size
 
