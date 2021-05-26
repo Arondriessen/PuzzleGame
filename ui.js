@@ -161,6 +161,8 @@ ui = [
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
 
+          // List Settings
+
           /* 14 */ function() { return levelData.length; }, // items
           /* 15 */ 10, // h-number
           /* 16 */ 3, // v-number (min, dynamically adjusted)
