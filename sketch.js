@@ -97,9 +97,13 @@ function setup() {
 
   //cc = color(random(255), random(255), random(255));
   colorMode(HSB);
-  cc = color(random(360), 100, 100);
+  cc = color(random(360), 80, 60);
   colorMode(RGB);
+  ccbg = color("#25252b");
 
+  bgSaved = 0;
+
+  textFont(fontRegular);
 }
 
 
@@ -558,8 +562,31 @@ function nextLevel() {
 
 function draw() {
 
-  background(cc);
-  textFont(fontRegular);
+  background(ccbg);
+
+  if (bgSaved < 1) {
+
+    // Draw background and save as image
+    textFont(fontRegular);
+
+    let s = max(width, height) * 1.2;
+    let lerpNum = 0;
+
+    for (let i = (s * 1); i > 0; i -= 10) {
+
+      iN = i / s;
+      lerpNum = 1 - (1 - iN) * (1 - iN);
+      fill(lerpColor(cc, ccbg, lerpNum));
+      noStroke();
+      circle(width / 2, height / 2, i);
+    }
+
+    img = get();
+
+    bgSaved = 1;
+  }
+
+  if (state == 2) { image(img, 0, 0); }
 
   uiHover = 0;
 
@@ -647,7 +674,7 @@ function draw() {
 
                 } else if (a[1][1] == 2) {
 
-                  rect(xx, yy, a[1][4], a[1][5], 28);
+                  rect(xx, yy, a[1][4], a[1][5], min(a[1][4], a[1][5]) / 3.4);
 
                 } else if (a[1][1] == 3) {
 
@@ -668,13 +695,23 @@ function draw() {
 
                   if ((mouseY > yy) && (mouseY < (yy + a[1][5]))) {
 
-                    uiHover = 1;
-                    uiSelected = a;
-                    uiSelectedIndex = ((v * hNum) + h + 1);
+                    if (uiSelected != a) {
 
-                    if (uiSelected[3][1] != 0) {
+                      if (uiSelected != "undefined") {
+                        if (uiSelected[3][2] != 0) {
 
-                      uiSelected[3][1]();
+                          uiSelected[3][2]();
+                        }
+                      }
+
+                      uiHover = 1;
+                      uiSelected = a;
+                      uiSelectedIndex = ((v * hNum) + h + 1);
+
+                      if (uiSelected[3][1] != 0) {
+
+                        uiSelected[3][1]();
+                      }
                     }
                   }
                 }
@@ -747,7 +784,7 @@ function draw() {
         }
 
         rectMode(CENTER);
-        fill(0, 15);
+        fill(255, 50);
         let centX = tilePos[0][mid][mid];
         let centY = tilePos[1][mid][mid];
         let offs = (height / 0.8);
