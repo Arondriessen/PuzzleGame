@@ -5,6 +5,7 @@
 state = 0; // 0 = menu, 1 = levels, 2 = puzzle
 uiLoaded = 0;
 uiHover = 0;
+uiSelected = "undefined";
 
 
 // Menu Data
@@ -37,6 +38,13 @@ cc = 255;
 levelLoaded = 0;
 
 
+
+function preload() {
+  fontRegular = loadFont('assets/Lato-Regular.ttf');
+  fontBold = loadFont('assets/Lato-Bold.ttf');
+}
+
+
 function setup() {
 
   // Set canvas to viewport size
@@ -47,7 +55,9 @@ function setup() {
   // Load progression data
 
   level = max(1, getItem('level'));
-  unlocked = max(1, getItem('unlocked'));
+  world = max(1, getItem('world'));
+  unlockedLevel = getItem('unlockedLevel');
+  if (unlockedLevel == null) { unlockedLevel = [1, 1]; }
 
 
   // Load level data from js file
@@ -58,9 +68,12 @@ function setup() {
 
     // Unlock all levels upto saved level
 
-    for (i = 0; i < (unlocked); i++) {
+    for (i = 0; i < (unlockedLevel.length); i++) {
 
-      levelData[i][0] = 1;
+      for (y = 0; y < (unlockedLevel[i]); y++) {
+
+        levelData[i][y][0] = 1;
+      }
     }
 
     prepareLevelData();
@@ -82,8 +95,15 @@ function setup() {
 
   // Set backround colour
 
-  cc = color(random(255), random(255), random(255));
+  //cc = color(random(255), random(255), random(255));
+  colorMode(HSB);
+  cc = color(random(360), 80, 60);
+  colorMode(RGB);
+  ccbg = color("#25252b");
 
+  bgSaved = 0;
+
+  textFont(fontRegular);
 }
 
 
@@ -95,8 +115,7 @@ function mouseClicked() {
 
       if (uiSelected[3][0] == 1) { // Does the element have a click function?
 
-        console.log(uiSelectedIndex);
-        uiSelected[3][2]();
+        uiSelected[3][3]();
         uiHover = 0;
       }
     }
@@ -240,7 +259,7 @@ function mouseReleased() {
             }
           }
         }
-        puzzlePieces[clickedPuzzlePiece][3] = 0; // gives non-critical error (cannot set property after finishing level) **to_do**
+        puzzlePieces[clickedPuzzlePiece][3] = 0; // Gives non-critical error (cannot set property after finishing level) **to_do**
         clickedPuzzlePiece = -1;
         clicked = 0;
       }
@@ -251,9 +270,9 @@ function mouseReleased() {
 
 function prepareLevelData() {
 
-  tiles = levelData[level - 1][1]; // squared = total number of tiles
-  puzzlePieces = levelData[level - 1][2];
-  pp = levelData[level - 1][2];
+  tiles = levelData[world - 1][level - 1][1]; // squared = total number of tiles
+  puzzlePieces = levelData[world - 1][level - 1][2];
+  pp = levelData[world - 1][level - 1][2];
 
   // Create COPY of (not reference to) the levelData array to avoid modifying it
 
@@ -273,8 +292,8 @@ function prepareLevelData() {
     }
   }
 
-  endPieces = levelData[level - 1][3];
-  steps = levelData[level - 1][4]; // Number of available steps for a puzzle
+  endPieces = levelData[world - 1][level - 1][3];
+  steps = levelData[world - 1][level - 1][4]; // Number of available steps for a puzzle
 
   tilePos = [[], [], []]; // x, y, selected
   tileSpread = 1; // the size of a tile compared to the space it occupies (2 = half size)
@@ -474,11 +493,11 @@ function isSolved() {
 
               solved = 1;
 
-              if (typeof levelData[level] !== "undefined") { // Check if there is a next level
+              if (typeof levelData[world - 1][level] !== "undefined") { // Check if there is a next level
 
-                levelData[level][0] = 1;
+                levelData[world - 1][level][0] = 1;
                 storeItem('level', level + 1);
-                if ((level + 1) > unlocked) { unlocked += 1; storeItem('unlocked', unlocked); }
+                if ((level + 1) > unlockedLevel[world - 1]) { unlockedLevel[world - 1] += 1; storeItem('unlockedLevel', unlockedLevel); }
                 uiData[state][1][0] = 1;
               }
 
@@ -543,154 +562,193 @@ function nextLevel() {
 
 function draw() {
 
-  background(cc);
+  background(ccbg);
+
+  if (bgSaved < 1) {
+
+    // Draw background and save as image
+    textFont(fontRegular);
+
+    let s = max(width, height) * 1.2;
+    let lerpNum = 0;
+
+    for (let i = (s * 1); i > 0; i -= 10) {
+
+      iN = i / s;
+      lerpNum = 1 - (1 - iN) * (1 - iN);
+      fill(lerpColor(cc, ccbg, lerpNum));
+      noStroke();
+      circle(width / 2, height / 2, i);
+    }
+
+    img = get();
+
+    bgSaved = 1;
+  }
+
+  if (state == 2) { image(img, 0, 0); }
+
+  uiHover = 0;
 
   if (uiLoaded == 1) { // Check if UI has loaded yet
 
-      // Draw UI (Dynamic)
+    // Draw UI (Dynamic)
 
-      uiHover = 0;
+    for (s = 0; s < uiData[state].length; s++) { // Cycle through UI states (starting with the default one)
 
-      for (s = 0; s < uiData[state].length; s++) { // Cycle through UI states (starting with the default one)
+      aa = uiData[state][s]; // Load state
 
-        aa = uiData[state][s]; // Load state
+      if (aa[0] == 1) {
 
-        if (aa[0] == 1) {
+        for (i = 1; i < aa.length; i++) { // Cycle through UI elements
 
-          for (i = 1; i < aa.length; i++) { // Cycle through UI elements
+          a = aa[i].slice(); // Load UI element (doesn't work without slice for some reason)
 
-            a = aa[i].slice(); // Load UI element (doesn't work without slice for some reason)
+          limit = 2;
+          hNum = 1;
+          vNum = 1;
+          vNum2 = 1;
+          xOff = 0;
+          yOff = 0;
 
-            limit = 2;
-            hNum = 1;
-            vNum = 1;
-            vNum2 = 1;
-            xOff = 0;
-            yOff = 0;
+          if (a[0] == 2) { // Is it a list item?
 
-            if (a[0] == 2) { // Is it a list item?
+            limit = a[1][14]();
+            //hNum = Math.min(a[1][15], limit);
+            hNum = Math.min(a[1][15], limit);
+            vNum2 = Math.ceil(limit / a[1][15]);
+            vNum = Math.max(vNum2, a[1][16]);
+            xOff = a[1][17];
+            yOff = a[1][18];
+          }
 
-              limit = a[1][14]();
-              //hNum = Math.min(a[1][15], limit);
-              hNum = Math.min(a[1][15], limit);
-              vNum2 = Math.ceil(limit / a[1][15]);
-              vNum = Math.max(vNum2, a[1][16]);
-              xOff = a[1][17];
-              yOff = a[1][18];
-            }
+          for (v = 0; v < vNum2; v++) { // Cycle through rows
 
-            for (v = 0; v < vNum2; v++) { // Cycle through rows
+            for (h = 0; h < hNum; h++) { // Cycle through columns
 
-              for (h = 0; h < hNum; h++) { // Cycle through columns
+              if (((v * hNum) + h) == limit) { break; }
 
-                if (((v * hNum) + h) == limit) { break; }
+              a = aa[i].slice(); // Reload UI element (doesn't work without slice for some reason)
 
-                a = aa[i].slice(); // Reload UI element (doesn't work without slice for some reason)
+              for (x = 1; x < a.length; x++) { // Cycle through UI parameter groups
 
-                for (x = 1; x < a.length; x++) { // Cycle through UI parameter groups
+                a[x] = a[x].slice();
 
-                  a[x] = a[x].slice();
+                for (y = 0; y < a[x].length; y++) { // Cycle throug element parameters
 
-                  for (y = 0; y < a[x].length; y++) { // Cycle throug element parameters
+                  if (typeof a[x][y] === "function") { // Check if parameter is a function
 
-                    if (typeof a[x][y] === "function") { // Check if parameter is a function
+                    if (((x == 3) && ((y == 1) || (y == 2) || (y == 3))) == 0) { // Exclude hover/click functions which should stay functions
 
-                      if (((x == 3) && ((y == 1) || (y == 2))) == 0) { // Exclude hover/click functions which should stay functions
-
-                        a[x][y] = a[x][y](); // If it is, store the function's return value
-                      }
+                      a[x][y] = a[x][y](); // If it is, store the function's return value
                     }
                   }
                 }
+              }
 
-                xx = (a[1][2] - (a[1][6] * a[1][4])) - ((hNum - 1) * (xOff / 2)) + (xOff * h);
-                yy = (a[1][3] - (a[1][7] * a[1][5])) - ((vNum - 1) * (yOff / 2)) + (yOff * v);
+              xx = (a[1][2] - (a[1][6] * a[1][4])) - ((hNum - 1) * (xOff / 2)) + (xOff * h);
+              yy = (a[1][3] - (a[1][7] * a[1][5])) - ((vNum - 1) * (yOff / 2)) + (yOff * v);
 
-                if (a[1][0] == 1) { // Is box element active?
+              if (a[1][0] == 1) { // Is box element active?
 
-                  fill(a[1][8], a[1][9]);
+                fill(a[1][8], a[1][9]);
 
-                  if (a[1][10] == 1) {
+                if (a[1][10] == 1) {
 
-                    stroke(a[1][11], a[1][12]);
-                    strokeWeight(a[1][13]);
-
-                  } else {
-
-                    noStroke();
-                  }
-
-
-                  // Draw element box
-
-                  rectMode(CORNER);
-
-                  if (a[1][1] == 1) {
-
-                    rect(xx, yy, a[1][4], a[1][5]);
-
-                  } else if (a[1][1] == 2) {
-
-                    circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
-                  }
+                  stroke(a[1][11], a[1][12]);
+                  strokeWeight(a[1][13]);
 
                 } else {
 
-                  noFill();
                   noStroke();
                 }
 
-                if (a[3][0] == 1) { // Is it interactive?
 
-                  // Is the mouse on a UI element? (New)
+                // Draw element box
 
-                  if ((mouseX > xx) && (mouseX < (xx + a[1][4]))) {
+                rectMode(CORNER);
 
-                    if ((mouseY > yy) && (mouseY < (yy + a[1][5]))) {
+                if (a[1][1] == 1) {
+
+                  rect(xx, yy, a[1][4], a[1][5]);
+
+                } else if (a[1][1] == 2) {
+
+                  rect(xx, yy, a[1][4], a[1][5], min(a[1][4], a[1][5]) / 3.4);
+
+                } else if (a[1][1] == 3) {
+
+                  circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
+                }
+
+              } else {
+
+                noFill();
+                noStroke();
+              }
+
+              if (a[3][0] == 1) { // Is it interactive?
+
+                // Is the mouse on a UI element? (New)
+
+                if ((mouseX > xx) && (mouseX < (xx + a[1][4]))) {
+
+                  if ((mouseY > yy) && (mouseY < (yy + a[1][5]))) {
+
+                    if (uiSelected != a) {
+
+                      if (uiSelected != "undefined") {
+                        if (uiSelected[3][2] != 0) {
+
+                          uiSelected[3][2]();
+                        }
+                      }
 
                       uiHover = 1;
                       uiSelected = a;
                       uiSelectedIndex = ((v * hNum) + h + 1);
 
+                      if (uiSelected[3][1] != 0) {
 
-                      // Button hover effect
-
-                      fill(0, 20);
-                      noStroke();
-
-                      if (a[1][1] == 1) {
-
-                        rect(xx, yy, a[1][4], a[1][5]);
-
-                      } else if (a[1][1] == 2) {
-
-                        circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
+                        uiSelected[3][1]();
                       }
                     }
                   }
                 }
+              }
 
-                if (a[2][0] == 1) { // Is text element active?
+              if (a[2][0] == 1) { // Is text element active?
 
 
-                  // Draw element text
+                // Draw element text
 
-                  textSize(a[2][2]);
-                  fill(a[2][3], a[2][4]);
-                  noStroke();
-                  textAlign(LEFT, TOP);
+                textSize(a[2][2]);
+                if (a[2][4] != -1) { fill(a[2][3], a[2][4]); } else { fill(a[2][3]); }
+                noStroke();
+                textAlign(LEFT, TOP);
 
-                  hA = ((a[1][4] * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
-                  vA =((a[1][5] * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
-                  vC = (a[2][2] / 14); // Small vertical correction for centering
+                hA = ((a[1][4] * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
+                vA =((a[1][5] * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
+                vC = -(a[2][2] / 7); // Small vertical correction for font height
 
-                  text(a[2][1], xx + hA, yy + vA + vC);
-                }
+                text(a[2][1], xx + hA, yy + vA + vC);
               }
             }
           }
         }
       }
+    }
+
+    if (uiSelected != "undefined") {
+
+      if (uiHover == 0) {
+
+        if (uiSelected[3][2] != 0) {
+
+          uiSelected[3][2]();
+        }
+      }
+    }
 
 
     // Levels Menu
@@ -726,13 +784,13 @@ function draw() {
         }
 
         rectMode(CENTER);
-        fill(0, 15);
+        fill(255, 50);
         let centX = tilePos[0][mid][mid];
         let centY = tilePos[1][mid][mid];
         let offs = (height / 0.8);
         let offs2 = ((mid + 3) * tileSize) * round(tiles / 5);
-        quad(centX, centY - offs2, centX + offs2, centY, centX, centY + offs2, centX - offs2, centY);
-        quad(centX, centY - offs, centX + offs, centY, centX, centY + offs, centX - offs, centY);
+        //quad(centX, centY - offs2, centX + offs2, centY, centX, centY + offs2, centX - offs2, centY);
+        //quad(centX, centY - offs, centX + offs, centY, centX, centY + offs, centX - offs, centY);
 
         selected.length = 0;
 
