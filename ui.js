@@ -468,16 +468,16 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2)) + (tileSize / 8)), // x pos
-          /* 03 */ (height / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2)) + (tileSize / 8)), // y pos
-          /* 04 */ 70, // width
-          /* 05 */ 70, // height
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ (width / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))), // x pos
+          /* 03 */ (height / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))), // y pos
+          /* 04 */ function() { return (tileSize / 2); }, // width
+          /* 05 */ function() { return (tileSize / 2); }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 20, // outline-alpha
           /* 13 */ 2, // outline-width
@@ -495,7 +495,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 36, // text-size
           /* 03 */ 255, // text-colour
@@ -507,9 +507,19 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { if (steps > 0) { shiftTileLine(uiSelectedIndex, -1, -1); } } // onClick event (0 = no event)
+          /* 03 */ function() { if (steps > 0) { shiftTileLine(uiSelectedIndex, -1, 1); } } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowTopLeftIMG; }, // image
+          /* 02 */ 22, // image-size
+          /* 03 */ 255, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ],
 
@@ -520,16 +530,16 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2)) + (tileSize / 8)), // x pos
-          /* 03 */ (height / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2)) + (tileSize / 8)), // y pos
-          /* 04 */ 70, // width
-          /* 05 */ 70, // height
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ (width / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))), // x pos
+          /* 03 */ (height / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))), // y pos
+          /* 04 */ function() { return (tileSize / 2); }, // width
+          /* 05 */ function() { return (tileSize / 2); }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 20, // outline-alpha
           /* 13 */ 2, // outline-width
@@ -547,7 +557,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 36, // text-size
           /* 03 */ 255, // text-colour
@@ -559,9 +569,19 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { if (steps > 0) { shiftTileLine(-1, uiSelectedIndex, -1); } } // onClick event (0 = no event)
+          /* 03 */ function() { if (steps > 0) { shiftTileLine(-1, uiSelectedIndex, 1); } } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowTopRightIMG; }, // image
+          /* 02 */ 22, // image-size
+          /* 03 */ 255, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ],
 
@@ -572,16 +592,16 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2)) + (tileSize / 8)), // x pos
-          /* 03 */ (height / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2)) + (tileSize / 8)), // y pos
-          /* 04 */ 70, // width
-          /* 05 */ 70, // height
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ (width / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))), // x pos
+          /* 03 */ (height / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))), // y pos
+          /* 04 */ function() { return (tileSize / 2); }, // width
+          /* 05 */ function() { return (tileSize / 2); }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 20, // outline-alpha
           /* 13 */ 2, // outline-width
@@ -599,7 +619,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 36, // text-size
           /* 03 */ 255, // text-colour
@@ -611,9 +631,19 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { if (steps > 0) { shiftTileLine(-1, uiSelectedIndex, 1); } } // onClick event (0 = no event)
+          /* 03 */ function() { if (steps > 0) { shiftTileLine(-1, uiSelectedIndex, -1); } } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowBottomLeftIMG; }, // image
+          /* 02 */ 22, // image-size
+          /* 03 */ 255, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ],
 
@@ -624,16 +654,16 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2)) + (tileSize / 8)), // x pos
-          /* 03 */ (height / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2)) + (tileSize / 8)), // y pos
-          /* 04 */ 70, // width
-          /* 05 */ 70, // height
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle, 4 = rotated rect)
+          /* 02 */ (width / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))), // x pos
+          /* 03 */ (height / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))), // y pos
+          /* 04 */ function() { return (tileSize / 2); }, // width
+          /* 05 */ function() { return (tileSize / 2); }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 20, // outline-alpha
           /* 13 */ 2, // outline-width
@@ -651,7 +681,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 36, // text-size
           /* 03 */ 255, // text-colour
@@ -663,9 +693,19 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { if (steps > 0) { shiftTileLine(uiSelectedIndex, -1, 1); } } // onClick event (0 = no event)
+          /* 03 */ function() { if (steps > 0) { shiftTileLine(uiSelectedIndex, -1, -1); } } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowBottomRightIMG; }, // image
+          /* 02 */ 22, // image-size
+          /* 03 */ 255, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ],
     ],

@@ -42,6 +42,10 @@ levelLoaded = 0;
 function preload() {
   fontRegular = loadFont('assets/Lato-Regular.ttf');
   fontBold = loadFont('assets/Lato-Bold.ttf');
+  arrowTopLeftIMG = loadImage('assets/arrowTopLeftIMG.svg');
+  arrowTopRightIMG = loadImage('assets/arrowTopRightIMG.svg');
+  arrowBottomLeftIMG = loadImage('assets/arrowBottomLeftIMG.svg');
+  arrowBottomRightIMG = loadImage('assets/arrowBottomRightIMG.svg');
 }
 
 
@@ -701,43 +705,6 @@ function draw() {
               xx = (a[1][2] - (a[1][6] * a[1][4])) - ((hNum - 1) * (xOff / 2)) - ((vNum - 1) * (xOff2 / 2)) + (xOff * h) + (xOff2 * v);
               yy = (a[1][3] - (a[1][7] * a[1][5])) - ((hNum - 1) * (yOff / 2)) - ((vNum - 1) * (yOff2 / 2)) + (yOff * h) + (yOff2 * v);
 
-              if (a[1][0] == 1) { // Is box element active?
-
-                fill(a[1][8], a[1][9]);
-
-                if (a[1][10] == 1) {
-
-                  stroke(a[1][11], a[1][12]);
-                  strokeWeight(a[1][13]);
-
-                } else {
-
-                  noStroke();
-                }
-
-
-                // Draw element box
-
-                rectMode(CORNER);
-
-                if (a[1][1] == 1) {
-
-                  rect(xx, yy, a[1][4], a[1][5]);
-
-                } else if (a[1][1] == 2) {
-
-                  rect(xx, yy, a[1][4], a[1][5], min(a[1][4], a[1][5]) / 3.4);
-
-                } else if (a[1][1] == 3) {
-
-                  circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
-                }
-
-              } else {
-
-                noFill();
-                noStroke();
-              }
 
               if (a[3][0] == 1) { // Is it interactive?
 
@@ -769,6 +736,50 @@ function draw() {
                 }
               }
 
+
+              if (a[1][0] == 1) { // Is box element active?
+
+                fill(a[1][8], a[1][9]);
+
+                if (a[0] == 2) { if (uiSelected == a) { fill(a[1][8], a[3][1]()); } }
+
+                if (a[1][10] == 1) {
+
+                  stroke(a[1][11], a[1][12]);
+                  strokeWeight(a[1][13]);
+
+                } else {
+
+                  noStroke();
+                }
+
+
+                // Draw element box
+
+                rectMode(CORNER);
+
+                switch(a[1][1]) {
+
+                  case 1: rect(xx, yy, a[1][4], a[1][5]);
+                  break;
+
+                  case 2: rect(xx, yy, a[1][4], a[1][5], min(a[1][4], a[1][5]) / 3.4);
+                  break;
+
+                  case 3: circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
+                  break;
+
+                  case 4: quad(xx + (a[1][4] / 2), yy - (a[1][5] * 0.5), xx + (a[1][4] * 1.5), yy + (a[1][5] / 2), xx + (a[1][4] / 2), yy + (a[1][5] * 1.5), xx - (a[1][4] * 0.5), yy + (a[1][5] / 2));
+                  break;
+                }
+
+              } else {
+
+                noFill();
+                noStroke();
+              }
+
+
               if (a[2][0] == 1) { // Is text element active?
 
 
@@ -779,11 +790,23 @@ function draw() {
                 noStroke();
                 textAlign(LEFT, TOP);
 
-                hA = ((a[1][4] * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
-                vA =((a[1][5] * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
-                vC = -(a[2][2] / 7); // Small vertical correction for font height
+                let hA = ((a[1][4] * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
+                let vA =((a[1][5] * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
+                let vC = -(a[2][2] / 7); // Small vertical correction for font height
 
                 text(a[2][1], xx + hA, yy + vA + vC);
+              }
+
+
+              if (a[4] != undefined) {
+
+                if (a[4][0] == 1) { // Is image element active?
+
+                  let hA = ((a[1][4] * a[4][4]) - (a[4][2] / 2)); // Horizontal aligning
+                  let vA = ((a[1][5] * a[4][5]) - (a[4][2] / 2)); // Vertical aligning
+
+                  image(a[4][1], xx + hA, yy + vA, a[4][2], a[4][2]);
+                }
               }
             }
           }
