@@ -42,6 +42,10 @@ levelLoaded = 0;
 function preload() {
   fontRegular = loadFont('assets/Lato-Regular.ttf');
   fontBold = loadFont('assets/Lato-Bold.ttf');
+  arrowTopLeftIMG = loadImage('assets/arrowTopLeftIMG.svg');
+  arrowTopRightIMG = loadImage('assets/arrowTopRightIMG.svg');
+  arrowBottomLeftIMG = loadImage('assets/arrowBottomLeftIMG.svg');
+  arrowBottomRightIMG = loadImage('assets/arrowBottomRightIMG.svg');
 }
 
 
@@ -139,8 +143,8 @@ function mousePressed() {
           for (let i = 0; i < puzzlePieces.length; i++) {
 
             // Is there a puzzle piece on the selected tile?
-            if (puzzlePieces[i][0] == (selected[1] + 1)) {
-              if (puzzlePieces[i][1] == (selected[0] + 1)) {
+            if (puzzlePieces[i][0] == (selected[1])) {
+              if (puzzlePieces[i][1] == (selected[0])) {
 
                 // Initiate clicked sequence!
                 clicked = 1;
@@ -192,8 +196,8 @@ function mouseReleased() {
           for (let i = 0; i < puzzlePieces.length; i++) {
 
             // Is there a puzzle piece on the currently selected tile?
-            if (puzzlePieces[i][0] == (selected[1] + 1)) {
-              if (puzzlePieces[i][1] == (selected[0] + 1)) {
+            if (puzzlePieces[i][0] == (selected[1])) {
+              if (puzzlePieces[i][1] == (selected[0])) {
 
                 // If its a click...
                 if (dragAmount == 0) {
@@ -238,17 +242,20 @@ function mouseReleased() {
           if (dragAmount > 0) {
 
             // Prevent dropping piece back on its og place
-            if ((puzzlePieces[clickedPuzzlePiece][0] != (selected[1] + 1)) || (puzzlePieces[clickedPuzzlePiece][1] != (selected[0] + 1))) {
+            if ((puzzlePieces[clickedPuzzlePiece][0] != (selected[1])) || (puzzlePieces[clickedPuzzlePiece][1] != (selected[0]))) {
 
               // Is the dragged piece marked as "being moved" ? (otherwise it's a non-movable piece)
               if (puzzlePieces[clickedPuzzlePiece][3] == 1) {
 
                 // Is the currently selected puzzle piece a movable piece? (or an empty tile)
-                if (isMovablePiece(-1, selected[0] + 1, selected[1] + 1) == 1) {
+                if (isMovablePiece(-1, selected[0], selected[1]) == 1) {
+
+                  // Update tile data
+                  tileIndexes[selected[0]][selected[1]] = [selected[0], selected[1]];
 
                   // Move puzzle piece to selected tile
-                  puzzlePieces[clickedPuzzlePiece][1] = (selected[0] + 1);
-                  puzzlePieces[clickedPuzzlePiece][0] = (selected[1] + 1);
+                  puzzlePieces[clickedPuzzlePiece][1] = selected[0];
+                  puzzlePieces[clickedPuzzlePiece][0] = selected[1];
                   puzzlePieces[clickedPuzzlePiece][3] = 0;
                   clickedPuzzlePiece = -1;
                   clicked = 0;
@@ -259,7 +266,7 @@ function mouseReleased() {
             }
           }
         }
-        puzzlePieces[clickedPuzzlePiece][3] = 0; // Gives non-critical error (cannot set property after finishing level) **to_do**
+        puzzlePieces[clickedPuzzlePiece][3] = 0; // Gives non-critical error (cannot set property after finishing level) ***** FIX *****
         clickedPuzzlePiece = -1;
         clicked = 0;
       }
@@ -270,9 +277,10 @@ function mouseReleased() {
 
 function prepareLevelData() {
 
-  tiles = levelData[world - 1][level - 1][1]; // squared = total number of tiles
+  tiles = levelData[world - 1][level - 1][1] + 2; // squared = total number of tiles
   puzzlePieces = levelData[world - 1][level - 1][2];
   pp = levelData[world - 1][level - 1][2];
+  ep = levelData[world - 1][level - 1][3];
 
   // Create COPY of (not reference to) the levelData array to avoid modifying it
 
@@ -292,10 +300,26 @@ function prepareLevelData() {
     }
   }
 
-  endPieces = levelData[world - 1][level - 1][3];
+  endPieces = [ep.length];
+
+  for (i = 0; i < ep.length; i++) { // Cycle through puzzle pieces
+
+    endPieces[i] = [4];
+
+    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+
+      if (typeof ep[i][y] === "object") { // Is it an object? (array)
+
+        endPieces[i][y] = ep[i][y].slice(); // If so make a copy of it
+
+      } else { endPieces[i][y] = ep[i][y]; } // If not set it to the same value
+    }
+  }
+
   steps = levelData[world - 1][level - 1][4]; // Number of available steps for a puzzle
 
-  tilePos = [[], [], []]; // x, y, selected
+  tileData = []; // x, y, fill-opacity, original-pos
+  tileIndexes = []; // x, y
   tileSpread = 1; // the size of a tile compared to the space it occupies (2 = half size)
   hoverGrowth = 1.12;
 
@@ -316,15 +340,44 @@ function prepareLevelData() {
   //cc = 120;
 
   // Assign tile positions based on number of tiles and defined spread
+
   for (let i = 0; i < tiles; i++) {
-    tilePos[0][i] = [];
-    tilePos[1][i] = [];
-    tilePos[2][i] = [];
+
+    tileData[i] = [];
+    tileIndexes[i] = [];
+
     for (let y = 0; y < tiles; y++) {
-      tilePos[0][i][y] = (width / 2) + (y * (tileSize / 2)) - ((tileSize / 2) * i);
-      tilePos[1][i][y] = (height / 2) + (y * (tileSize / 2)) - offset + ((tileSize / 2) * i);
+
+      tileData[i][y] = [];
+      tileIndexes[i][y] = [i, y]; // Save index of tile in indexes array
+
+      // Set tile positions
+
+      tileData[i][y][0] = (width / 2) + (y * (tileSize / 2)) - ((tileSize / 2) * i);
+      tileData[i][y][1] = (height / 2) + (y * (tileSize / 2)) - offset + ((tileSize / 2) * i);
+      tileData[i][y][2] = -1;
+      tileData[i][y][3] = [i, y]; // Save original grid position to keep track of position changes
     }
   }
+
+  // Cycle through the tile grid again and genereate tile opacity values based on distance from centre tile
+
+  for (let i = 1; i < (tiles - 1); i++) {
+    for (let y = 1; y < (tiles - 1); y++) {
+
+      let posX = tileData[i][y][0]; // Store x position
+      let posY = tileData[i][y][1]; // Store y position
+
+      let distX = abs(tileData[mid][mid][0] - posX);
+      let distY = abs(tileData[mid][mid][1] - posY);
+      let distance = max(distX, distY);
+      let centX = tileData[mid][mid][0];
+      let centY = tileData[mid][mid][1];
+
+      tileData[i][y][2] = ((255 - map(dist(centX, centY, posX, posY), 0, mid * tileSize, 120, 240)));
+    }
+  }
+
   levelLoaded = 1;
 }
 
@@ -610,16 +663,19 @@ function draw() {
           vNum2 = 1;
           xOff = 0;
           yOff = 0;
+          xOff2 = 0;
+          yOff2 = 0;
 
           if (a[0] == 2) { // Is it a list item?
 
             limit = a[1][14]();
-            //hNum = Math.min(a[1][15], limit);
-            hNum = Math.min(a[1][15], limit);
-            vNum2 = Math.ceil(limit / a[1][15]);
-            vNum = Math.max(vNum2, a[1][16]);
-            xOff = a[1][17];
-            yOff = a[1][18];
+            hNum = Math.min(a[1][15](), limit);
+            vNum2 = Math.ceil(limit / a[1][15]());
+            vNum = Math.max(vNum2, a[1][16]());
+            xOff = a[1][17]();
+            yOff = a[1][18]();
+            xOff2 = a[1][19]();
+            yOff2 = a[1][20]();
           }
 
           for (v = 0; v < vNum2; v++) { // Cycle through rows
@@ -646,46 +702,9 @@ function draw() {
                 }
               }
 
-              xx = (a[1][2] - (a[1][6] * a[1][4])) - ((hNum - 1) * (xOff / 2)) + (xOff * h);
-              yy = (a[1][3] - (a[1][7] * a[1][5])) - ((vNum - 1) * (yOff / 2)) + (yOff * v);
+              xx = (a[1][2] - (a[1][6] * a[1][4])) - ((hNum - 1) * (xOff / 2)) - ((vNum - 1) * (xOff2 / 2)) + (xOff * h) + (xOff2 * v);
+              yy = (a[1][3] - (a[1][7] * a[1][5])) - ((hNum - 1) * (yOff / 2)) - ((vNum - 1) * (yOff2 / 2)) + (yOff * h) + (yOff2 * v);
 
-              if (a[1][0] == 1) { // Is box element active?
-
-                fill(a[1][8], a[1][9]);
-
-                if (a[1][10] == 1) {
-
-                  stroke(a[1][11], a[1][12]);
-                  strokeWeight(a[1][13]);
-
-                } else {
-
-                  noStroke();
-                }
-
-
-                // Draw element box
-
-                rectMode(CORNER);
-
-                if (a[1][1] == 1) {
-
-                  rect(xx, yy, a[1][4], a[1][5]);
-
-                } else if (a[1][1] == 2) {
-
-                  rect(xx, yy, a[1][4], a[1][5], min(a[1][4], a[1][5]) / 3.4);
-
-                } else if (a[1][1] == 3) {
-
-                  circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
-                }
-
-              } else {
-
-                noFill();
-                noStroke();
-              }
 
               if (a[3][0] == 1) { // Is it interactive?
 
@@ -717,6 +736,50 @@ function draw() {
                 }
               }
 
+
+              if (a[1][0] == 1) { // Is box element active?
+
+                fill(a[1][8], a[1][9]);
+
+                if (a[0] == 2) { if (uiSelected == a) { fill(a[1][8], a[3][1]()); } }
+
+                if (a[1][10] == 1) {
+
+                  stroke(a[1][11], a[1][12]);
+                  strokeWeight(a[1][13]);
+
+                } else {
+
+                  noStroke();
+                }
+
+
+                // Draw element box
+
+                rectMode(CORNER);
+
+                switch(a[1][1]) {
+
+                  case 1: rect(xx, yy, a[1][4], a[1][5]);
+                  break;
+
+                  case 2: rect(xx, yy, a[1][4], a[1][5], min(a[1][4], a[1][5]) / 3.4);
+                  break;
+
+                  case 3: circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
+                  break;
+
+                  case 4: quad(xx + (a[1][4] / 2), yy - (a[1][5] * 0.5), xx + (a[1][4] * 1.5), yy + (a[1][5] / 2), xx + (a[1][4] / 2), yy + (a[1][5] * 1.5), xx - (a[1][4] * 0.5), yy + (a[1][5] / 2));
+                  break;
+                }
+
+              } else {
+
+                noFill();
+                noStroke();
+              }
+
+
               if (a[2][0] == 1) { // Is text element active?
 
 
@@ -727,11 +790,23 @@ function draw() {
                 noStroke();
                 textAlign(LEFT, TOP);
 
-                hA = ((a[1][4] * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
-                vA =((a[1][5] * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
-                vC = -(a[2][2] / 7); // Small vertical correction for font height
+                let hA = ((a[1][4] * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
+                let vA =((a[1][5] * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
+                let vC = -(a[2][2] / 7); // Small vertical correction for font height
 
                 text(a[2][1], xx + hA, yy + vA + vC);
+              }
+
+
+              if (a[4] != undefined) {
+
+                if (a[4][0] == 1) { // Is image element active?
+
+                  let hA = ((a[1][4] * a[4][4]) - (a[4][2] / 2)); // Horizontal aligning
+                  let vA = ((a[1][5] * a[4][5]) - (a[4][2] / 2)); // Vertical aligning
+
+                  image(a[4][1], xx + hA, yy + vA, a[4][2], a[4][2]);
+                }
               }
             }
           }
@@ -739,7 +814,7 @@ function draw() {
       }
     }
 
-    if (uiSelected != "undefined") {
+    if (uiSelected != "undefined") { // Reset hover effect if not hovering on UI anymore
 
       if (uiHover == 0) {
 
@@ -776,7 +851,7 @@ function draw() {
           }
 
           // If so set piece state to 'being dragged'
-          if (dragAmount > 0){
+          if (dragAmount > 0) {
             if (isMovablePiece(clickedPuzzlePiece, 0, 0) == 1) {
               puzzlePieces[clickedPuzzlePiece][3] = 1;
             }
@@ -785,45 +860,34 @@ function draw() {
 
         rectMode(CENTER);
         fill(255, 50);
-        let centX = tilePos[0][mid][mid];
-        let centY = tilePos[1][mid][mid];
-        let offs = (height / 0.8);
-        let offs2 = ((mid + 3) * tileSize) * round(tiles / 5);
-        //quad(centX, centY - offs2, centX + offs2, centY, centX, centY + offs2, centX - offs2, centY);
-        //quad(centX, centY - offs, centX + offs, centY, centX, centY + offs, centX - offs, centY);
 
         selected.length = 0;
 
-        // Cycle through the tile grid
-        for (let i = 0; i < tiles; i++) {
+        for (let i = 0; i < tiles; i++) { // Cycle through tiles, check for mouse hover, and draw tiles
           for (let y = 0; y < tiles; y++) {
 
-            posX = tilePos[0][i][y];
-            posY = tilePos[1][i][y];
+            if (tileData[i][y][2] != -1) { // Exclude outer ring tiles (empty tiles)
 
-            op = 0;
+              // Check for mouse selection
 
-            distX = abs(tilePos[0][mid][mid] - tilePos[0][i][y]);
-            distY = abs(tilePos[1][mid][mid] - tilePos[1][i][y]);
-            distance = max(distX, distY);
+              let posX = tileData[i][y][0]; // Store x position
+              let posY = tileData[i][y][1]; // Store y position
+              let scale = tileSpread;
 
-            // Check for mouse selection
-            if ((abs(mouseX - posX) + abs(mouseY - posY)) < (tileSize / 2)) {
-              tilePos[2][i][y] = 1;
-              selected = [i, y];
-            } else {
-              tilePos[2][i][y] = 0;
+              if ((abs(mouseX - posX) + abs(mouseY - posY)) < (tileSize / 2)) {
+
+                scale = tileSpread * hoverGrowth; // If cursor is on tile resize it (hover effect)
+                selected = [i, y]; // Save index of selected tile
+                //selected = [tileIndexes[i][y][0], tileIndexes[i][y][1]]; // Save index of selected tile
+                //selected = [tileData[i][y][3][0], tileData[i][y][3][1]]; // Save index of selected tile
+              }
+
+              // Draw tiles
+
+              strokeWeight(0);
+              fill(0, tileData[i][y][2]);
+              quad(posX, posY - ((tileSize / 2) / scale), posX + ((tileSize / 2) / scale), posY, posX, posY + ((tileSize / 2) / scale), posX - ((tileSize / 2) / scale), posY);
             }
-
-            // If cursor is on a tile do stuff
-            if (tilePos[2][i][y] == 1) {
-              op = tileSpread * hoverGrowth;
-            } else { op = tileSpread; }
-
-            // Draw tiles
-            strokeWeight(0);
-            fill(0, ((255 - map(dist(centX, centY, tilePos[0][i][y], tilePos[1][i][y]), 0, mid * tileSize, 120, 240))) + op);
-            quad(posX, posY - ((tileSize / 2) / op), posX + ((tileSize / 2) / op), posY, posX, posY + ((tileSize / 2) / op), posX - ((tileSize / 2) / op), posY);
           }
         }
 
@@ -836,10 +900,11 @@ function draw() {
 
         for (let i = 0; i < puzzlePieces.length; i++) {
 
-          let posX = tilePos[0][puzzlePieces[i][1] - 1][puzzlePieces[i][0] - 1];
-          let posY = tilePos[1][puzzlePieces[i][1] - 1][puzzlePieces[i][0] - 1];
+          let posX = tileData[puzzlePieces[i][1]][puzzlePieces[i][0]][0];
+          let posY = tileData[puzzlePieces[i][1]][puzzlePieces[i][0]][1];
 
           if (puzzlePieces[i][3] == 1) {
+
             posX = mouseX + (posX - clickX);
             posY = mouseY + (posY - clickY);
           }
@@ -847,6 +912,7 @@ function draw() {
           beginShape();
 
           for (let y = 0; y < (puzzlePieces[i][2].length); y++) {
+
             vertex(posX + (positions[puzzlePieces[i][2][y]][0] * (tileSize / 4)), posY + (positions[puzzlePieces[i][2][y]][1] * (tileSize / 4)));
           }
 
@@ -854,14 +920,106 @@ function draw() {
         }
 
         // Draw end pieces
+
         fill(255);
         noStroke();
+
         for (let i = 0; i < (endPieces.length); i++) {
-          let posX = tilePos[0][endPieces[i][1] - 1][endPieces[i][0] - 1];
-          let posY = tilePos[1][endPieces[i][1] - 1][endPieces[i][0] - 1];
+
+          let posX = tileData[endPieces[i][1]][endPieces[i][0]][0];
+          let posY = tileData[endPieces[i][1]][endPieces[i][0]][1];
+
           quad(posX, posY - (tileSize / 8), posX + (tileSize / 8), posY, posX, posY + (tileSize / 8), posX - (tileSize / 8), posY);
         }
       }
     }
   }
+}
+
+
+function shiftTileLine(row, column, dir) {
+
+  // Move tiles
+
+  dirNorm = Math.max(0, dir);
+  dirRev = dir * -1;
+  dirRevNorm = Math.max(0, dirRev);
+
+  if (row != -1) {
+
+    console.log("Moved Row");
+
+    for (let y = ((tiles - 1) * dirNorm); y != ((tiles - 1) * dirRevNorm); y += dirRev) {
+
+      if (tileData[row][y + dirRev][2] != -1) {
+
+        console.log("Block " + y);
+
+        tileData[row][y][2] = tileData[row][y + dirRev][2];
+        tileData[row][y][3][0] = tileData[row][y + dirRev][3][0];
+        tileData[row][y][3][1] = tileData[row][y + dirRev][3][1];
+
+        tileIndexes[tileData[row][y][3][0]][tileData[row][y][3][1]][0] = row;
+        tileIndexes[tileData[row][y][3][0]][tileData[row][y][3][1]][1] = y;
+
+      } else {
+
+        tileData[row][y][2] = -1;
+      }
+    }
+
+    tileData[row][((tiles - 1) * dirRevNorm)][2] = -1;
+
+  } else {
+
+    console.log("Moved Column");
+
+    for (let y = ((tiles - 1) * dirNorm); y != ((tiles - 1) * dirRevNorm); y += dirRev) {
+
+      if (tileData[y + dirRev][column][2] != -1) {
+
+        console.log("Block " + y);
+
+        tileData[y][column][2] = tileData[y + dirRev][column][2];
+        tileData[y][column][3][0] = tileData[y + dirRev][column][3][0];
+        tileData[y][column][3][1] = tileData[y + dirRev][column][3][1];
+
+        tileIndexes[tileData[y][column][3][0]][tileData[y][column][3][1]][0] = row;
+        tileIndexes[tileData[y][column][3][0]][tileData[y][column][3][1]][1] = y;
+
+      } else {
+
+        tileData[y][column][2] = -1;
+      }
+    }
+
+    tileData[((tiles - 1) * dirRevNorm)][column][2] = -1;
+
+  }
+
+  // Move puzzle pieces with tiles
+
+  let lineType = row;
+  let num = 1;
+
+  if (row == -1) { lineType = column; num = 0; }
+
+  for (let i = 0; i < puzzlePieces.length; i++) {
+
+    if (puzzlePieces[i][num] == lineType) {
+
+      puzzlePieces[i][Math.abs(num -1)] += dir;
+    }
+  }
+
+  for (let i = 0; i < endPieces.length; i++) {
+
+    if (endPieces[i][num] == lineType) {
+
+      endPieces[i][Math.abs(num -1)] += dir;
+    }
+  }
+
+  useStep();
+  isSolved();
 }

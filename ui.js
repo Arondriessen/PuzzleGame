@@ -167,10 +167,12 @@ ui = [
           // List Settings
 
           /* 14 */ function() { return levelData[levelsWorld].length; }, // items
-          /* 15 */ 10, // h-number
-          /* 16 */ 3, // v-number (min, dynamically adjusted)
-          /* 17 */ 110, // x-offset
-          /* 18 */ 120 // y-offset
+          /* 15 */ function() { return 5; }, // h-number
+          /* 16 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 17 */ function() { return 110; }, // x-offset
+          /* 18 */ function() { return 0; }, // y-offset
+          /* 19 */ function() { return 0; }, // x-offset (new line)
+          /* 20 */ function() { return 120; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -457,7 +459,255 @@ ui = [
           /* 02 */ function() { uiData[2][0][4][1][9] = 0; uiData[2][0][4][1][12] = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { state = 0; } // onClick event (0 = no event)
         ]
-      ]
+      ],
+
+      [ // /* 05 */ Shift Row/Column (Top Left)
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ (width / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))), // x pos
+          /* 03 */ (height / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))), // y pos
+          /* 04 */ function() { return (tileSize / 2); }, // width
+          /* 05 */ function() { return (tileSize / 2); }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 20, // outline-alpha
+          /* 13 */ 2, // outline-width
+
+          // List Settings
+
+          /* 14 */ function() { return (tiles - 2); }, // items
+          /* 15 */ function() { return (tiles - 2); }, // h-number
+          /* 16 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 17 */ function() { return -(tileSize / 2); }, // x-offset (spacing)
+          /* 18 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 19 */ function() { return 0; }, // x-offset (new line)
+          /* 20 */ function() { return 0; } // y-offset (new line)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
+          /* 02 */ 36, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 200, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ function() { if (steps > 0) { shiftTileLine(uiSelectedIndex, -1, 1); } } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowTopLeftIMG; }, // image
+          /* 02 */ 22, // image-size
+          /* 03 */ 255, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 06 */ Shift Row/Column (Top Right)
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ (width / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))), // x pos
+          /* 03 */ (height / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))), // y pos
+          /* 04 */ function() { return (tileSize / 2); }, // width
+          /* 05 */ function() { return (tileSize / 2); }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 20, // outline-alpha
+          /* 13 */ 2, // outline-width
+
+          // List Settings
+
+          /* 14 */ function() { return (tiles - 2); }, // items
+          /* 15 */ function() { return (tiles - 2); }, // h-number
+          /* 16 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 17 */ function() { return (tileSize / 2); }, // x-offset (spacing)
+          /* 18 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 19 */ function() { return 0; }, // x-offset (new line)
+          /* 20 */ function() { return 0; } // y-offset (new line)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
+          /* 02 */ 36, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 200, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ function() { if (steps > 0) { shiftTileLine(-1, uiSelectedIndex, 1); } } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowTopRightIMG; }, // image
+          /* 02 */ 22, // image-size
+          /* 03 */ 255, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 06 */ Shift Row/Column (Bottom Left)
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ (width / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))), // x pos
+          /* 03 */ (height / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))), // y pos
+          /* 04 */ function() { return (tileSize / 2); }, // width
+          /* 05 */ function() { return (tileSize / 2); }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 20, // outline-alpha
+          /* 13 */ 2, // outline-width
+
+          // List Settings
+
+          /* 14 */ function() { return (tiles - 2); }, // items
+          /* 15 */ function() { return (tiles - 2); }, // h-number
+          /* 16 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 17 */ function() { return (tileSize / 2); }, // x-offset (spacing)
+          /* 18 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 19 */ function() { return 0; }, // x-offset (new line)
+          /* 20 */ function() { return 0; } // y-offset (new line)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
+          /* 02 */ 36, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 200, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ function() { if (steps > 0) { shiftTileLine(-1, uiSelectedIndex, -1); } } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowBottomLeftIMG; }, // image
+          /* 02 */ 22, // image-size
+          /* 03 */ 255, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 08 */ Shift Row/Column (Bottom Right)
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle, 4 = rotated rect)
+          /* 02 */ (width / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))), // x pos
+          /* 03 */ (height / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))), // y pos
+          /* 04 */ function() { return (tileSize / 2); }, // width
+          /* 05 */ function() { return (tileSize / 2); }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 20, // outline-alpha
+          /* 13 */ 2, // outline-width
+
+          // List Settings
+
+          /* 14 */ function() { return (tiles - 2); }, // items
+          /* 15 */ function() { return (tiles - 2); }, // h-number
+          /* 16 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 17 */ function() { return -(tileSize / 2); }, // x-offset (spacing)
+          /* 18 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 19 */ function() { return 0; }, // x-offset (new line)
+          /* 20 */ function() { return 0; } // y-offset (new line)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
+          /* 02 */ 36, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 200, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ function() { if (steps > 0) { shiftTileLine(uiSelectedIndex, -1, -1); } } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowBottomRightIMG; }, // image
+          /* 02 */ 22, // image-size
+          /* 03 */ 255, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
     ],
 
     [ // /* 01 */ Level Completed
