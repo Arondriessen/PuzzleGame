@@ -1020,44 +1020,6 @@ function shiftTileLine(row, column, dir) {
     }
   }
 
-  //useStep();
-  //isSolved();
-}
-
-
-function shiftRight() {
-
-  let row = 2;
-
-  for (let y = (tiles - 1); y > 0; y--) {
-
-    tileData[row][y][2] = tileData[row][y - 1][2];
-    tileData[row][y][3][0] = tileData[row][y - 1][3][0];
-    tileData[row][y][3][1] = tileData[row][y - 1][3][1];
-
-    tileIndexes[tileData[row][y][3][0]][tileData[row][y][3][1]][0] = row;
-    tileIndexes[tileData[row][y][3][0]][tileData[row][y][3][1]][1] = y;
-  }
-
-  // Move puzzle pieces with tiles
-
-  for (let i = 0; i < puzzlePieces.length; i++) {
-
-    if (puzzlePieces[i][1] == row) {
-
-      puzzlePieces[i][0]++;
-    }
-  }
-
-  for (let i = 0; i < endPieces.length; i++) {
-
-    if (endPieces[i][1] == row) {
-
-      endPieces[i][0]++;
-    }
-  }
-
-  tileData[row][0][2] = -1;
   useStep();
   isSolved();
 }
