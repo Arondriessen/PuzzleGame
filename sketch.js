@@ -939,87 +939,101 @@ function draw() {
 
 function shiftTileLine(row, column, dir) {
 
-  // Move tiles
+  if (solved == 0) {
 
-  dirNorm = Math.max(0, dir);
-  dirRev = dir * -1;
-  dirRevNorm = Math.max(0, dirRev);
+    // Move tiles
 
-  if (row != -1) {
+    let dirNorm = Math.max(0, dir);
+    let dirRev = dir * -1;
+    let dirRevNorm = Math.max(0, dirRev);
+    let isGo = 0;
 
-    console.log("Moved Row");
+    if (row != -1) {
 
-    for (let y = ((tiles - 1) * dirNorm); y != ((tiles - 1) * dirRevNorm); y += dirRev) {
+      if (tileData[row][((tiles - 1) * dirNorm)][2] == -1) { // Check if tiles have room to move (if not, cancel)
 
-      if (tileData[row][y + dirRev][2] != -1) {
+        console.log("Moved Row");
 
-        console.log("Block " + y);
+        for (let y = ((tiles - 1) * dirNorm); y != ((tiles - 1) * dirRevNorm); y += dirRev) {
 
-        tileData[row][y][2] = tileData[row][y + dirRev][2];
-        tileData[row][y][3][0] = tileData[row][y + dirRev][3][0];
-        tileData[row][y][3][1] = tileData[row][y + dirRev][3][1];
+          if (tileData[row][y + dirRev][2] != -1) {
 
-        tileIndexes[tileData[row][y][3][0]][tileData[row][y][3][1]][0] = row;
-        tileIndexes[tileData[row][y][3][0]][tileData[row][y][3][1]][1] = y;
+            console.log("Block " + y);
 
-      } else {
+            tileData[row][y][2] = tileData[row][y + dirRev][2];
+            tileData[row][y][3][0] = tileData[row][y + dirRev][3][0];
+            tileData[row][y][3][1] = tileData[row][y + dirRev][3][1];
 
-        tileData[row][y][2] = -1;
+            tileIndexes[tileData[row][y][3][0]][tileData[row][y][3][1]][0] = row;
+            tileIndexes[tileData[row][y][3][0]][tileData[row][y][3][1]][1] = y;
+
+          } else {
+
+            tileData[row][y][2] = -1;
+          }
+        }
+
+        tileData[row][((tiles - 1) * dirRevNorm)][2] = -1;
+        isGo = 1;
+    }
+
+    } else {
+
+      if (tileData[((tiles - 1) * dirNorm)][column][2] == -1) { // Check if tiles have room to move (if not, cancel)
+
+        console.log("Moved Column");
+
+        for (let y = ((tiles - 1) * dirNorm); y != ((tiles - 1) * dirRevNorm); y += dirRev) {
+
+          if (tileData[y + dirRev][column][2] != -1) {
+
+            console.log("Block " + y);
+
+            tileData[y][column][2] = tileData[y + dirRev][column][2];
+            tileData[y][column][3][0] = tileData[y + dirRev][column][3][0];
+            tileData[y][column][3][1] = tileData[y + dirRev][column][3][1];
+
+            tileIndexes[tileData[y][column][3][0]][tileData[y][column][3][1]][0] = row;
+            tileIndexes[tileData[y][column][3][0]][tileData[y][column][3][1]][1] = y;
+
+          } else {
+
+            tileData[y][column][2] = -1;
+          }
+        }
+
+        tileData[((tiles - 1) * dirRevNorm)][column][2] = -1;
+        isGo = 1;
       }
     }
 
-    tileData[row][((tiles - 1) * dirRevNorm)][2] = -1;
+    if (isGo) { // Check if tiles have room to move (if not, cancel)
 
-  } else {
+      // Move puzzle pieces with tiles
 
-    console.log("Moved Column");
+      let lineType = row;
+      let num = 1;
 
-    for (let y = ((tiles - 1) * dirNorm); y != ((tiles - 1) * dirRevNorm); y += dirRev) {
+      if (row == -1) { lineType = column; num = 0; }
 
-      if (tileData[y + dirRev][column][2] != -1) {
+      for (let i = 0; i < puzzlePieces.length; i++) {
 
-        console.log("Block " + y);
+        if (puzzlePieces[i][num] == lineType) {
 
-        tileData[y][column][2] = tileData[y + dirRev][column][2];
-        tileData[y][column][3][0] = tileData[y + dirRev][column][3][0];
-        tileData[y][column][3][1] = tileData[y + dirRev][column][3][1];
-
-        tileIndexes[tileData[y][column][3][0]][tileData[y][column][3][1]][0] = row;
-        tileIndexes[tileData[y][column][3][0]][tileData[y][column][3][1]][1] = y;
-
-      } else {
-
-        tileData[y][column][2] = -1;
+          puzzlePieces[i][Math.abs(num -1)] += dir;
+        }
       }
-    }
 
-    tileData[((tiles - 1) * dirRevNorm)][column][2] = -1;
+      for (let i = 0; i < endPieces.length; i++) {
 
-  }
+        if (endPieces[i][num] == lineType) {
 
-  // Move puzzle pieces with tiles
+          endPieces[i][Math.abs(num -1)] += dir;
+        }
+      }
 
-  let lineType = row;
-  let num = 1;
-
-  if (row == -1) { lineType = column; num = 0; }
-
-  for (let i = 0; i < puzzlePieces.length; i++) {
-
-    if (puzzlePieces[i][num] == lineType) {
-
-      puzzlePieces[i][Math.abs(num -1)] += dir;
+      useStep();
+      isSolved();
     }
   }
-
-  for (let i = 0; i < endPieces.length; i++) {
-
-    if (endPieces[i][num] == lineType) {
-
-      endPieces[i][Math.abs(num -1)] += dir;
-    }
-  }
-
-  useStep();
-  isSolved();
 }
