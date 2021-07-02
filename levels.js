@@ -104,20 +104,19 @@ levels = [
       5, // Grid Size
 
       [ // Puzzle Pieces
-        [3, 3, ["Middle", "Bottom"], 0],
-        [3, 4, ["Left", "Middle", "Top"], 0],
-        [4, 3, ["Left", "Middle", "Top"], 0],
-        [4, 4, ["Bottom", "Middle", "Right"], 0],
-        [5, 3, ["Bottom", "Middle", "Right"], 0],
-        [5, 4, ["Middle", "Top"], 0]
+        [3, 2, ["Middle", "Bottom"], 0],
+        [4, 4, ["Top", "Middle", "Left"], 0],
+        [5, 3, ["Top", "Middle", "Bottom"], 0],
+        [3, 5, ["Left", "Middle", "Right"], 0],
+        [2, 5, ["Middle", "Right"], 0]
       ],
 
       [ // End-Pieces
-        [3, 3],
-        [5, 4]
+        [3, 2],
+        [2, 5]
       ],
 
-      99 // Number of Moves
+      3 // Number of Moves
     ],
 
     [   // Level 6
@@ -127,21 +126,104 @@ levels = [
       5, // Grid Size
 
       [ // Puzzle Pieces
-        [3, 3, ["Middle", "Bottom"], 0],
-        [3, 4, ["Left", "Middle", "Top"], 0],
-        [4, 3, ["Left", "Middle", "Top"], 0],
-        [4, 4, ["Bottom", "Middle", "Right"], 0],
-        [5, 3, ["Bottom", "Middle", "Right"], 0],
-        [5, 4, ["Middle", "Top"], 0]
+        [2, 4, ["Middle", "Top"], 0],
+        [3, 4, ["Bottom", "Middle", "Right"], 0],
+        [3, 5, ["Left", "Middle", "Top"], 0],
+        [4, 4, ["Middle", "Bottom"], 0]
       ],
 
       [ // End-Pieces
-        [3, 3],
-        [5, 4]
+        [2, 4],
+        [4, 4]
       ],
 
-      99 // Number of Moves
-    ]
+      3 // Number of Moves
+    ],
+
+    [   // Level 7
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [1, 2, ["Middle", "Bottom"], 0],
+        [2, 2, ["Left", "Middle", "Top"], 0],
+        [1, 3, ["Bottom", "Middle", "Right"], 0],
+        [2, 4, ["Middle", "Top"], 0]
+      ],
+
+      [ // End-Pieces
+        [1, 2],
+        [2, 4]
+      ],
+
+      3 // Number of Moves
+    ],
+
+    [   // Level 8
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [2, 1, ["Middle", "Bottom"], 0],
+        [2, 2, ["Left", "Middle", "Top"], 0],
+        [1, 3, ["Bottom", "Middle", "Right"], 0],
+        [2, 4, ["Middle", "Top"], 0]
+      ],
+
+      [ // End-Pieces
+        [2, 1],
+        [2, 4]
+      ],
+
+      2 // Number of Moves
+    ],
+
+    [   // Level 9
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [1, 3, ["Middle", "Right"], 0],
+        [1, 4, ["Left", "Middle", "Bottom"], 0],
+        [3, 5, ["Top", "Middle", "Right"], 0],
+        [2, 4, ["Middle", "Left"], 0]
+      ],
+
+      [ // End-Pieces
+        [1, 3],
+        [2, 4]
+      ],
+
+      3 // Number of Moves
+    ],
+
+    [   // Level 10
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [1, 4, ["Middle", "Top"], 0],
+        [2, 3, ["Bottom", "Middle", "Right"], 0],
+        [3, 4, ["Left", "Middle", "Top"], 0],
+        [3, 5, ["Left", "Middle", "Right"], 0],
+        [5, 3, ["Middle", "Bottom"], 0]
+      ],
+
+      [ // End-Pieces
+        [1, 4],
+        [5, 3]
+      ],
+
+      4 // Number of Moves
+    ],
 
   ],
 

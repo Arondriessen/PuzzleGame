@@ -2,7 +2,7 @@
 
 // General
 
-state = 0; // 0 = menu, 1 = levels, 2 = puzzle
+state = 0; // 0 = menu, 1 = levels, 2 = puzzle, 3 = settings, 4 = level-gen
 uiLoaded = 0;
 uiHover = 0;
 uiSelected = "undefined";
@@ -42,10 +42,11 @@ levelLoaded = 0;
 function preload() {
   fontRegular = loadFont('assets/Lato-Regular.ttf');
   fontBold = loadFont('assets/Lato-Bold.ttf');
-  arrowTopLeftIMG = loadImage('assets/arrowTopLeftIMG.svg');
-  arrowTopRightIMG = loadImage('assets/arrowTopRightIMG.svg');
-  arrowBottomLeftIMG = loadImage('assets/arrowBottomLeftIMG.svg');
-  arrowBottomRightIMG = loadImage('assets/arrowBottomRightIMG.svg');
+  arrowTopLeftIMG = loadImage('assets/arrowTopLeftIMG3.svg');
+  arrowTopRightIMG = loadImage('assets/arrowTopRightIMG3.svg');
+  arrowBottomLeftIMG = loadImage('assets/arrowBottomLeftIMG3.svg');
+  arrowBottomRightIMG = loadImage('assets/arrowBottomRightIMG3.svg');
+  menuIconIMG = loadImage('assets/menuIconIMG.svg');
 }
 
 
@@ -304,9 +305,9 @@ function prepareLevelData() {
 
   for (i = 0; i < ep.length; i++) { // Cycle through puzzle pieces
 
-    endPieces[i] = [4];
+    endPieces[i] = [2];
 
-    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+    for (y = 0; y < 2; y++) { // Cycle through piece parameters
 
       if (typeof ep[i][y] === "object") { // Is it an object? (array)
 
@@ -836,7 +837,7 @@ function draw() {
 
     // Puzzle
 
-    if (state == 2) {
+    if ((state == 2) || (state == 4)) {
 
       noStroke();
 
@@ -937,7 +938,7 @@ function draw() {
 }
 
 
-function shiftTileLine(row, column, dir) {
+function shiftTileLine(row, column, dir, steps) {
 
   if (solved == 0) {
 
@@ -947,6 +948,7 @@ function shiftTileLine(row, column, dir) {
     let dirRev = dir * -1;
     let dirRevNorm = Math.max(0, dirRev);
     let isGo = 0;
+    let puzzlePiecesMoved = 0;
 
     if (row != -1) {
 
@@ -1021,6 +1023,7 @@ function shiftTileLine(row, column, dir) {
         if (puzzlePieces[i][num] == lineType) {
 
           puzzlePieces[i][Math.abs(num -1)] += dir;
+          puzzlePiecesMoved++;
         }
       }
 
@@ -1032,8 +1035,235 @@ function shiftTileLine(row, column, dir) {
         }
       }
 
-      useStep();
-      isSolved();
+      if (steps) { useStep(); isSolved(); }
+    }
+
+    return [isGo, puzzlePiecesMoved];
+  }
+}
+
+
+function generateLevel() {
+
+  console.log("Generated Level");
+
+  difficulty = 4;
+  shiftsDone = [];
+  shiftsDone.length = 0;
+
+  for (let i = 0; i < difficulty; i++) {
+
+    shiftsDone.push(shiftRandomTileLine());
+  }
+
+  let rPieces = 5;
+
+  puzzlePieces.length = 0;
+  endPieces.length = 0;
+  puzzlePieces = [rPieces];
+  endPieces = [2];
+  puzzlePiecesCopy = [];
+  endPiecesCopy = [];
+  puzzlePiecesCopy.length = 0;
+  endPiecesCopy.length = 0;
+
+  let x;
+  let y;
+  let prevX = -1;
+  let prevY = -1;
+  let rot1 = "Middle";
+  let rot2 = "Middle";
+  let startRot = Math.round(random(1, 4));
+  let positionsPlaced = 0;
+  let posPlaced = 0;
+
+  while (positionsPlaced == 0) { // Loop for placing solved puzzle path
+
+    let failed = 0;
+    let loopCounter = 0;
+
+    console.log("********** START PATHFINDING LOOP **********");
+
+    for (let i = 0; i < rPieces; i++) { // Cycle through pieces that need to be generated
+
+      posPlaced = 0;
+
+      while (posPlaced == 0) { // Loop for placing single position in path
+
+        console.log("*** START POSITION FINDING LOOP ***");
+
+        if (i == 0) { // Find random starting position
+
+          x = Math.round(random(tiles - 1));
+          y = Math.round(random(tiles - 1));
+
+        } else { // Find positions to continue path
+
+          let add = (Math.round(random()) * 2) - 1;
+
+          if (random() > 0.5) {
+
+            x = add + (puzzlePieces[i - 1][0]);
+            y = puzzlePieces[i - 1][1];
+            rot1 = positionsRotation[(add * -1) + 2];
+            rot2 = positionsRotation[add + 2];
+
+          } else {
+
+            x = puzzlePieces[i - 1][0];
+            y = add + (puzzlePieces[i - 1][1]);
+            rot1 = positionsRotation[(add * -1) + 3];
+            rot2 = positionsRotation[add + 3];
+          }
+        }
+
+        if (((x > -1) && (x < tiles)) && ((y > -1) && (y < tiles))) { // Check that position does not fall off grid
+
+          if (tileData[y][x][2] != -1) { // Check if position is on a tile
+
+            let notOnPrev = 1;
+
+            for (let p = 0; p < i; p++) { // Loop through previous positions
+
+              //console.log("Checking previous position: " + puzzlePieces[p][0] + "." + puzzlePieces[p][1] + " - " + x + "." + y);
+
+              if ((x == puzzlePieces[p][0]) && (y == puzzlePieces[p][1])) { // Check if position is on top of pevious ones
+
+                notOnPrev = 0;
+              }
+            }
+
+            if (notOnPrev == 1) { // If not, place positions
+
+              puzzlePieces[i] = [x, y, [rot1, "Middle", "Middle"], 0];
+              puzzlePiecesCopy[i] = [x, y, [rot1, "Middle", "Middle"], 0];
+
+              if (i > 0) { puzzlePieces[i - 1][2][2] = rot2; puzzlePiecesCopy[i - 1][2][2] = rot2; }
+
+              if (i == (rPieces - 1)) {
+
+                endPieces[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
+                endPieces[1] = [x, y];
+                endPiecesCopy[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
+                endPiecesCopy[1] = [x, y];
+                positionsPlaced = 1;
+                console.log("Path Placed");
+              }
+              posPlaced = 1;
+
+              console.log("Position Placed: " + x + " - " + y);
+
+            } else { console.log("Position is on previous one -" + x + " - " + y); }
+          } else { console.log("Position is not on a Tile -" + x + " - " + y); }
+        } else { console.log("Position Fell off Grid -" + x + " - " + y); }
+
+        loopCounter++;
+        if (loopCounter > 60) { failed = 1; console.log("************************ FAILED ************************"); break; }
+      }
+
+      if (failed) { break; }
     }
   }
+}
+
+
+function shiftRandomTileLine() {
+
+  // Shift a random row/column of tiles by 1 in a random direction
+
+  let rLine = Math.round(random(1, (tiles - 2)));
+  let rDir = (Math.round(random()) * 2) - 1;
+  let count = 0;
+  let result = [2];
+
+  console.log(rLine + " - " + rDir);
+
+  if (random() > 0.5) {
+
+    result = shiftTileLine(rLine, -1, rDir, 0);
+    count = ((result[0] == 1) && (result[1] > 0));
+    if (result[1] == 0) { shiftTileLine(rLine, -1, rDir * -1, 0); }
+
+    while (count == 0) {
+
+      rLine = Math.round(random(1, (tiles - 2)));
+      rDir = (Math.round(random()) * 2) - 1;
+      result = shiftTileLine(rLine, -1, rDir, 0);
+      count = ((result[0] == 1) && (result[1] > 0));
+      if (result[1] == 0) { shiftTileLine(rLine, -1, rDir * -1, 0); }
+      console.log ("******* RETRY SHIFT *******");
+    }
+
+    return [rLine, -1, rDir];
+
+  } else {
+
+    result = shiftTileLine(-1, rLine, rDir, 0);
+    count = ((result[0] == 1) && (result[1] > 0));
+    if (result[1] == 0) { shiftTileLine(-1, rLine, rDir * -1, 0); }
+
+    while (count == 0) {
+
+      rLine = Math.round(random(1, (tiles - 2)));
+      rDir = (Math.round(random()) * 2) - 1;
+      result = shiftTileLine(-1, rLine, rDir, 0);
+      count = ((result[0] == 1) && (result[1] > 0));
+      if (result[1] == 0) { shiftTileLine(-1, rLine, rDir * -1, 0); }
+      console.log ("******* RETRY SHIFT *******");
+    }
+
+    return [-1, rLine, rDir];
+  }
+}
+
+
+function resetGenLevel() {
+
+  uiData[state][1][0] = 0;
+  prepareLevelData();
+
+  steps = difficulty;
+
+  for (let i = 0; i < shiftsDone.length; i++) {
+
+    shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2], 0);
+  }
+
+  puzzlePieces.length = 0;
+  endPieces.length = 0;
+
+  ppC = puzzlePiecesCopy;
+  epC = endPiecesCopy;
+
+  puzzlePieces = [ppC.length];
+  endPieces = [epC.length];
+
+  for (let i = 0; i < ppC.length; i++) {
+
+    puzzlePieces[i] = [4];
+
+    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+
+      if (typeof ppC[i][y] === "object") { // Is it an object? (array)
+
+        puzzlePieces[i][y] = ppC[i][y].slice(); // If so make a copy of it
+
+      } else { puzzlePieces[i][y] = ppC[i][y]; } // If not set it to the same value
+    }
+  }
+
+  endPieces[0] = epC[0].slice();
+  endPieces[1] = epC[1].slice();
+
+  for (let i = (shiftsDone.length - 1); i > -1; i--) {
+
+    shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2] * -1, 0);
+  }
+
+  solved = 0;
+
+  console.log("***** SOLUTION *****");
+  console.log(shiftsDone);
+  console.log("***** LEVEL DATA *****");
+  console.log([puzzlePieces, endPieces]);
 }
