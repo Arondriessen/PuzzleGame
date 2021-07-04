@@ -6,6 +6,7 @@ state = 0; // 0 = menu, 1 = levels, 2 = puzzle, 3 = settings, 4 = level-gen
 uiLoaded = 0;
 uiHover = 0;
 uiSelected = "undefined";
+uiScale = 1;
 
 
 // Menu Data
@@ -55,6 +56,11 @@ function setup() {
   // Set canvas to viewport size
 
   createCanvas(windowWidth, windowHeight);
+
+
+  // Set UI scale based on resolution
+
+  uiScale = min(width, height) / 1300;
 
 
   // Load progression data
@@ -324,7 +330,8 @@ function prepareLevelData() {
   tileSpread = 1; // the size of a tile compared to the space it occupies (2 = half size)
   hoverGrowth = 1.12;
 
-  tileSize = min(((height / 1.15) / tiles)  * tileSpread, 180); // the size a single tile occupies (tiles themselves can be smaller)
+  let smallerDimension = min(width, height);
+  tileSize = min(((smallerDimension / 1.15) / tiles)  * tileSpread, smallerDimension / 7); // the size a single tile occupies (tiles themselves can be smaller)
   selected = [];
   clicked = 0;
   clickTimer = 0;
@@ -652,7 +659,11 @@ function draw() {
 
       aa = uiData[state][s]; // Load state
 
-      if (aa[0] == 1) {
+      let subStateEnabled = 0;
+
+      if (typeof aa[0] === "function") { subStateEnabled = aa[0](); } else { subStateEnabled = aa[0]; }
+
+      if (subStateEnabled) { // Check if state is enabled
 
         for (i = 1; i < aa.length; i++) { // Cycle through UI elements
 
@@ -837,7 +848,7 @@ function draw() {
 
     // Puzzle
 
-    if ((state == 2) || (state == 4)) {
+    if (state == 2) {
 
       noStroke();
 
@@ -940,6 +951,8 @@ function draw() {
 
 function shiftTileLine(row, column, dir, steps) {
 
+  let debug = 0;
+
   if (solved == 0) {
 
     // Move tiles
@@ -954,13 +967,13 @@ function shiftTileLine(row, column, dir, steps) {
 
       if (tileData[row][((tiles - 1) * dirNorm)][2] == -1) { // Check if tiles have room to move (if not, cancel)
 
-        console.log("Moved Row");
+        if (debug) { console.log("Moved Row"); }
 
         for (let y = ((tiles - 1) * dirNorm); y != ((tiles - 1) * dirRevNorm); y += dirRev) {
 
           if (tileData[row][y + dirRev][2] != -1) {
 
-            console.log("Block " + y);
+            //console.log("Block " + y);
 
             tileData[row][y][2] = tileData[row][y + dirRev][2];
             tileData[row][y][3][0] = tileData[row][y + dirRev][3][0];
@@ -983,13 +996,13 @@ function shiftTileLine(row, column, dir, steps) {
 
       if (tileData[((tiles - 1) * dirNorm)][column][2] == -1) { // Check if tiles have room to move (if not, cancel)
 
-        console.log("Moved Column");
+        if (debug) { console.log("Moved Column"); }
 
         for (let y = ((tiles - 1) * dirNorm); y != ((tiles - 1) * dirRevNorm); y += dirRev) {
 
           if (tileData[y + dirRev][column][2] != -1) {
 
-            console.log("Block " + y);
+            //console.log("Block " + y);
 
             tileData[y][column][2] = tileData[y + dirRev][column][2];
             tileData[y][column][3][0] = tileData[y + dirRev][column][3][0];
@@ -1045,9 +1058,11 @@ function shiftTileLine(row, column, dir, steps) {
 
 function generateLevel() {
 
-  console.log("Generated Level");
+  let debug = 0;
 
-  difficulty = 4;
+  if (debug) { console.log("Generated Level"); }
+
+  difficulty = 1;
   shiftsDone = [];
   shiftsDone.length = 0;
 
@@ -1056,6 +1071,7 @@ function generateLevel() {
     shiftsDone.push(shiftRandomTileLine());
   }
 
+  /*
   let rPieces = 5;
 
   puzzlePieces.length = 0;
@@ -1164,10 +1180,13 @@ function generateLevel() {
       if (failed) { break; }
     }
   }
+  */
 }
 
 
 function shiftRandomTileLine() {
+
+  let debug = 0;
 
   // Shift a random row/column of tiles by 1 in a random direction
 
@@ -1176,13 +1195,13 @@ function shiftRandomTileLine() {
   let count = 0;
   let result = [2];
 
-  console.log(rLine + " - " + rDir);
+  if (debug) { console.log(rLine + " - " + rDir); }
 
   if (random() > 0.5) {
 
     result = shiftTileLine(rLine, -1, rDir, 0);
     count = ((result[0] == 1) && (result[1] > 0));
-    if (result[1] == 0) { shiftTileLine(rLine, -1, rDir * -1, 0); }
+    if (result[1] == 0) { if (debug) { console.log ("Undoing Row Shift"); } shiftTileLine(rLine, -1, rDir * -1, 0); }
 
     while (count == 0) {
 
@@ -1190,8 +1209,8 @@ function shiftRandomTileLine() {
       rDir = (Math.round(random()) * 2) - 1;
       result = shiftTileLine(rLine, -1, rDir, 0);
       count = ((result[0] == 1) && (result[1] > 0));
-      if (result[1] == 0) { shiftTileLine(rLine, -1, rDir * -1, 0); }
-      console.log ("******* RETRY SHIFT *******");
+      if (result[1] == 0) { if (debug) { console.log ("Undoing Row Shift"); } shiftTileLine(rLine, -1, rDir * -1, 0); }
+      if (debug) { console.log ("******* RETRY ROW SHIFT *******"); }
     }
 
     return [rLine, -1, rDir];
@@ -1200,7 +1219,7 @@ function shiftRandomTileLine() {
 
     result = shiftTileLine(-1, rLine, rDir, 0);
     count = ((result[0] == 1) && (result[1] > 0));
-    if (result[1] == 0) { shiftTileLine(-1, rLine, rDir * -1, 0); }
+    if (result[1] == 0) { if (debug) { console.log ("Undoing Column Shift"); } shiftTileLine(-1, rLine, rDir * -1, 0); }
 
     while (count == 0) {
 
@@ -1208,8 +1227,8 @@ function shiftRandomTileLine() {
       rDir = (Math.round(random()) * 2) - 1;
       result = shiftTileLine(-1, rLine, rDir, 0);
       count = ((result[0] == 1) && (result[1] > 0));
-      if (result[1] == 0) { shiftTileLine(-1, rLine, rDir * -1, 0); }
-      console.log ("******* RETRY SHIFT *******");
+      if (result[1] == 0) { if (debug) { console.log ("Undoing Column Shift"); } shiftTileLine(-1, rLine, rDir * -1, 0); }
+      if (debug) { console.log ("******* RETRY COLUMN SHIFT *******"); }
     }
 
     return [-1, rLine, rDir];
