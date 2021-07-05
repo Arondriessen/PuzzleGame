@@ -653,6 +653,48 @@ ui = [
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
+      ],
+
+      [ // /* 05 */ Design Mode Toggle
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width - (90 * uiScale), // x pos
+          /* 03 */ height - (210 * uiScale), // y pos
+          /* 04 */ 270 * uiScale, // width
+          /* 05 */ 96 * uiScale, // height
+          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 50, // outline-alpha
+          /* 13 */ 4 // outline-width
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { let txt = "Off"; if (designMode) { txt = "On"; } return ("Design Mode: " + txt); }, // text
+          /* 02 */ 28 * uiScale, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 255, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { designMode = !designMode; if (designMode) { solved = 0; } else { if (steps < 1) { solved = -1; } } } // onClick event (0 = no event)
+        ]
       ]
     ],
 
@@ -705,7 +747,7 @@ ui = [
 
     [ // /* 02 */ Level Gen. UI
 
-      /* 00 */ 1, // state (0 = off, 1 = on)
+      /* 00 */ function() { return designMode; }, // state (0 = off, 1 = on)
 
       [ // /* 00 */ Generate Level Button
 
@@ -788,6 +830,48 @@ ui = [
           /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { resetGenLevel(); } // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 02 */ Retry Gen. Level Button
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ 90 * uiScale, // x pos
+          /* 03 */ height - (450 * uiScale), // y pos
+          /* 04 */ 270 * uiScale, // width
+          /* 05 */ 96 * uiScale, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 50, // outline-alpha
+          /* 13 */ 4 // outline-width
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ "Retry Gen.", // text
+          /* 02 */ 40 * uiScale, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ -1, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { retryGenLevel(); } // onClick event (0 = no event)
         ]
       ]
     ],

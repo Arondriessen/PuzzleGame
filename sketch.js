@@ -7,6 +7,7 @@ uiLoaded = 0;
 uiHover = 0;
 uiSelected = "undefined";
 uiScale = 1;
+designMode = 0;
 
 
 // Menu Data
@@ -262,6 +263,13 @@ function mouseReleased() {
                   clicked = 0;
                   useStep();
                   isSolved();
+
+                  // If we're in design mode, update endpoints too
+
+                  endPieces[0][0] = puzzlePieces[0][0];
+                  endPieces[0][1] = puzzlePieces[0][1];
+                  endPieces[1][0] = puzzlePieces[puzzlePieces.length - 1][0];
+                  endPieces[1][1] = puzzlePieces[puzzlePieces.length - 1][1];
                 }
               }
             }
@@ -380,6 +388,9 @@ function prepareLevelData() {
     }
   }
 
+  storeItem('level', level);
+  storeItem('world', world);
+
   levelLoaded = 1;
 }
 
@@ -387,16 +398,24 @@ function prepareLevelData() {
 function isMovablePiece(piece, x, y) {
 
   let clickedOnMovablePiece = 1;
+
   if (piece > -1) {
+
     for (let i = 0; i < (endPieces.length); i++) {
+
       if ((puzzlePieces[piece][0] == (endPieces[i][0])) & (puzzlePieces[piece][1] == (endPieces[i][1]))) {
-        clickedOnMovablePiece = 0;
+
+        if (designMode == 0) { clickedOnMovablePiece = 0; }
       }
     }
+
   } else {
+
     for (let i = 0; i < (endPieces.length); i++) {
+
       if ((y == (endPieces[i][0])) & (x == (endPieces[i][1]))) {
-        clickedOnMovablePiece = 0;
+
+        if (designMode == 0) { clickedOnMovablePiece = 0; }
       }
     }
   }
@@ -405,10 +424,14 @@ function isMovablePiece(piece, x, y) {
 
 
 function useStep() {
-  steps -= 1;
 
-  if (steps < 1) {
-    solved = -1;
+  if (designMode == 0) {
+
+    steps -= 1;
+
+    if (steps < 1) {
+      solved = -1;
+    }
   }
 }
 
@@ -427,163 +450,152 @@ function rotatePuzzlePiece(i) {
 
 function isSolved() {
 
-  /*
-  // Check array of puzzle pieces against array of solutions (old / single-solution / manual)
+  if (designMode == 0) {
 
-  if (JSON.stringify(puzzlePieces) === JSON.stringify(puzzleSolution)) {
+    // Go from endpoint A to B.
+    // Check ending side of endpoint A.
+    // Cycle through puzzlepieces and check for contuing points (pathfinding)
+    // If it ends at endpoint B it's solved, if it ends earlier it's not.
 
-    solved = 1;
-    level += 1;
-    storeItem('level', level);
-    nextLevel();
-  }*/
+    aSize = puzzlePieces.length;
+    pI = 0;
 
+    console.log("//////////////// isSolved ////////////////");
 
-  // New Method
+    for (i = 0; i < aSize; i++) {
 
-  // Go from endpoint A to B.
-  // Check ending side of endpoint A.
-  // Cycle through puzzlepieces and check for contuing points (pathfinding)
-  // If it ends at endpoint B it's solved, if it ends earlier it's not.
+      console.log(aSize + " - Number of puzzle pieces");
+      console.log(i + " - Main loop index ****************************");
+      console.log(pI + " - Puzzle piece index");
 
-  aSize = puzzlePieces.length;
-  pI = 0;
+      piece = puzzlePieces[pI]
+      points = piece[2];
+      exitMainLoop = 1;
 
-  console.log("//////////////// isSolved ////////////////");
+      if (points.length == 2) {
 
-  for (i = 0; i < aSize; i++) {
+        // Endpoints
 
-    console.log(aSize + " - Number of puzzle pieces");
-    console.log(i + " - Main loop index ****************************");
-    console.log(pI + " - Puzzle piece index");
+        dir = firstNoMiddle(points);
+        console.log("Endpoint - Type of piece");
 
-    piece = puzzlePieces[pI]
-    points = piece[2];
-    exitMainLoop = 1;
+      } else {
 
-    if (points.length == 2) {
+        // Regular Pieces
 
-      // Endpoints
-
-      dir = firstNoMiddle(points);
-      console.log("Endpoint - Type of piece");
-
-    } else {
-
-      // Regular Pieces
-
-      console.log("Regular piece - Type of piece");
-    }
-
-    console.log(dir + " - Direction 1");
-
-    for (y = 0; y < aSize; y++) {
-
-      console.log(y + " - Secondary loop index -----------------");
-
-      exitSecLoop = 0;
-
-      piece2 = puzzlePieces[y];
-      continueLoop = 0;
-
-      // Is piece next to main piece?
-
-      if (piece2[1] == piece[1]) {
-
-        if (piece2[0] == (piece[0] - 1)) {
-
-          // Left
-
-          if (dir == "Left") { // Does the main piece connect to this piece?
-
-            continueLoop = 1;
-          }
-        }
-
-        if (piece2[0] == (piece[0] + 1)) {
-
-          // Right
-
-          if (dir == "Right") { // Does the main piece connect to this piece?
-
-            continueLoop = 1;
-          }
-        }
+        console.log("Regular piece - Type of piece");
       }
 
-      if (piece2[0] == piece[0]) {
+      console.log(dir + " - Direction 1");
 
-        if (piece2[1] == (piece[1] - 1)) {
+      for (y = 0; y < aSize; y++) {
 
-          // Above
+        console.log(y + " - Secondary loop index -----------------");
 
-          if (dir == "Top") { // Does the main piece connect to this piece?
+        exitSecLoop = 0;
 
-            continueLoop = 1;
+        piece2 = puzzlePieces[y];
+        continueLoop = 0;
+
+        // Is piece next to main piece?
+
+        if (piece2[1] == piece[1]) {
+
+          if (piece2[0] == (piece[0] - 1)) {
+
+            // Left
+
+            if (dir == "Left") { // Does the main piece connect to this piece?
+
+              continueLoop = 1;
+            }
+          }
+
+          if (piece2[0] == (piece[0] + 1)) {
+
+            // Right
+
+            if (dir == "Right") { // Does the main piece connect to this piece?
+
+              continueLoop = 1;
+            }
           }
         }
 
-        if (piece2[1] == (piece[1] + 1)) {
+        if (piece2[0] == piece[0]) {
 
-          // Below
+          if (piece2[1] == (piece[1] - 1)) {
 
-          if (dir == "Bottom") { // Does the main piece connect to this piece?
+            // Above
 
-            continueLoop = 1;
+            if (dir == "Top") { // Does the main piece connect to this piece?
+
+              continueLoop = 1;
+            }
+          }
+
+          if (piece2[1] == (piece[1] + 1)) {
+
+            // Below
+
+            if (dir == "Bottom") { // Does the main piece connect to this piece?
+
+              continueLoop = 1;
+            }
           }
         }
-      }
 
-      points2 = piece2[2];
+        points2 = piece2[2];
 
-      if (continueLoop == 1) {
+        if (continueLoop == 1) {
 
-        console.log("Piece is next to main piece");
+          console.log("Piece is next to main piece");
 
-        for (x = 0; x < points2.length; x++) { // Cycle through points
+          for (x = 0; x < points2.length; x++) { // Cycle through points
 
-          if (points2[x] == dirOp(dir)) {
+            if (points2[x] == dirOp(dir)) {
 
-            console.log(dirOp(dir) + " - Direction 2");
+              console.log(dirOp(dir) + " - Direction 2");
 
-            // Connection found
+              // Connection found
 
-            console.log("Connection found (" + (i + 1) + "/" + (aSize - 1) + ")");
+              console.log("Connection found (" + (i + 1) + "/" + (aSize - 1) + ")");
 
-            pI = y; // Reassign index to restart loop with
-            exitSecLoop = 1;
-            exitMainLoop = 0;
+              pI = y; // Reassign index to restart loop with
+              exitSecLoop = 1;
+              exitMainLoop = 0;
 
-            if (points2.length == 2) {
+              if (points2.length == 2) {
 
-              console.log("//////////////// Level Finished! ////////////////");
+                console.log("//////////////// Level Finished! ////////////////");
 
-              solved = 1;
+                solved = 1;
 
-              if (typeof levelData[world - 1][level] !== "undefined") { // Check if there is a next level
+                if (typeof levelData[world - 1][level] !== "undefined") { // Check if there is a next level
 
-                levelData[world - 1][level][0] = 1;
-                storeItem('level', level + 1);
-                if ((level + 1) > unlockedLevel[world - 1]) { unlockedLevel[world - 1] += 1; storeItem('unlockedLevel', unlockedLevel); }
-                uiData[state][1][0] = 1;
+                  levelData[world - 1][level][0] = 1;
+                  storeItem('level', level + 1);
+                  if ((level + 1) > unlockedLevel[world - 1]) { unlockedLevel[world - 1] += 1; storeItem('unlockedLevel', unlockedLevel); }
+                  uiData[state][1][0] = 1;
+                }
+
+                exitMainLoop = 1;
+
+              } else {
+
+                dir = points2[(((x - 1) * -1) + 1)];
               }
 
-              exitMainLoop = 1;
-
-            } else {
-
-              dir = points2[(((x - 1) * -1) + 1)];
+              break;
             }
-
-            break;
           }
         }
+
+        if (exitSecLoop == 1) { break; }
       }
 
-      if (exitSecLoop == 1) { break; }
+      if (exitMainLoop == 1) { break; }
     }
-
-    if (exitMainLoop == 1) { break; }
   }
 }
 
@@ -1071,7 +1083,7 @@ function generateLevel() {
   tileRots = 2;
   tileMoves = 2;
   tileSwitches = 0;
-  shiftMoves = 0;
+  shiftMoves = 6;
   shiftsDone = [];
   shiftsDone.length = 0;
 
@@ -1081,16 +1093,22 @@ function generateLevel() {
   }
 
 
-  let rPieces = 5;
+  let rPieces = 8;
 
   puzzlePieces.length = 0;
   endPieces.length = 0;
   puzzlePieces = [rPieces];
   endPieces = [2];
+
   puzzlePiecesCopy = [];
   endPiecesCopy = [];
   puzzlePiecesCopy.length = 0;
   endPiecesCopy.length = 0;
+
+  puzzlePiecesCopy2 = [];
+  endPiecesCopy2 = [];
+  puzzlePiecesCopy2.length = 0;
+  endPiecesCopy2.length = 0;
 
   let x;
   let y;
@@ -1166,16 +1184,20 @@ function generateLevel() {
 
                   puzzlePieces[i] = [x, y, [rot1, "Middle", "Middle"], 0];
                   puzzlePiecesCopy[i] = [x, y, [rot1, "Middle", "Middle"], 0];
+                  puzzlePiecesCopy2[i] = [x, y, [rot1, "Middle", "Middle"], 0];
 
                 } else { // Last End Piece
 
                   puzzlePieces[i] = [x, y, ["Middle", rot1], 0];
                   puzzlePiecesCopy[i] = [x, y, ["Middle", rot1], 0];
+                  puzzlePiecesCopy2[i] = [x, y, ["Middle", rot1], 0];
 
                   endPieces[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
                   endPieces[1] = [x, y];
                   endPiecesCopy[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
                   endPiecesCopy[1] = [x, y];
+                  endPiecesCopy2[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
+                  endPiecesCopy2[1] = [x, y];
                   positionsPlaced = 1;
                   console.log("Path Placed");
                 }
@@ -1185,11 +1207,13 @@ function generateLevel() {
 
                 puzzlePieces[i - 1][2][pointIndex] = rot2;
                 puzzlePiecesCopy[i - 1][2][pointIndex] = rot2;
+                puzzlePiecesCopy2[i - 1][2][pointIndex] = rot2;
 
               } else { // First End Piece
 
                 puzzlePieces[i] = [x, y, ["Middle", rot1], 0];
                 puzzlePiecesCopy[i] = [x, y, ["Middle", rot1], 0];
+                puzzlePiecesCopy2[i] = [x, y, ["Middle", rot1], 0];
               }
 
               posPlaced = 1;
@@ -1318,7 +1342,6 @@ function resetGenLevel() {
   }
 
 
-
   // Moving Puzzle Pieces
 
   for (let i = 0; i < tileMoves; i++) {
@@ -1353,6 +1376,17 @@ function resetGenLevel() {
     }
   }
 
+  for (let i = 0; i < puzzlePieces.length; i++) {
+
+    puzzlePiecesCopy2[i][0] = puzzlePieces[i][0];
+    puzzlePiecesCopy2[i][1] = puzzlePieces[i][1];
+  }
+
+  endPiecesCopy2[0][0] = endPieces[0][0];
+  endPiecesCopy2[0][1] = endPieces[0][1];
+  endPiecesCopy2[1][0] = endPieces[1][0];
+  endPiecesCopy2[1][1] = endPieces[1][1];
+
 
   // Rotating Puzzle Pieces
 
@@ -1360,7 +1394,7 @@ function resetGenLevel() {
 
     let puzzleIndex = Math.round(random(1, puzzlePieces.length - 2));
 
-    for (let y = 0; y < 3; y++) { rotatePuzzlePiece(puzzleIndex); }
+    for (let y = 0; y < 3; y++) { rotatePuzzlePiece(puzzleIndex); puzzlePiecesCopy2[puzzleIndex][2] = puzzlePieces[puzzleIndex][2].slice(); }
   }
 
 
@@ -1370,4 +1404,92 @@ function resetGenLevel() {
   console.log(shiftsDone);
   console.log("***** LEVEL DATA *****");
   console.log([puzzlePieces, endPieces]);
+}
+
+
+function retryGenLevel() {
+
+  // Resetting Level
+
+  uiData[state][1][0] = 0;
+  prepareLevelData();
+
+
+  // Redoing Generating Tile Shifts
+
+  steps = tileRots + tileMoves + tileSwitches + shiftMoves;
+
+  for (let i = 0; i < shiftsDone.length; i++) {
+
+    shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2], 0);
+  }
+
+
+  // Redoing Generated Puzzle Piece Placements (when solved)
+
+  puzzlePieces.length = 0;
+  endPieces.length = 0;
+
+  let ppC = puzzlePiecesCopy;
+  let epC = endPiecesCopy;
+
+  puzzlePieces = [ppC.length];
+  endPieces = [epC.length];
+
+  for (let i = 0; i < ppC.length; i++) {
+
+    puzzlePieces[i] = [4];
+
+    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+
+      if (typeof ppC[i][y] === "object") { // Is it an object? (array)
+
+        puzzlePieces[i][y] = ppC[i][y].slice(); // If so make a copy of it
+
+      } else { puzzlePieces[i][y] = ppC[i][y]; } // If not set it to the same value
+    }
+  }
+
+  endPieces[0] = epC[0].slice();
+  endPieces[1] = epC[1].slice();
+
+
+  // Undoing Generated Tile Shifts
+
+  for (let i = (shiftsDone.length - 1); i > -1; i--) {
+
+    shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2] * -1, 0);
+  }
+
+
+  // Redoing Generated Puzzle Piece Placements (when scrambled)
+
+  puzzlePieces.length = 0;
+  endPieces.length = 0;
+
+  let ppC2 = puzzlePiecesCopy2;
+  let epC2 = endPiecesCopy2;
+
+  puzzlePieces = [ppC2.length];
+  endPieces = [epC2.length];
+
+  for (let i = 0; i < ppC2.length; i++) {
+
+    puzzlePieces[i] = [4];
+
+    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+
+      if (typeof ppC2[i][y] === "object") { // Is it an object? (array)
+
+        puzzlePieces[i][y] = ppC2[i][y].slice(); // If so make a copy of it
+
+      } else { puzzlePieces[i][y] = ppC2[i][y]; } // If not set it to the same value
+    }
+  }
+
+  endPieces[0] = epC2[0].slice();
+  endPieces[1] = epC2[1].slice();
+
+
+  solved = 0;
 }
