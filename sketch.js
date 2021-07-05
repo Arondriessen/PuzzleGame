@@ -210,13 +210,7 @@ function mouseReleased() {
                 if (dragAmount == 0) {
 
                   // Rotate Puzzle Piece
-                  for (let y = 0; y < puzzlePieces[i][2].length; y++) {
-                    let pos = positionsRotation.indexOf(puzzlePieces[i][2][y]);
-                    if (pos > 0) {
-                      pos = max(1, (pos + 1) % 5);
-                      puzzlePieces[i][2][y] = positionsRotation[pos];
-                    }
-                  }
+                  rotatePuzzlePiece(i);
                   useStep();
                   isSolved();
 
@@ -415,6 +409,18 @@ function useStep() {
 
   if (steps < 1) {
     solved = -1;
+  }
+}
+
+
+function rotatePuzzlePiece(i) {
+
+  for (let y = 0; y < puzzlePieces[i][2].length; y++) {
+    let pos = positionsRotation.indexOf(puzzlePieces[i][2][y]);
+    if (pos > 0) {
+      pos = max(1, (pos + 1) % 5);
+      puzzlePieces[i][2][y] = positionsRotation[pos];
+    }
   }
 }
 
@@ -1062,16 +1068,19 @@ function generateLevel() {
 
   if (debug) { console.log("Generated Level"); }
 
-  difficulty = 1;
+  tileRots = 2;
+  tileMoves = 2;
+  tileSwitches = 0;
+  shiftMoves = 0;
   shiftsDone = [];
   shiftsDone.length = 0;
 
-  for (let i = 0; i < difficulty; i++) {
+  for (let i = 0; i < shiftMoves; i++) {
 
     shiftsDone.push(shiftRandomTileLine());
   }
 
-  /*
+
   let rPieces = 5;
 
   puzzlePieces.length = 0;
@@ -1151,20 +1160,38 @@ function generateLevel() {
 
             if (notOnPrev == 1) { // If not, place positions
 
-              puzzlePieces[i] = [x, y, [rot1, "Middle", "Middle"], 0];
-              puzzlePiecesCopy[i] = [x, y, [rot1, "Middle", "Middle"], 0];
+              if (i > 0) {
 
-              if (i > 0) { puzzlePieces[i - 1][2][2] = rot2; puzzlePiecesCopy[i - 1][2][2] = rot2; }
+                if (i < (rPieces - 1)) { // Normal Pieces
 
-              if (i == (rPieces - 1)) {
+                  puzzlePieces[i] = [x, y, [rot1, "Middle", "Middle"], 0];
+                  puzzlePiecesCopy[i] = [x, y, [rot1, "Middle", "Middle"], 0];
 
-                endPieces[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
-                endPieces[1] = [x, y];
-                endPiecesCopy[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
-                endPiecesCopy[1] = [x, y];
-                positionsPlaced = 1;
-                console.log("Path Placed");
+                } else { // Last End Piece
+
+                  puzzlePieces[i] = [x, y, ["Middle", rot1], 0];
+                  puzzlePiecesCopy[i] = [x, y, ["Middle", rot1], 0];
+
+                  endPieces[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
+                  endPieces[1] = [x, y];
+                  endPiecesCopy[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
+                  endPiecesCopy[1] = [x, y];
+                  positionsPlaced = 1;
+                  console.log("Path Placed");
+                }
+
+                let pointIndex = 2;
+                if (i == 1) { pointIndex = 1; }
+
+                puzzlePieces[i - 1][2][pointIndex] = rot2;
+                puzzlePiecesCopy[i - 1][2][pointIndex] = rot2;
+
+              } else { // First End Piece
+
+                puzzlePieces[i] = [x, y, ["Middle", rot1], 0];
+                puzzlePiecesCopy[i] = [x, y, ["Middle", rot1], 0];
               }
+
               posPlaced = 1;
 
               console.log("Position Placed: " + x + " - " + y);
@@ -1180,7 +1207,7 @@ function generateLevel() {
       if (failed) { break; }
     }
   }
-  */
+
 }
 
 
@@ -1238,15 +1265,23 @@ function shiftRandomTileLine() {
 
 function resetGenLevel() {
 
+  // Resetting Level
+
   uiData[state][1][0] = 0;
   prepareLevelData();
 
-  steps = difficulty;
+
+  // Redoing Generating Tile Shifts
+
+  steps = tileRots + tileMoves + tileSwitches + shiftMoves;
 
   for (let i = 0; i < shiftsDone.length; i++) {
 
     shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2], 0);
   }
+
+
+  // Redoing Generated Puzzle Piece Placements
 
   puzzlePieces.length = 0;
   endPieces.length = 0;
@@ -1274,10 +1309,60 @@ function resetGenLevel() {
   endPieces[0] = epC[0].slice();
   endPieces[1] = epC[1].slice();
 
+
+  // Undoing Generated Tile Shifts
+
   for (let i = (shiftsDone.length - 1); i > -1; i--) {
 
     shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2] * -1, 0);
   }
+
+
+
+  // Moving Puzzle Pieces
+
+  for (let i = 0; i < tileMoves; i++) {
+
+    let tileMoved = 0;
+
+    while (tileMoved == 0) {
+
+      let puzzleIndex = Math.round(random(1, puzzlePieces.length - 2));
+      let newX = Math.round(random(1, tiles - 2));
+      let newY = Math.round(random(1, tiles - 2));
+
+      if ((newX != puzzlePieces[puzzleIndex][0]) && (newY != puzzlePieces[puzzleIndex][1])) {
+
+        let isOnOtherPiece = 0;
+
+        for (let y = 0; y < puzzlePieces.length; y++) {
+
+          if ((newX == puzzlePieces[y][0]) && (newY == puzzlePieces[y][1])) {
+
+            isOnOtherPiece = 1;
+          }
+        }
+
+        if (isOnOtherPiece == 0) {
+
+          puzzlePieces[puzzleIndex][0] = newX;
+          puzzlePieces[puzzleIndex][1] = newY;
+          tileMoved = 1;
+        }
+      }
+    }
+  }
+
+
+  // Rotating Puzzle Pieces
+
+  for (let i = 0; i < tileRots; i++) {
+
+    let puzzleIndex = Math.round(random(1, puzzlePieces.length - 2));
+
+    for (let y = 0; y < 3; y++) { rotatePuzzlePiece(puzzleIndex); }
+  }
+
 
   solved = 0;
 
