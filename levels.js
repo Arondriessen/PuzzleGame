@@ -99,7 +99,6 @@ levels = [
 
   ],
 
-
   [ // World 2
 
     [   // Level 1
@@ -228,6 +227,53 @@ levels = [
       ],
 
       4 // Number of Moves
+    ]
+
+  ],
+
+  [ // World 3
+
+    [   // Level 1
+
+      1, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [3, 2, ["Middle", "Bottom"], 0],
+        [4, 4, ["Top", "Middle", "Left"], 0],
+        [5, 3, ["Top", "Middle", "Bottom"], 0],
+        [3, 5, ["Left", "Middle", "Right"], 0],
+        [2, 5, ["Middle", "Right"], 0]
+      ],
+
+      [ // End-Pieces
+        [3, 2],
+        [2, 5]
+      ],
+
+      3 // Number of Moves
+    ],
+
+    [   // Level 2
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [2, 4, ["Middle", "Top"], 0],
+        [3, 4, ["Bottom", "Middle", "Right"], 0],
+        [3, 5, ["Left", "Middle", "Top"], 0],
+        [4, 4, ["Middle", "Bottom"], 0]
+      ],
+
+      [ // End-Pieces
+        [2, 4],
+        [4, 4]
+      ],
+
+      3 // Number of Moves
     ]
 
   ]

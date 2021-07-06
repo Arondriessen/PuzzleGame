@@ -8,6 +8,7 @@ uiHover = 0;
 uiSelected = "undefined";
 uiScale = 1;
 designMode = 0;
+activeUIAnims = [];
 
 
 // Menu Data
@@ -39,6 +40,7 @@ positions["Bottom"] = [-1, 1];
 cc = 255;
 levelLoaded = 0;
 
+document.addEventListener('contextmenu', event => event.preventDefault());
 
 
 function preload() {
@@ -210,12 +212,24 @@ function mouseReleased() {
                 // If its a click...
                 if (dragAmount == 0) {
 
-                  // Rotate Puzzle Piece
-                  rotatePuzzlePiece(i);
-                  useStep();
-                  isSolved();
+                  if (mouseButton === LEFT) {
 
-                  console.log()
+                    // Rotate Puzzle Piece
+                    rotatePuzzlePiece(i);
+                    useStep();
+                    isSolved();
+
+                  } else {
+
+                    if (designMode) {
+
+                      if (mouseButton === RIGHT) {
+
+                        event.preventDefault();
+                        puzzlePieces.splice(i, 1);
+                      }
+                    }
+                  }
 
                 // If its a drag...
                 } else {
@@ -288,8 +302,8 @@ function prepareLevelData() {
 
   tiles = levelData[world - 1][level - 1][1] + 2; // squared = total number of tiles
   puzzlePieces = levelData[world - 1][level - 1][2];
-  pp = levelData[world - 1][level - 1][2];
-  ep = levelData[world - 1][level - 1][3];
+  let pp = levelData[world - 1][level - 1][2];
+  let ep = levelData[world - 1][level - 1][3];
 
   // Create COPY of (not reference to) the levelData array to avoid modifying it
 
@@ -311,19 +325,8 @@ function prepareLevelData() {
 
   endPieces = [ep.length];
 
-  for (i = 0; i < ep.length; i++) { // Cycle through puzzle pieces
-
-    endPieces[i] = [2];
-
-    for (y = 0; y < 2; y++) { // Cycle through piece parameters
-
-      if (typeof ep[i][y] === "object") { // Is it an object? (array)
-
-        endPieces[i][y] = ep[i][y].slice(); // If so make a copy of it
-
-      } else { endPieces[i][y] = ep[i][y]; } // If not set it to the same value
-    }
-  }
+  endPieces[0] = ep[0].slice();
+  endPieces[1] = ep[1].slice();
 
   steps = levelData[world - 1][level - 1][4]; // Number of available steps for a puzzle
 
@@ -346,8 +349,8 @@ function prepareLevelData() {
   mid = floor(tiles / 2);
   offset = (mid * tileSize);
   tileW = sqrt(sq(tileSize) / 2);
-  //cc = color(random(255), random(255), random(255));
-  //cc = 120;
+
+  levelCompleteAnim = [ 0, 0, 255, 0 ];
 
   // Assign tile positions based on number of tiles and defined spread
 
@@ -571,6 +574,8 @@ function isSolved() {
 
                 solved = 1;
 
+                animateUIElement([[levelCompleteAnim, 0], [levelCompleteAnim, 3]], [tileSize * (tiles - 2), 30], [(tileSize * (tiles - 2)) * 1.7, 0], 40);
+
                 if (typeof levelData[world - 1][level] !== "undefined") { // Check if there is a next level
 
                   levelData[world - 1][level][0] = 1;
@@ -740,27 +745,45 @@ function draw() {
 
                 // Is the mouse on a UI element? (New)
 
-                if ((mouseX > xx) && (mouseX < (xx + a[1][4]))) {
+                let mouseIsOnElement = 0;
 
-                  if ((mouseY > yy) && (mouseY < (yy + a[1][5]))) {
+                if (a[1][1] < 4) { // Rectangular hitbox
 
-                    if (uiSelected != a) {
+                  if ((mouseX > xx) && (mouseX < (xx + a[1][4]))) {
 
-                      if (uiSelected != "undefined") {
-                        if (uiSelected[3][2] != 0) {
+                    if ((mouseY > yy) && (mouseY < (yy + a[1][5]))) {
 
-                          uiSelected[3][2]();
-                        }
+                      mouseIsOnElement = 1;
+                    }
+                  }
+                } else if  (a[1][1] == 4){
+
+                  // Rotated Rectangular Hitbox
+
+                  if ((abs(mouseX - (xx + (a[1][4] / 2))) + abs(mouseY - (yy + (a[1][5] / 2)))) < (a[1][4])) {
+
+                    mouseIsOnElement = 1;
+                  }
+                }
+
+                if (mouseIsOnElement) {
+
+                  if (uiSelected != a) {
+
+                    if (uiSelected != "undefined") {
+                      if (uiSelected[3][2] != 0) {
+
+                        uiSelected[3][2]();
                       }
+                    }
 
-                      uiHover = 1;
-                      uiSelected = a;
-                      uiSelectedIndex = ((v * hNum) + h + 1);
+                    uiHover = 1;
+                    uiSelected = a;
+                    uiSelectedIndex = ((v * hNum) + h + 1);
 
-                      if (uiSelected[3][1] != 0) {
+                    if (uiSelected[3][1] != 0) {
 
-                        uiSelected[3][1]();
-                      }
+                      uiSelected[3][1]();
                     }
                   }
                 }
@@ -887,6 +910,16 @@ function draw() {
             }
           }
         }
+
+
+        // Run active animations
+        if (activeUIAnims.length > 0) { animateUIElement(); }
+
+
+        // Draw level completed anim
+        fill(levelCompleteAnim[2], levelCompleteAnim[3]);
+        quad(width / 2, (height / 2) - (levelCompleteAnim[0] / 2), (width / 2) + (levelCompleteAnim[0] / 2), height / 2, width / 2, (height / 2) + (levelCompleteAnim[0] / 2), (width / 2) - (levelCompleteAnim[0] / 2), height / 2);
+
 
         rectMode(CENTER);
         fill(255, 50);
@@ -1492,4 +1525,90 @@ function retryGenLevel() {
 
 
   solved = 0;
+}
+
+
+function saveLevelChanges() {
+
+  let pp = puzzlePieces;
+  let ep = endPieces;
+  puzzlePiecesCopy2.length = 0;
+  endPiecesCopy2.length = 0;
+  puzzlePiecesCopy2 = [pp.length];
+  endPiecesCopy2 = [ep.length];
+
+  for (i = 0; i < pp.length; i++) { // Cycle through puzzle pieces
+
+    puzzlePiecesCopy2[i] = [4];
+
+    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+
+      if (typeof pp[i][y] === "object") { // Is it an object? (array)
+
+        puzzlePiecesCopy2[i][y] = pp[i][y].slice(); // If so make a copy of it
+
+      } else { puzzlePiecesCopy2[i][y] = pp[i][y]; } // If not set it to the same value
+    }
+  }
+
+  endPiecesCopy2[0] = ep[0].slice();
+  endPiecesCopy2[1] = ep[1].slice();
+}
+
+
+function animateUIElement(elements, start, end, time) {
+
+  if (elements != undefined) { // Add new anim
+
+    let spd = [end.length];
+
+    for (let i = 0; i < end.length; i++) {
+
+      spd[i] = (end[i] - start[i]) / time;
+    }
+
+    for (let y = 0; y < elements.length; y++) { // Cycle through elements (variables to animate in one batch)
+
+      let elem = elements[y][0];
+      let elemIndex = elements[y][1];
+
+      elem[elemIndex] = start[y];
+    }
+
+    activeUIAnims.push([elements, end, spd, time]);
+
+  } else { // Continue active anims
+
+    for (let i = 0; i < activeUIAnims.length; i++) { // Cycle through anims
+
+      activeUIAnims[i][3]--; // Decrease time left for anim
+
+      console.log("***** ANIM *****");
+
+      if (activeUIAnims[i][3] > 0) {
+
+        for (let y = 0; y < activeUIAnims[i][0].length; y++) { // Cycle through elements (variables to animate in one batch)
+
+          let elem = activeUIAnims[i][0][y][0];
+          let elemIndex = activeUIAnims[i][0][y][1];
+
+          elem[elemIndex] += activeUIAnims[i][2][y];
+
+          console.log(y + " : " + elem[elemIndex] + " + " + activeUIAnims[i][2][y]);
+        }
+
+      } else {
+
+        for (let y = 0; y < activeUIAnims[i][0].length; y++) { // Cycle through elements (variables to animate in one batch)
+
+          let elem = activeUIAnims[i][0][y][0];
+          let elemIndex = activeUIAnims[i][0][y][1];
+
+          elem[elemIndex] = activeUIAnims[i][1][y];
+        }
+
+        activeUIAnims.splice(i, 1);
+      }
+    }
+  }
 }
