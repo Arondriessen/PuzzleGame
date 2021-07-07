@@ -24,7 +24,14 @@ levels = [
         [3, 3]
       ],
 
-      1 // Number of Moves
+      1, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        0, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ],
 
     [   // Level 2
@@ -45,7 +52,14 @@ levels = [
         [3, 3]
       ],
 
-      1 // Number of Moves
+      1, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        0, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ],
 
     [   // Level 3
@@ -71,7 +85,14 @@ levels = [
         [3, 3]
       ],
 
-      1 // Number of Moves
+      1, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        0, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ],
 
     [   // Level 4
@@ -94,7 +115,14 @@ levels = [
         [3, 2]
       ],
 
-      3 // Number of Moves
+      3, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        0, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ]
 
   ],
@@ -120,7 +148,14 @@ levels = [
         [2, 5]
       ],
 
-      3 // Number of Moves
+      3, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ],
 
     [   // Level 2
@@ -141,7 +176,14 @@ levels = [
         [4, 4]
       ],
 
-      3 // Number of Moves
+      3, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ],
 
     [   // Level 3
@@ -162,7 +204,14 @@ levels = [
         [2, 4]
       ],
 
-      3 // Number of Moves
+      3, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ],
 
     [   // Level 4
@@ -183,7 +232,14 @@ levels = [
         [2, 4]
       ],
 
-      2 // Number of Moves
+      2, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ],
 
     [   // Level 5
@@ -204,7 +260,14 @@ levels = [
         [2, 4]
       ],
 
-      3 // Number of Moves
+      3, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ],
 
     [   // Level 6
@@ -226,7 +289,14 @@ levels = [
         [5, 3]
       ],
 
-      4 // Number of Moves
+      4, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ]
 
   ],
@@ -252,7 +322,14 @@ levels = [
         [2, 5]
       ],
 
-      3 // Number of Moves
+      3, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ],
 
     [   // Level 2
@@ -273,7 +350,14 @@ levels = [
         [4, 4]
       ],
 
-      3 // Number of Moves
+      3, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ]
     ]
 
   ]

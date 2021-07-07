@@ -214,10 +214,13 @@ function mouseReleased() {
 
                   if (mouseButton === LEFT) {
 
-                    // Rotate Puzzle Piece
-                    rotatePuzzlePiece(i);
-                    useStep();
-                    isSolved();
+                    if (levelData[world - 1][level - 1][5][0]) {
+
+                      // Rotate Puzzle Piece
+                      rotatePuzzlePiece(i);
+                      useStep();
+                      isSolved();
+                    }
 
                   } else {
 
@@ -737,8 +740,16 @@ function draw() {
                 }
               }
 
-              xx = (a[1][2] - (a[1][6] * a[1][4])) - ((hNum - 1) * (xOff / 2)) - ((vNum - 1) * (xOff2 / 2)) + (xOff * h) + (xOff2 * v);
-              yy = (a[1][3] - (a[1][7] * a[1][5])) - ((hNum - 1) * (yOff / 2)) - ((vNum - 1) * (yOff2 / 2)) + (yOff * h) + (yOff2 * v);
+              // Variables for drawing UI elements
+
+              boxW = a[1][4];
+              boxH = a[1][5];
+              boxOp = a[1][9];
+              boxOutlineOp = a[1][12];
+              if (a[4] != undefined) { imgOp = a[4][3]; }
+
+              xx = (a[1][2] - (a[1][6] * boxW)) - ((hNum - 1) * (xOff / 2)) - ((vNum - 1) * (xOff2 / 2)) + (xOff * h) + (xOff2 * v);
+              yy = (a[1][3] - (a[1][7] * boxH)) - ((hNum - 1) * (yOff / 2)) - ((vNum - 1) * (yOff2 / 2)) + (yOff * h) + (yOff2 * v);
 
 
               if (a[3][0] == 1) { // Is it interactive?
@@ -749,9 +760,9 @@ function draw() {
 
                 if (a[1][1] < 4) { // Rectangular hitbox
 
-                  if ((mouseX > xx) && (mouseX < (xx + a[1][4]))) {
+                  if ((mouseX > xx) && (mouseX < (xx + boxW))) {
 
-                    if ((mouseY > yy) && (mouseY < (yy + a[1][5]))) {
+                    if ((mouseY > yy) && (mouseY < (yy + boxH))) {
 
                       mouseIsOnElement = 1;
                     }
@@ -760,7 +771,7 @@ function draw() {
 
                   // Rotated Rectangular Hitbox
 
-                  if ((abs(mouseX - (xx + (a[1][4] / 2))) + abs(mouseY - (yy + (a[1][5] / 2)))) < (a[1][4])) {
+                  if ((abs(mouseX - (xx + (boxW / 2))) + abs(mouseY - (yy + (boxH / 2)))) < (boxW)) {
 
                     mouseIsOnElement = 1;
                   }
@@ -792,13 +803,13 @@ function draw() {
 
               if (a[1][0] == 1) { // Is box element active?
 
-                fill(a[1][8], a[1][9]);
+                fill(a[1][8], boxOp);
 
-                if (a[0] == 2) { if (uiSelected == a) { fill(a[1][8], a[3][1]()); } }
+                //if (a[0] == 2) { if (uiSelected == a) { fill(a[1][8], a[3][1]()); } }
 
                 if (a[1][10] == 1) {
 
-                  stroke(a[1][11], a[1][12]);
+                  stroke(a[1][11], boxOutlineOp);
                   strokeWeight(a[1][13]);
 
                 } else {
@@ -813,16 +824,16 @@ function draw() {
 
                 switch(a[1][1]) {
 
-                  case 1: rect(xx, yy, a[1][4], a[1][5]);
+                  case 1: rect(xx, yy, boxW, boxH);
                   break;
 
-                  case 2: rect(xx, yy, a[1][4], a[1][5], min(a[1][4], a[1][5]) / 3.4);
+                  case 2: rect(xx, yy, boxW, boxH, min(boxW, boxH) / 3.4);
                   break;
 
-                  case 3: circle(xx + (a[1][4] / 2), yy + (a[1][5] / 2), a[1][4]);
+                  case 3: circle(xx + (boxW / 2), yy + (boxH / 2), boxW);
                   break;
 
-                  case 4: quad(xx + (a[1][4] / 2), yy - (a[1][5] * 0.5), xx + (a[1][4] * 1.5), yy + (a[1][5] / 2), xx + (a[1][4] / 2), yy + (a[1][5] * 1.5), xx - (a[1][4] * 0.5), yy + (a[1][5] / 2));
+                  case 4: quad(xx + (boxW / 2), yy - (boxH * 0.5), xx + (boxW * 1.5), yy + (boxH / 2), xx + (boxW / 2), yy + (boxH * 1.5), xx - (boxW * 0.5), yy + (boxH / 2));
                   break;
                 }
 
@@ -843,8 +854,8 @@ function draw() {
                 noStroke();
                 textAlign(LEFT, TOP);
 
-                let hA = ((a[1][4] * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
-                let vA =((a[1][5] * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
+                let hA = ((boxW * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
+                let vA =((boxH * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
                 let vC = -(a[2][2] / 7); // Small vertical correction for font height
 
                 text(a[2][1], xx + hA, yy + vA + vC);
@@ -855,8 +866,8 @@ function draw() {
 
                 if (a[4][0] == 1) { // Is image element active?
 
-                  let hA = ((a[1][4] * a[4][4]) - (a[4][2] / 2)); // Horizontal aligning
-                  let vA = ((a[1][5] * a[4][5]) - (a[4][2] / 2)); // Vertical aligning
+                  let hA = ((boxW * a[4][4]) - (a[4][2] / 2)); // Horizontal aligning
+                  let vA = ((boxH * a[4][5]) - (a[4][2] / 2)); // Vertical aligning
 
                   image(a[4][1], xx + hA, yy + vA, a[4][2], a[4][2]);
                 }
@@ -898,15 +909,18 @@ function draw() {
 
         if (clicked == 1) {
 
-          // Has the mouse moved since clicking a puzzle piece?
-          if ((mouseX != clickX) || (mouseY != clickY)) {
-            dragAmount = 1;
-          }
+          if (levelData[world - 1][level - 1][5][1]) {
 
-          // If so set piece state to 'being dragged'
-          if (dragAmount > 0) {
-            if (isMovablePiece(clickedPuzzlePiece, 0, 0) == 1) {
-              puzzlePieces[clickedPuzzlePiece][3] = 1;
+            // Has the mouse moved since clicking a puzzle piece?
+            if ((mouseX != clickX) || (mouseY != clickY)) {
+              dragAmount = 1;
+            }
+
+            // If so set piece state to 'being dragged'
+            if (dragAmount > 0) {
+              if (isMovablePiece(clickedPuzzlePiece, 0, 0) == 1) {
+                puzzlePieces[clickedPuzzlePiece][3] = 1;
+              }
             }
           }
         }

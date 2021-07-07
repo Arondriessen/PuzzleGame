@@ -45,8 +45,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; menuState = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; menuState = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { prepareLevelData(); state = 2; } // onClick event (0 = no event)
         ]
       ],
@@ -87,8 +87,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { levelsWorld = world; ui[1][levelsWorld][0] = 1; state = 1; } // onClick event (0 = no event)
         ]
       ],
@@ -129,8 +129,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ 0 // onClick event (0 = no event)
         ]
       ]
@@ -179,8 +179,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { ui[1][levelsWorld][0] = 0; state = 0; } // onClick event (0 = no event)
         ]
       ],
@@ -221,8 +221,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { ui[1][levelsWorld][0] = 0; levelsWorld = Math.max(1, levelsWorld - 1); ui[1][levelsWorld][0] = 1;} // onClick event (0 = no event)
         ]
       ],
@@ -263,8 +263,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { ui[1][levelsWorld][0] = 0; levelsWorld = Math.min(3, levelsWorld + 1); ui[1][levelsWorld][0] = 1;} // onClick event (0 = no event)
         ]
       ]
@@ -362,8 +362,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ function() { return levelData[0][((v * hNum) + h)][0] }, // state (0 = off, 1 = on)
-          /* 01 */ function() { return 50; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 50; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { world = levelsWorld; level = uiSelectedIndex; prepareLevelData(); state = 2; } // onClick event (0 = no event)
         ]
       ],
@@ -462,8 +462,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ function() { return levelData[1][((v * hNum) + h)][0] }, // state (0 = off, 1 = on)
-          /* 01 */ function() { return 50; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 50; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { world = levelsWorld; level = uiSelectedIndex; prepareLevelData(); state = 2; } // onClick event (0 = no event)
         ]
       ],
@@ -562,8 +562,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ function() { return levelData[2][((v * hNum) + h)][0] }, // state (0 = off, 1 = on)
-          /* 01 */ function() { return 50; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 50; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { world = levelsWorld; level = uiSelectedIndex; prepareLevelData(); state = 2; } // onClick event (0 = no event)
         ]
       ],
@@ -697,8 +697,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { uiData[state][1][0] = 0; prepareLevelData(); } // onClick event (0 = no event)
         ]
       ],
@@ -739,8 +739,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { state = 0; } // onClick event (0 = no event)
         ],
 
@@ -791,8 +791,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { designMode = !designMode; if (designMode) { solved = 0; } else { if (steps < 1) { solved = -1; } } } // onClick event (0 = no event)
         ]
       ]
@@ -838,8 +838,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { uiData[state][1][0] = 0; nextLevel(); } // onClick event (0 = no event)
         ]
       ]
@@ -885,8 +885,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { generateLevel(); } // onClick event (0 = no event)
         ]
       ],
@@ -927,8 +927,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { resetGenLevel(); } // onClick event (0 = no event)
         ]
       ],
@@ -969,8 +969,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { retryGenLevel(); } // onClick event (0 = no event)
         ]
       ],
@@ -1011,8 +1011,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { saveLevelChanges(); } // onClick event (0 = no event)
         ]
       ],
@@ -1053,8 +1053,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { steps++; } // onClick event (0 = no event)
         ]
       ],
@@ -1095,8 +1095,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { puzzlePieces.splice(puzzlePieces.length - 1, 0, [1, 1, ["Top", "Middle", "Bottom"], 0]); } // onClick event (0 = no event)
         ]
       ],
@@ -1137,8 +1137,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { puzzlePieces.splice(puzzlePieces.length - 1, 0, [1, 1, ["Top", "Middle", "Right"], 0]); } // onClick event (0 = no event)
         ]
       ],
@@ -1179,8 +1179,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { uiSelected[1][9] = 30; uiSelected[1][12] = 100; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiSelected[1][9] = 0; uiSelected[1][12] = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { puzzlePieces.splice(1, puzzlePieces.length - 2); } // onClick event (0 = no event)
         ]
       ]
@@ -1190,7 +1190,7 @@ ui = [
 
       /* 00 */ function() { return (world == 2); }, // state (0 = off, 1 = on)
 
-      [ // /* 05 */ Shift Row/Column (Top Left)
+      [ // /* 01 */ Shift Row/Column (Top Left)
 
         2, // /* 00 */ Type (1 = single, 2 = list)
 
@@ -1206,10 +1206,10 @@ ui = [
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
-          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
-          /* 12 */ 20, // outline-alpha
-          /* 13 */ 2, // outline-width
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 1, // outline-width
 
           // List Settings
 
@@ -1236,8 +1236,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 16; imgOp = 255; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; imgOp = 40; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { shiftTileLine(uiSelectedIndex, -1, -1, 1); } // onClick event (0 = no event)
         ],
 
@@ -1246,13 +1246,13 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return arrowBottomRightIMG; }, // image
           /* 02 */ 22 * uiScale, // image-size
-          /* 03 */ 255, // image-alpha
+          /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
       ],
 
-      [ // /* 06 */ Shift Row/Column (Top Right)
+      [ // /* 02 */ Shift Row/Column (Top Right)
 
         2, // /* 00 */ Type (1 = single, 2 = list)
 
@@ -1298,8 +1298,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 16; imgOp = 255; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; imgOp = 40; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex, -1, 1); } // onClick event (0 = no event)
         ],
 
@@ -1308,13 +1308,13 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return arrowBottomLeftIMG; }, // image
           /* 02 */ 22 * uiScale, // image-size
-          /* 03 */ 255, // image-alpha
+          /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
       ],
 
-      [ // /* 06 */ Shift Row/Column (Bottom Left)
+      [ // /* 03 */ Shift Row/Column (Bottom Left)
 
         2, // /* 00 */ Type (1 = single, 2 = list)
 
@@ -1360,8 +1360,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 16; imgOp = 255; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; imgOp = 40; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -1370,13 +1370,13 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return arrowTopRightIMG; }, // image
           /* 02 */ 22 * uiScale, // image-size
-          /* 03 */ 255, // image-alpha
+          /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
       ],
 
-      [ // /* 08 */ Shift Row/Column (Bottom Right)
+      [ // /* 04 */ Shift Row/Column (Bottom Right)
 
         2, // /* 00 */ Type (1 = single, 2 = list)
 
@@ -1422,8 +1422,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 16; imgOp = 255; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; imgOp = 40; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { shiftTileLine(uiSelectedIndex, -1, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -1432,7 +1432,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return arrowTopLeftIMG; }, // image
           /* 02 */ 22 * uiScale, // image-size
-          /* 03 */ 255, // image-alpha
+          /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
@@ -1489,8 +1489,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return 10; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 16; imgOp = 255; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { boxOp = 0; imgOp = 40; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { shiftTileLine(uiSelectedIndex, -1, -1, 1); } // onClick event (0 = no event)
         ],
 
