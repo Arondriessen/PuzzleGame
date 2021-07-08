@@ -699,7 +699,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { uiData[state][1][0] = 0; prepareLevelData(); } // onClick event (0 = no event)
+          /* 03 */ function() { prepareLevelData(); } // onClick event (0 = no event)
         ]
       ],
 
