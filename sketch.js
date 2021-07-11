@@ -40,6 +40,7 @@ positions["Bottom"] = [-1, 1];
 cc = 255;
 levelLoaded = 0;
 
+
 document.addEventListener('contextmenu', event => event.preventDefault());
 
 
@@ -51,6 +52,7 @@ function preload() {
   arrowBottomLeftIMG = loadImage('assets/arrowBottomLeftIMG3.svg');
   arrowBottomRightIMG = loadImage('assets/arrowBottomRightIMG3.svg');
   menuIconIMG = loadImage('assets/menuIconIMG.svg');
+  rotCornerBottom = loadImage('assets/rotCornerBottom.svg');
 }
 
 
@@ -1001,7 +1003,7 @@ function draw() {
 
         noFill();
         stroke(puzzlePieceColour, puzzlePieceOp[0]);
-        strokeWeight(8 / (tiles / 5));
+        strokeWeight((8 / (tiles / 5)) * uiScale);
         strokeCap(SQUARE);
 
         for (let i = 0; i < puzzlePieces.length; i++) {
@@ -1141,6 +1143,67 @@ function shiftTileLine(row, column, dir, steps, animOnly) {
 
     return [isGo, puzzlePiecesMoved];
   }
+}
+
+
+function rotateCornerTiles(cornerX, cornerY) {
+
+  let cornerTiles = (tiles - 1) / 2; // No. of tiles in a corner (diameter)
+  let cX = Math.max(1, cornerX * cornerTiles); // x index of top-left piece in selected corner (start post of rotation)
+  let cY = Math.max(1, cornerY * cornerTiles); // y index of top-left piece in selected corner (start post of rotation)
+  let loops = (cornerTiles - 1) / 2; // No. of "circles" to rotate
+
+  let a = [];
+  let tC = [];
+  let xx;
+  let yy;
+  let len;
+  let off;
+
+  for (let i = 0; i < loops; i++) {
+
+    a.length = 0;
+    xx = cX + i;
+    yy = cY + i;
+    len = cornerTiles - (i * 2);
+
+    for (let y = 0; y < len; y++) {
+      xx += Math.min(y, 1);
+      a.push([yy, xx]);
+    }
+
+    for (let y = 0; y < (len - 1); y++) {
+      yy++;
+      a.push([yy, xx]);
+    }
+
+    for (let y = 0; y < (len - 1); y++) {
+      xx--;
+      a.push([yy, xx]);
+    }
+
+    for (let y = 0; y < (len - 2); y++) {
+      yy--;
+      a.push([yy, xx]);
+    }
+
+    tC = [a.length];
+
+    for (let y = 0; y < a.length; y++) {
+
+      tC[y] = tileData[a[y][0]][a[y][1]][2];
+    }
+
+    for (let y = 0; y < a.length; y++) {
+
+      off = (y + a.length - (len - 1)) % (a.length);
+      tileData[a[y][0]][a[y][1]][2] = tC[off];
+    }
+
+    //console.log(a);
+  }
+
+  // After the loop rotate the center tile
 }
 
 
@@ -1599,10 +1662,12 @@ function animateUIElement(elements, start, end, time, reset, id) {
 
     let noDuplicate = 1;
 
-    for (let i = 0; i < activeUIAnims.length; i++) {
+    // Does fuck all for now (should prevent duplicate animations activating before the first one's ended)
+
+    /*for (let i = 0; i < activeUIAnims.length; i++) {
 
       if (activeUIAnims[i][0][0] === elements[0]) { noDuplicate = 0; }
-    }
+    }*/
 
     if (noDuplicate) {
 
