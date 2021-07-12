@@ -5,6 +5,7 @@
 state = 0; // 0 = menu, 1 = levels, 2 = puzzle, 3 = settings, 4 = level-gen
 uiLoaded = 0;
 uiHover = 0;
+uiHover2 = "";
 uiSelected = "undefined";
 uiScale = 1;
 designMode = 0;
@@ -98,7 +99,7 @@ function setup() {
     prepareLevelData();
   };
   script.src = 'levels.js';
-  document.head.appendChild(script); // or something of the likes
+  document.head.appendChild(script);
 
 
   // Load UI data from js file
@@ -109,7 +110,7 @@ function setup() {
     uiLoaded = 1;
   };
   script.src = 'ui.js';
-  document.head.appendChild(script); // or something of the likes
+  document.head.appendChild(script);
 
 
   // Set backround colour
@@ -712,11 +713,16 @@ function draw() {
     bgSaved = 1;
   }
 
-  if (state == 2) { image(img, 0, 0); }
+  image(img, 0, 0);
 
   uiHover = 0;
 
   if (uiLoaded == 1) { // Check if UI has loaded yet
+
+
+    // Run active animations
+    if (activeUIAnims.length > 0) { animateUIElement(); }
+
 
     // Draw UI (Dynamic)
 
@@ -816,7 +822,9 @@ function draw() {
 
                 if (mouseIsOnElement) {
 
-                  if (uiSelected != a) {
+                  elementID = (str(s) + "-" + str(i) + "-" + str(v) + "-" + str(h));
+
+                  if (uiHover2 != elementID) {
 
                     if (uiSelected != "undefined") {
                       if (uiSelected[3][2] != 0) {
@@ -824,16 +832,18 @@ function draw() {
                         uiSelected[3][2]();
                       }
                     }
-
-                    uiHover = 1;
-                    uiSelected = a;
-                    uiSelectedIndex = ((v * hNum) + h + 1);
-
-                    if (uiSelected[3][1] != 0) {
-
-                      uiSelected[3][1]();
-                    }
                   }
+
+                  uiHover = 1;
+                  uiSelected = a;
+                  uiSelectedIndex = ((v * hNum) + h + 1);
+
+                  if (uiSelected[3][1] != 0) {
+
+                    uiSelected[3][1]();
+                  }
+
+                  uiHover2 = elementID;
                 }
               }
 
@@ -916,6 +926,13 @@ function draw() {
       }
     }
 
+
+    if (uiHover == 0) {
+
+      uiHover2 = "";
+    }
+
+
     if (uiSelected != "undefined") { // Reset hover effect if not hovering on UI anymore
 
       if (uiHover == 0) {
@@ -923,6 +940,7 @@ function draw() {
         if (uiSelected[3][2] != 0) {
 
           uiSelected[3][2]();
+          uiSelected = "undefined";
         }
       }
     }
@@ -962,10 +980,6 @@ function draw() {
             }
           }
         }
-
-
-        // Run active animations
-        if (activeUIAnims.length > 0) { animateUIElement(); }
 
 
         // Draw level completed anim

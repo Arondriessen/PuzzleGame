@@ -9,26 +9,79 @@ ui = [
 
       /* 00 */ 1, // state (0 = off, 1 = on)
 
-      [ // /* 01 */ Play Button
+      [ // /* 01 */ Background Tiles
 
-        1, // /* 00 */ Type (1 = single, 2 = list)
+        2, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
-          /* 03 */ (height / 2) - (120 * uiScale), // y pos
-          /* 04 */ 270 * uiScale, // width
-          /* 05 */ 96 * uiScale, // height
+          /* 03 */ height / 2, // y pos
+          /* 04 */ width / 6, // width
+          /* 05 */ width / 6, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
-          /* 12 */ 50, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 12 */ 10, // outline-alpha
+          /* 13 */ 1, // outline-width
+
+
+          // List Settings
+
+          /* 14 */ function() { return 25; }, // items
+          /* 15 */ function() { return 5; }, // h-number
+          /* 16 */ function() { return 3; }, // v-number (min, dynamically adjusted)
+          /* 17 */ function() { return width / 3; }, // x-offset
+          /* 18 */ function() { return 0; }, // y-offset
+          /* 19 */ function() { return width / 6; }, // x-offset (new line)
+          /* 20 */ function() { return width / 6; } // y-offset (new line)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0 * uiScale, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { boxOp = 2; }, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 02 */ Play Button
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width / 2, // x pos
+          /* 03 */ height / 2, // y pos
+          /* 04 */ width / 6, // width
+          /* 05 */ width / 6, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 80 * uiScale // outline-width
         ],
 
         [ // /* 02 */ Text
@@ -45,19 +98,19 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; menuState = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() {  boxOp = 5; boxOutlineOp = 0; menuState = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
           /* 03 */ function() { prepareLevelData(); state = 2; } // onClick event (0 = no event)
         ]
       ],
 
-      [ // /* 02 */ Levels Button
+      [ // /* 03 */ Levels Button
 
         1, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ (height / 2), // y pos
@@ -75,7 +128,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ "Levels", // text
           /* 02 */ 48 * uiScale, // text-size
           /* 03 */ 255, // text-colour
@@ -86,20 +139,20 @@ ui = [
 
         [ // /* 03 */ Button Events
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ function() { levelsWorld = world; state = 1; } // onClick event (0 = no event)
         ]
       ],
 
-      [ // /* 03 */ Settings Button
+      [ // /* 04 */ Settings Button
 
         1, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ (height / 2) + (120 * uiScale), // y pos
@@ -117,7 +170,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ "Settings", // text
           /* 02 */ 48 * uiScale, // text-size
           /* 03 */ 255, // text-colour
@@ -128,7 +181,7 @@ ui = [
 
         [ // /* 03 */ Button Events
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 30; boxOutlineOp = 100; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { boxOp = 0; boxOutlineOp = 50; }, // onHoverOut event (0 = no event)
           /* 03 */ 0 // onClick event (0 = no event)
@@ -1483,7 +1536,7 @@ ui = [
 
     [ // /* 04 */ Corner Tiles Rotation
 
-      /* 00 */ 1, // state (0 = off, 1 = on)
+      /* 00 */ function() { return levelData[world - 1][level - 1][5][3]; }, // state (0 = off, 1 = on)
 
       [ // /* 01 */ Rotate Corner Tiles (Top)
 
