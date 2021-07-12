@@ -1509,13 +1509,13 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ "/", // text
-          /* 02 */ 36 * uiScale, // text-size
-          /* 03 */ 255, // text-colour
-          /* 04 */ 200, // text-alpha
-          /* 05 */ 0.5, // text-h-align
-          /* 06 */ 0.5 // text-v-align
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
         ],
 
         [ // /* 03 */ Button Events
@@ -1528,10 +1528,10 @@ ui = [
 
         [ // /* 04 */ Image
 
-          /* 00 */ 0, // state (0 = off, 1 = on)
-          /* 01 */ function() { return arrowBottomRightIMG; }, // image
-          /* 02 */ 22 * uiScale, // image-size
-          /* 03 */ 40, // image-alpha
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return rotCornerTop; }, // image
+          /* 02 */ 72 * uiScale, // image-size
+          /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
@@ -1561,13 +1561,13 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ "/", // text
-          /* 02 */ 36 * uiScale, // text-size
-          /* 03 */ 255, // text-colour
-          /* 04 */ 200, // text-alpha
-          /* 05 */ 0.5, // text-h-align
-          /* 06 */ 0.5 // text-v-align
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
         ],
 
         [ // /* 03 */ Button Events
@@ -1580,10 +1580,10 @@ ui = [
 
         [ // /* 04 */ Image
 
-          /* 00 */ 0, // state (0 = off, 1 = on)
-          /* 01 */ function() { return arrowBottomRightIMG; }, // image
-          /* 02 */ 22 * uiScale, // image-size
-          /* 03 */ 40, // image-alpha
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return rotCornerRight; }, // image
+          /* 02 */ 72 * uiScale, // image-size
+          /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
@@ -1614,19 +1614,19 @@ ui = [
         [ // /* 02 */ Text
 
           /* 00 */ 0, // state (0 = off, 1 = on)
-          /* 01 */ "/", // text
-          /* 02 */ 36 * uiScale, // text-size
-          /* 03 */ 255, // text-colour
-          /* 04 */ 200, // text-alpha
-          /* 05 */ 0.5, // text-h-align
-          /* 06 */ 0.5 // text-v-align
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
         ],
 
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 16; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { /*boxOp = 0;*/ }, // onHoverOut event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(1, 1); } // onClick event (0 = no event)
         ],
 
@@ -1635,7 +1635,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCornerBottom; }, // image
           /* 02 */ 72 * uiScale, // image-size
-          /* 03 */ 40, // image-alpha
+          /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
@@ -1665,29 +1665,29 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ "/", // text
-          /* 02 */ 36 * uiScale, // text-size
-          /* 03 */ 255, // text-colour
-          /* 04 */ 200, // text-alpha
-          /* 05 */ 0.5, // text-h-align
-          /* 06 */ 0.5 // text-v-align
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
         ],
 
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 16; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { /*boxOp = 0;*/ }, // onHoverOut event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(0, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
-          /* 00 */ 0, // state (0 = off, 1 = on)
-          /* 01 */ function() { return arrowBottomRightIMG; }, // image
-          /* 02 */ 22 * uiScale, // image-size
-          /* 03 */ 40, // image-alpha
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return rotCornerLeft; }, // image
+          /* 02 */ 72 * uiScale, // image-size
+          /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]

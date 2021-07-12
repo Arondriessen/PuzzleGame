@@ -52,7 +52,10 @@ function preload() {
   arrowBottomLeftIMG = loadImage('assets/arrowBottomLeftIMG3.svg');
   arrowBottomRightIMG = loadImage('assets/arrowBottomRightIMG3.svg');
   menuIconIMG = loadImage('assets/menuIconIMG.svg');
+  rotCornerTop = loadImage('assets/rotCornerTop.svg');
+  rotCornerRight = loadImage('assets/rotCornerRight.svg');
   rotCornerBottom = loadImage('assets/rotCornerBottom.svg');
+  rotCornerLeft = loadImage('assets/rotCornerLeft.svg');
 }
 
 
@@ -273,6 +276,8 @@ function mouseReleased() {
 
                   // Update tile data
                   tileIndexes[selected[0]][selected[1]] = [selected[0], selected[1]];
+                  tileData[selected[0]][selected[1]][4] = clickedPuzzlePiece;
+                  tileData[puzzlePieces[clickedPuzzlePiece][1]][puzzlePieces[clickedPuzzlePiece][0]][4] = -1;
 
                   // Move puzzle piece to selected tile
                   puzzlePieces[clickedPuzzlePiece][1] = selected[0];
@@ -285,10 +290,7 @@ function mouseReleased() {
 
                   // If we're in design mode, update endpoints too
 
-                  endPieces[0][0] = puzzlePieces[0][0];
-                  endPieces[0][1] = puzzlePieces[0][1];
-                  endPieces[1][0] = puzzlePieces[puzzlePieces.length - 1][0];
-                  endPieces[1][1] = puzzlePieces[puzzlePieces.length - 1][1];
+                  updateEndpoints();
                 }
               }
             }
@@ -378,6 +380,7 @@ function prepareLevelData() {
       tileData[i][y][1] = (height / 2) + (y * (tileSize / 2)) - offset + ((tileSize / 2) * i);
       tileData[i][y][2] = -1; // Opacity
       tileData[i][y][3] = 1; // Scale
+      tileData[i][y][4] = -1; // Puzzle Piece Id (-1 = no piece on tile)
       //tileData[i][y][3] = [i, y]; // Save original grid position to keep track of position changes
     }
   }
@@ -398,6 +401,11 @@ function prepareLevelData() {
 
       tileData[i][y][2] = ((255 - map(dist(centX, centY, posX, posY), 0, mid * tileSize, 120, 240)));
     }
+  }
+
+  for (let i = 0; i < pp.length; i++) {
+
+    tileData[puzzlePieces[i][1]][puzzlePieces[i][0]][4] = i;
   }
 
   storeItem('level', level);
@@ -1070,18 +1078,25 @@ function shiftTileLine(row, column, dir, steps, animOnly) {
           if (tileData[row][y + dirRev][2] != -1) {
 
             tileData[row][y][2] = tileData[row][y + dirRev][2];
-            tileData[row][y][3][0] = tileData[row][y + dirRev][3][0];
-            tileData[row][y][3][1] = tileData[row][y + dirRev][3][1];
+            tileData[row][y][4] = tileData[row][y + dirRev][4];
+
+            if (tileData[row][y][4] != -1) {
+
+              puzzlePieces[tileData[row][y][4]][0] = y;
+              puzzlePieces[tileData[row][y][4]][1] = row;
+            }
 
             animateUIElement([[tileData[row][y], 0], [tileData[row][y], 1]], [tileData[row][y + dirRev][0], tileData[row][y + dirRev][1]], [tileData[row][y][0], tileData[row][y][1]], 1 + (Math.abs(((tiles - 1) * dirNorm) - y) * 3), 0);
 
           } else {
 
             tileData[row][y][2] = -1;
+            tileData[row][y][4] = -1;
           }
         }
 
         tileData[row][((tiles - 1) * dirRevNorm)][2] = -1;
+        tileData[row][((tiles - 1) * dirRevNorm)][4] = -1;
         isGo = 1;
     }
 
@@ -1096,49 +1111,33 @@ function shiftTileLine(row, column, dir, steps, animOnly) {
           if (tileData[y + dirRev][column][2] != -1) {
 
             tileData[y][column][2] = tileData[y + dirRev][column][2];
-            tileData[y][column][3][0] = tileData[y + dirRev][column][3][0];
-            tileData[y][column][3][1] = tileData[y + dirRev][column][3][1];
+            tileData[y][column][4] = tileData[y + dirRev][column][4];
+
+            if (tileData[y][column][4] != -1) {
+
+              puzzlePieces[tileData[y][column][4]][0] = column;
+              puzzlePieces[tileData[y][column][4]][1] = y;
+            }
 
             animateUIElement([[tileData[y][column], 0], [tileData[y][column], 1]], [tileData[y + dirRev][column][0], tileData[y + dirRev][column][1]], [tileData[y][column][0], tileData[y][column][1]], 1 + (Math.abs(((tiles - 1) * dirNorm) - y) * 3), 0);
 
           } else {
 
             tileData[y][column][2] = -1;
+            tileData[y][column][4] = -1;
           }
         }
 
         tileData[((tiles - 1) * dirRevNorm)][column][2] = -1;
+        tileData[((tiles - 1) * dirRevNorm)][column][4] = -1;
         isGo = 1;
       }
     }
 
     if (isGo) { // Check if tiles have room to move (if not, cancel)
 
-      // Move puzzle pieces with tiles
-
-      let lineType = row;
-      let num = 1;
-
-      if (row == -1) { lineType = column; num = 0; }
-
-      for (let i = 0; i < puzzlePieces.length; i++) {
-
-        if (puzzlePieces[i][num] == lineType) {
-
-          puzzlePieces[i][Math.abs(num -1)] += dir;
-          puzzlePiecesMoved++;
-        }
-      }
-
-      for (let i = 0; i < endPieces.length; i++) {
-
-        if (endPieces[i][num] == lineType) {
-
-          endPieces[i][Math.abs(num -1)] += dir;
-        }
-      }
-
-      if (steps) { useStep(); isSolved(); } // Not sure why it's checking the steps like this but its not causing issues
+      updateEndpoints();
+      useStep(); isSolved();
     }
 
     return [isGo, puzzlePiecesMoved];
@@ -1148,62 +1147,78 @@ function shiftTileLine(row, column, dir, steps, animOnly) {
 
 function rotateCornerTiles(cornerX, cornerY) {
 
-  let cornerTiles = (tiles - 1) / 2; // No. of tiles in a corner (diameter)
-  let cX = Math.max(1, cornerX * cornerTiles); // x index of top-left piece in selected corner (start post of rotation)
-  let cY = Math.max(1, cornerY * cornerTiles); // y index of top-left piece in selected corner (start post of rotation)
-  let loops = (cornerTiles - 1) / 2; // No. of "circles" to rotate
+  if (solved == 0) {
 
-  let a = [];
-  let tC = [];
-  let xx;
-  let yy;
-  let len;
-  let off;
+    let cornerTiles = (tiles - 1) / 2; // No. of tiles in a corner (diameter)
+    let cX = Math.max(1, cornerX * cornerTiles); // x index of top-left piece in selected corner (start post of rotation)
+    let cY = Math.max(1, cornerY * cornerTiles); // y index of top-left piece in selected corner (start post of rotation)
+    let loops = (cornerTiles - 1) / 2; // No. of "circles" to rotate
 
-  for (let i = 0; i < loops; i++) {
+    let a = [];
+    let tC = [];
+    let xx;
+    let yy;
+    let len;
+    let off;
 
-    a.length = 0;
-    xx = cX + i;
-    yy = cY + i;
-    len = cornerTiles - (i * 2);
+    for (let i = 0; i < loops; i++) {
 
-    for (let y = 0; y < len; y++) {
-      xx += Math.min(y, 1);
-      a.push([yy, xx]);
+      a.length = 0;
+      xx = cX + i;
+      yy = cY + i;
+      len = cornerTiles - (i * 2);
+
+      for (let y = 0; y < len; y++) {
+        xx += Math.min(y, 1);
+        a.push([yy, xx]);
+      }
+
+      for (let y = 0; y < (len - 1); y++) {
+        yy++;
+        a.push([yy, xx]);
+      }
+
+      for (let y = 0; y < (len - 1); y++) {
+        xx--;
+        a.push([yy, xx]);
+      }
+
+      for (let y = 0; y < (len - 2); y++) {
+        yy--;
+        a.push([yy, xx]);
+      }
+
+      tC = [a.length];
+
+      for (let y = 0; y < a.length; y++) {
+        let tD = tileData[a[y][0]][a[y][1]];
+        tC[y] = [tD[0], tD[1], tD[2], tD[3], tD[4]];
+      }
+
+      for (let y = 0; y < a.length; y++) {
+
+        off = (y + a.length - (len - 1)) % (a.length);
+        tileData[a[y][0]][a[y][1]][2] = tC[off][2];
+        tileData[a[y][0]][a[y][1]][3] = tC[off][3];
+        tileData[a[y][0]][a[y][1]][4] = tC[off][4];
+
+        if (tC[off][4] != -1) {
+
+          puzzlePieces[tC[off][4]][0] = a[y][1];
+          puzzlePieces[tC[off][4]][1] = a[y][0];
+        }
+
+        //off = (y + (len - 1)) % (a.length);
+        animateUIElement([[tileData[a[y][0]][a[y][1]], 0], [tileData[a[y][0]][a[y][1]], 1]], [tC[off][0], tC[off][1]], [tileData[a[y][0]][a[y][1]][0], tileData[a[y][0]][a[y][1]][1]], 15, 0);
+      }
+
+      //console.log(a);
     }
 
-    for (let y = 0; y < (len - 1); y++) {
-      yy++;
-      a.push([yy, xx]);
-    }
-
-    for (let y = 0; y < (len - 1); y++) {
-      xx--;
-      a.push([yy, xx]);
-    }
-
-    for (let y = 0; y < (len - 2); y++) {
-      yy--;
-      a.push([yy, xx]);
-    }
-
-    tC = [a.length];
-
-    for (let y = 0; y < a.length; y++) {
-
-      tC[y] = tileData[a[y][0]][a[y][1]][2];
-    }
-
-    for (let y = 0; y < a.length; y++) {
-
-      off = (y + a.length - (len - 1)) % (a.length);
-      tileData[a[y][0]][a[y][1]][2] = tC[off];
-    }
-
-    //console.log(a);
+    updateEndpoints();
+    useStep();
+    isSolved();
   }
-
-  // After the loop rotate the center tile
 }
 
 
@@ -1730,4 +1745,13 @@ function animateUIElement(elements, start, end, time, reset, id) {
       }
     }
   }
+}
+
+
+function updateEndpoints() {
+
+  endPieces[0][0] = puzzlePieces[0][0];
+  endPieces[0][1] = puzzlePieces[0][1];
+  endPieces[1][0] = puzzlePieces[(puzzlePieces.length - 1)][0];
+  endPieces[1][1] = puzzlePieces[(puzzlePieces.length - 1)][1];
 }
