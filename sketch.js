@@ -42,6 +42,23 @@ cc = 255;
 levelLoaded = 0;
 
 
+// Animation Variables
+
+btFill = 0;
+//btStr = 25;
+btStr = 20;
+
+//btFillHov = 30;
+btFillHov = 20;
+//btStrHov = 75;
+btStrHov = 0;
+
+btHovInSpd = 5;
+btHovOutSpd = 5;
+
+btTxtSize = 36;
+
+
 document.addEventListener('contextmenu', event => event.preventDefault());
 
 
@@ -70,6 +87,7 @@ function setup() {
   // Set UI scale based on resolution
 
   uiScale = min(width, height) / 1300;
+  btTxtSize =  btTxtSize * uiScale;
 
 
   // Load progression data
@@ -594,7 +612,7 @@ function isSolved() {
                 puzzlePieceColour = 255;
 
                 animateUIElement([[puzzlePieceOp, 0], [endPieceOp, 0]], [30, 255], [0, 0], 20, 0);
-                animateUIElement([[uiData[2][1][2][1], 4], [uiData[2][1][2][1], 5], [uiData[2][1][2][1], 9], [uiData[2][1][2][2], 4]], [300 * uiScale, 300 * uiScale, 0, 0], [400 * uiScale, 400 * uiScale, 20, 255], 15, 0);
+                animateUIElement([[uiData[2][1][2][1], 4], [uiData[2][1][2][1], 5], [uiData[2][1][2][1], 9], [uiData[2][1][2][2], 4]], [300 * uiScale, 300 * uiScale, 0, 0], [420 * uiScale, 420 * uiScale, 5, 255], 15, 0);
 
                 for (let x = 0; x < tiles; x++) {
 
