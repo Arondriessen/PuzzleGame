@@ -307,7 +307,7 @@ levels = [
 
       1, // State (0 = locked, 1 = unlocked)
 
-      5, // Grid Size
+      7, // Grid Size
 
       [ // Puzzle Pieces
         [3, 2, ["Middle", "Bottom"], 0],
@@ -328,7 +328,7 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ],
 
@@ -356,7 +356,7 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ]
 

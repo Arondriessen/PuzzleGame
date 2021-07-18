@@ -5,6 +5,7 @@
 state = 0; // 0 = menu, 1 = levels, 2 = puzzle, 3 = settings, 4 = level-gen
 uiLoaded = 0;
 uiHover = 0;
+uiHover2 = "";
 uiSelected = "undefined";
 uiScale = 1;
 designMode = 0;
@@ -40,6 +41,24 @@ positions["Bottom"] = [-1, 1];
 cc = 255;
 levelLoaded = 0;
 
+
+// Animation Variables
+
+btFill = 0;
+//btStr = 25;
+btStr = 20;
+
+//btFillHov = 30;
+btFillHov = 20;
+//btStrHov = 75;
+btStrHov = 0;
+
+btHovInSpd = 5;
+btHovOutSpd = 5;
+
+btTxtSize = 36;
+
+
 document.addEventListener('contextmenu', event => event.preventDefault());
 
 
@@ -51,6 +70,10 @@ function preload() {
   arrowBottomLeftIMG = loadImage('assets/arrowBottomLeftIMG3.svg');
   arrowBottomRightIMG = loadImage('assets/arrowBottomRightIMG3.svg');
   menuIconIMG = loadImage('assets/menuIconIMG.svg');
+  rotCornerTop = loadImage('assets/rotCornerTop.svg');
+  rotCornerRight = loadImage('assets/rotCornerRight.svg');
+  rotCornerBottom = loadImage('assets/rotCornerBottom.svg');
+  rotCornerLeft = loadImage('assets/rotCornerLeft.svg');
 }
 
 
@@ -64,6 +87,7 @@ function setup() {
   // Set UI scale based on resolution
 
   uiScale = min(width, height) / 1300;
+  btTxtSize =  btTxtSize * uiScale;
 
 
   // Load progression data
@@ -93,7 +117,7 @@ function setup() {
     prepareLevelData();
   };
   script.src = 'levels.js';
-  document.head.appendChild(script); // or something of the likes
+  document.head.appendChild(script);
 
 
   // Load UI data from js file
@@ -104,7 +128,7 @@ function setup() {
     uiLoaded = 1;
   };
   script.src = 'ui.js';
-  document.head.appendChild(script); // or something of the likes
+  document.head.appendChild(script);
 
 
   // Set backround colour
@@ -271,6 +295,8 @@ function mouseReleased() {
 
                   // Update tile data
                   tileIndexes[selected[0]][selected[1]] = [selected[0], selected[1]];
+                  tileData[selected[0]][selected[1]][4] = clickedPuzzlePiece;
+                  tileData[puzzlePieces[clickedPuzzlePiece][1]][puzzlePieces[clickedPuzzlePiece][0]][4] = -1;
 
                   // Move puzzle piece to selected tile
                   puzzlePieces[clickedPuzzlePiece][1] = selected[0];
@@ -283,10 +309,7 @@ function mouseReleased() {
 
                   // If we're in design mode, update endpoints too
 
-                  endPieces[0][0] = puzzlePieces[0][0];
-                  endPieces[0][1] = puzzlePieces[0][1];
-                  endPieces[1][0] = puzzlePieces[puzzlePieces.length - 1][0];
-                  endPieces[1][1] = puzzlePieces[puzzlePieces.length - 1][1];
+                  updateEndpoints();
                 }
               }
             }
@@ -376,6 +399,7 @@ function prepareLevelData() {
       tileData[i][y][1] = (height / 2) + (y * (tileSize / 2)) - offset + ((tileSize / 2) * i);
       tileData[i][y][2] = -1; // Opacity
       tileData[i][y][3] = 1; // Scale
+      tileData[i][y][4] = -1; // Puzzle Piece Id (-1 = no piece on tile)
       //tileData[i][y][3] = [i, y]; // Save original grid position to keep track of position changes
     }
   }
@@ -396,6 +420,11 @@ function prepareLevelData() {
 
       tileData[i][y][2] = ((255 - map(dist(centX, centY, posX, posY), 0, mid * tileSize, 120, 240)));
     }
+  }
+
+  for (let i = 0; i < pp.length; i++) {
+
+    tileData[puzzlePieces[i][1]][puzzlePieces[i][0]][4] = i;
   }
 
   storeItem('level', level);
@@ -583,7 +612,7 @@ function isSolved() {
                 puzzlePieceColour = 255;
 
                 animateUIElement([[puzzlePieceOp, 0], [endPieceOp, 0]], [30, 255], [0, 0], 20, 0);
-                animateUIElement([[uiData[2][1][2][1], 4], [uiData[2][1][2][1], 5], [uiData[2][1][2][1], 9], [uiData[2][1][2][2], 4]], [300 * uiScale, 300 * uiScale, 0, 0], [400 * uiScale, 400 * uiScale, 20, 255], 15, 0);
+                animateUIElement([[uiData[2][1][2][1], 4], [uiData[2][1][2][1], 5], [uiData[2][1][2][1], 9], [uiData[2][1][2][2], 4]], [300 * uiScale, 300 * uiScale, 0, 0], [420 * uiScale, 420 * uiScale, 5, 255], 15, 0);
 
                 for (let x = 0; x < tiles; x++) {
 
@@ -702,11 +731,16 @@ function draw() {
     bgSaved = 1;
   }
 
-  if (state == 2) { image(img, 0, 0); }
+  image(img, 0, 0);
 
   uiHover = 0;
 
   if (uiLoaded == 1) { // Check if UI has loaded yet
+
+
+    // Run active animations
+    if (activeUIAnims.length > 0) { animateUIElement(); }
+
 
     // Draw UI (Dynamic)
 
@@ -806,7 +840,9 @@ function draw() {
 
                 if (mouseIsOnElement) {
 
-                  if (uiSelected != a) {
+                  elementID = (str(s) + "-" + str(i) + "-" + str(v) + "-" + str(h));
+
+                  if (uiHover2 != elementID) {
 
                     if (uiSelected != "undefined") {
                       if (uiSelected[3][2] != 0) {
@@ -814,16 +850,18 @@ function draw() {
                         uiSelected[3][2]();
                       }
                     }
-
-                    uiHover = 1;
-                    uiSelected = a;
-                    uiSelectedIndex = ((v * hNum) + h + 1);
-
-                    if (uiSelected[3][1] != 0) {
-
-                      uiSelected[3][1]();
-                    }
                   }
+
+                  uiHover = 1;
+                  uiSelected = a;
+                  uiSelectedIndex = ((v * hNum) + h + 1);
+
+                  if (uiSelected[3][1] != 0) {
+
+                    uiSelected[3][1]();
+                  }
+
+                  uiHover2 = elementID;
                 }
               }
 
@@ -906,6 +944,13 @@ function draw() {
       }
     }
 
+
+    if (uiHover == 0) {
+
+      uiHover2 = "";
+    }
+
+
     if (uiSelected != "undefined") { // Reset hover effect if not hovering on UI anymore
 
       if (uiHover == 0) {
@@ -913,6 +958,7 @@ function draw() {
         if (uiSelected[3][2] != 0) {
 
           uiSelected[3][2]();
+          uiSelected = "undefined";
         }
       }
     }
@@ -952,10 +998,6 @@ function draw() {
             }
           }
         }
-
-
-        // Run active animations
-        if (activeUIAnims.length > 0) { animateUIElement(); }
 
 
         // Draw level completed anim
@@ -1001,7 +1043,7 @@ function draw() {
 
         noFill();
         stroke(puzzlePieceColour, puzzlePieceOp[0]);
-        strokeWeight(8 / (tiles / 5));
+        strokeWeight((8 / (tiles / 5)) * uiScale);
         strokeCap(SQUARE);
 
         for (let i = 0; i < puzzlePieces.length; i++) {
@@ -1068,18 +1110,25 @@ function shiftTileLine(row, column, dir, steps, animOnly) {
           if (tileData[row][y + dirRev][2] != -1) {
 
             tileData[row][y][2] = tileData[row][y + dirRev][2];
-            tileData[row][y][3][0] = tileData[row][y + dirRev][3][0];
-            tileData[row][y][3][1] = tileData[row][y + dirRev][3][1];
+            tileData[row][y][4] = tileData[row][y + dirRev][4];
+
+            if (tileData[row][y][4] != -1) {
+
+              puzzlePieces[tileData[row][y][4]][0] = y;
+              puzzlePieces[tileData[row][y][4]][1] = row;
+            }
 
             animateUIElement([[tileData[row][y], 0], [tileData[row][y], 1]], [tileData[row][y + dirRev][0], tileData[row][y + dirRev][1]], [tileData[row][y][0], tileData[row][y][1]], 1 + (Math.abs(((tiles - 1) * dirNorm) - y) * 3), 0);
 
           } else {
 
             tileData[row][y][2] = -1;
+            tileData[row][y][4] = -1;
           }
         }
 
         tileData[row][((tiles - 1) * dirRevNorm)][2] = -1;
+        tileData[row][((tiles - 1) * dirRevNorm)][4] = -1;
         isGo = 1;
     }
 
@@ -1094,52 +1143,113 @@ function shiftTileLine(row, column, dir, steps, animOnly) {
           if (tileData[y + dirRev][column][2] != -1) {
 
             tileData[y][column][2] = tileData[y + dirRev][column][2];
-            tileData[y][column][3][0] = tileData[y + dirRev][column][3][0];
-            tileData[y][column][3][1] = tileData[y + dirRev][column][3][1];
+            tileData[y][column][4] = tileData[y + dirRev][column][4];
+
+            if (tileData[y][column][4] != -1) {
+
+              puzzlePieces[tileData[y][column][4]][0] = column;
+              puzzlePieces[tileData[y][column][4]][1] = y;
+            }
 
             animateUIElement([[tileData[y][column], 0], [tileData[y][column], 1]], [tileData[y + dirRev][column][0], tileData[y + dirRev][column][1]], [tileData[y][column][0], tileData[y][column][1]], 1 + (Math.abs(((tiles - 1) * dirNorm) - y) * 3), 0);
 
           } else {
 
             tileData[y][column][2] = -1;
+            tileData[y][column][4] = -1;
           }
         }
 
         tileData[((tiles - 1) * dirRevNorm)][column][2] = -1;
+        tileData[((tiles - 1) * dirRevNorm)][column][4] = -1;
         isGo = 1;
       }
     }
 
     if (isGo) { // Check if tiles have room to move (if not, cancel)
 
-      // Move puzzle pieces with tiles
-
-      let lineType = row;
-      let num = 1;
-
-      if (row == -1) { lineType = column; num = 0; }
-
-      for (let i = 0; i < puzzlePieces.length; i++) {
-
-        if (puzzlePieces[i][num] == lineType) {
-
-          puzzlePieces[i][Math.abs(num -1)] += dir;
-          puzzlePiecesMoved++;
-        }
-      }
-
-      for (let i = 0; i < endPieces.length; i++) {
-
-        if (endPieces[i][num] == lineType) {
-
-          endPieces[i][Math.abs(num -1)] += dir;
-        }
-      }
-
-      if (steps) { useStep(); isSolved(); } // Not sure why it's checking the steps like this but its not causing issues
+      updateEndpoints();
+      useStep(); isSolved();
     }
 
     return [isGo, puzzlePiecesMoved];
+  }
+}
+
+
+function rotateCornerTiles(cornerX, cornerY) {
+
+  if (solved == 0) {
+
+    let cornerTiles = (tiles - 1) / 2; // No. of tiles in a corner (diameter)
+    let cX = Math.max(1, cornerX * cornerTiles); // x index of top-left piece in selected corner (start post of rotation)
+    let cY = Math.max(1, cornerY * cornerTiles); // y index of top-left piece in selected corner (start post of rotation)
+    let loops = (cornerTiles - 1) / 2; // No. of "circles" to rotate
+
+    let a = [];
+    let tC = [];
+    let xx;
+    let yy;
+    let len;
+    let off;
+
+    for (let i = 0; i < loops; i++) {
+
+      a.length = 0;
+      xx = cX + i;
+      yy = cY + i;
+      len = cornerTiles - (i * 2);
+
+      for (let y = 0; y < len; y++) {
+        xx += Math.min(y, 1);
+        a.push([yy, xx]);
+      }
+
+      for (let y = 0; y < (len - 1); y++) {
+        yy++;
+        a.push([yy, xx]);
+      }
+
+      for (let y = 0; y < (len - 1); y++) {
+        xx--;
+        a.push([yy, xx]);
+      }
+
+      for (let y = 0; y < (len - 2); y++) {
+        yy--;
+        a.push([yy, xx]);
+      }
+
+      tC = [a.length];
+
+      for (let y = 0; y < a.length; y++) {
+        let tD = tileData[a[y][0]][a[y][1]];
+        tC[y] = [tD[0], tD[1], tD[2], tD[3], tD[4]];
+      }
+
+      for (let y = 0; y < a.length; y++) {
+
+        off = (y + a.length - (len - 1)) % (a.length);
+        tileData[a[y][0]][a[y][1]][2] = tC[off][2];
+        tileData[a[y][0]][a[y][1]][3] = tC[off][3];
+        tileData[a[y][0]][a[y][1]][4] = tC[off][4];
+
+        if (tC[off][4] != -1) {
+
+          puzzlePieces[tC[off][4]][0] = a[y][1];
+          puzzlePieces[tC[off][4]][1] = a[y][0];
+        }
+
+        //off = (y + (len - 1)) % (a.length);
+        animateUIElement([[tileData[a[y][0]][a[y][1]], 0], [tileData[a[y][0]][a[y][1]], 1]], [tC[off][0], tC[off][1]], [tileData[a[y][0]][a[y][1]][0], tileData[a[y][0]][a[y][1]][1]], 15, 0);
+      }
+
+      //console.log(a);
+    }
+
+    updateEndpoints();
+    useStep();
+    isSolved();
   }
 }
 
@@ -1599,10 +1709,12 @@ function animateUIElement(elements, start, end, time, reset, id) {
 
     let noDuplicate = 1;
 
-    for (let i = 0; i < activeUIAnims.length; i++) {
+    // Does fuck all for now (should prevent duplicate animations activating before the first one's ended)
+
+    /*for (let i = 0; i < activeUIAnims.length; i++) {
 
       if (activeUIAnims[i][0][0] === elements[0]) { noDuplicate = 0; }
-    }
+    }*/
 
     if (noDuplicate) {
 
@@ -1665,4 +1777,13 @@ function animateUIElement(elements, start, end, time, reset, id) {
       }
     }
   }
+}
+
+
+function updateEndpoints() {
+
+  endPieces[0][0] = puzzlePieces[0][0];
+  endPieces[0][1] = puzzlePieces[0][1];
+  endPieces[1][0] = puzzlePieces[(puzzlePieces.length - 1)][0];
+  endPieces[1][1] = puzzlePieces[(puzzlePieces.length - 1)][1];
 }
