@@ -489,6 +489,8 @@ function rotatePuzzlePiece(i) {
 
 function isSolved() {
 
+  let debug = 0;
+
   if (designMode == 0) {
 
     // Go from endpoint A to B.
@@ -499,13 +501,16 @@ function isSolved() {
     aSize = puzzlePieces.length;
     pI = 0;
 
-    console.log("//////////////// isSolved ////////////////");
+    if (debug) { console.log("//////////////// isSolved ////////////////"); }
 
     for (i = 0; i < aSize; i++) {
 
-      console.log(aSize + " - Number of puzzle pieces");
-      console.log(i + " - Main loop index ****************************");
-      console.log(pI + " - Puzzle piece index");
+      if (debug) {
+
+        console.log(aSize + " - Number of puzzle pieces");
+        console.log(i + " - Main loop index ****************************");
+        console.log(pI + " - Puzzle piece index");
+      }
 
       piece = puzzlePieces[pI]
       points = piece[2];
@@ -516,20 +521,20 @@ function isSolved() {
         // Endpoints
 
         dir = firstNoMiddle(points);
-        console.log("Endpoint - Type of piece");
+        if (debug) { console.log("Endpoint - Type of piece"); }
 
       } else {
 
         // Regular Pieces
 
-        console.log("Regular piece - Type of piece");
+        if (debug) { console.log("Regular piece - Type of piece"); }
       }
 
-      console.log(dir + " - Direction 1");
+      if (debug) { console.log(dir + " - Direction 1"); }
 
       for (y = 0; y < aSize; y++) {
 
-        console.log(y + " - Secondary loop index -----------------");
+        if (debug) { console.log(y + " - Secondary loop index -----------------"); }
 
         exitSecLoop = 0;
 
@@ -588,17 +593,17 @@ function isSolved() {
 
         if (continueLoop == 1) {
 
-          console.log("Piece is next to main piece");
+          if (debug) { console.log("Piece is next to main piece"); }
 
           for (x = 0; x < points2.length; x++) { // Cycle through points
 
             if (points2[x] == dirOp(dir)) {
 
-              console.log(dirOp(dir) + " - Direction 2");
+              if (debug) { console.log(dirOp(dir) + " - Direction 2"); }
 
               // Connection found
 
-              console.log("Connection found (" + (i + 1) + "/" + (aSize - 1) + ")");
+              if (debug) { console.log("Connection found (" + (i + 1) + "/" + (aSize - 1) + ")"); }
 
               pI = y; // Reassign index to restart loop with
               exitSecLoop = 1;
@@ -606,7 +611,7 @@ function isSolved() {
 
               if (points2.length == 2) {
 
-                console.log("//////////////// Level Finished! ////////////////");
+                if (debug) { console.log("//////////////// Level Finished! ////////////////"); }
 
                 solved = 1;
                 puzzlePieceColour = 255;
@@ -1042,7 +1047,7 @@ function draw() {
         // Draw puzzle pieces
 
         noFill();
-        stroke(puzzlePieceColour, puzzlePieceOp[0]);
+        if (typeof(puzzlePieceColour) == "object") { stroke(puzzlePieceColour); } else { stroke(puzzlePieceColour, puzzlePieceOp[0]); }
         strokeWeight((8 / (tiles / 5)) * uiScale);
         strokeCap(SQUARE);
 
@@ -1085,9 +1090,15 @@ function draw() {
 }
 
 
-function shiftTileLine(row, column, dir, steps, animOnly) {
+function shiftTileLine(row, column, dir, animate) {
 
-  let debug = 0;
+  // row = row number or -1 if moving a column
+  // column = column number or -1 if moving a row
+  // dir = direction of line movement (1 = right/down, -1 = left/up)
+  // stepsToMove = steps to move in given direction ***multiple steps doesn't actually work rn***
+  // toggle to animate the movement (0 = no, 1 = yes)
+
+  let debug = 1;
 
   if (solved == 0) {
 
@@ -1097,7 +1108,7 @@ function shiftTileLine(row, column, dir, steps, animOnly) {
     let dirRev = dir * -1;
     let dirRevNorm = Math.max(0, dirRev);
     let isGo = 0;
-    let puzzlePiecesMoved = 0;
+    let puzzlePiecesMoved = 1;
 
     if (row != -1) {
 
@@ -1118,7 +1129,7 @@ function shiftTileLine(row, column, dir, steps, animOnly) {
               puzzlePieces[tileData[row][y][4]][1] = row;
             }
 
-            animateUIElement([[tileData[row][y], 0], [tileData[row][y], 1]], [tileData[row][y + dirRev][0], tileData[row][y + dirRev][1]], [tileData[row][y][0], tileData[row][y][1]], 1 + (Math.abs(((tiles - 1) * dirNorm) - y) * 3), 0);
+            if (animate) { animateUIElement([[tileData[row][y], 0], [tileData[row][y], 1]], [tileData[row][y + dirRev][0], tileData[row][y + dirRev][1]], [tileData[row][y][0], tileData[row][y][1]], 1 + (Math.abs(((tiles - 1) * dirNorm) - y) * 3), 0); }
 
           } else {
 
@@ -1151,7 +1162,7 @@ function shiftTileLine(row, column, dir, steps, animOnly) {
               puzzlePieces[tileData[y][column][4]][1] = y;
             }
 
-            animateUIElement([[tileData[y][column], 0], [tileData[y][column], 1]], [tileData[y + dirRev][column][0], tileData[y + dirRev][column][1]], [tileData[y][column][0], tileData[y][column][1]], 1 + (Math.abs(((tiles - 1) * dirNorm) - y) * 3), 0);
+            if (animate) { animateUIElement([[tileData[y][column], 0], [tileData[y][column], 1]], [tileData[y + dirRev][column][0], tileData[y + dirRev][column][1]], [tileData[y][column][0], tileData[y][column][1]], 1 + (Math.abs(((tiles - 1) * dirNorm) - y) * 3), 0); }
 
           } else {
 
@@ -1256,14 +1267,14 @@ function rotateCornerTiles(cornerX, cornerY) {
 
 function generateLevel() {
 
-  let debug = 0;
+  let debug = 1;
 
   if (debug) { console.log("Generated Level"); }
 
-  tileRots = 2;
-  tileMoves = 2;
+  tileRots = 0;
+  tileMoves = 0;
   tileSwitches = 0;
-  shiftMoves = 6;
+  shiftMoves = 1;
   shiftsDone = [];
   shiftsDone.length = 0;
 
@@ -1417,7 +1428,7 @@ function generateLevel() {
 
 function shiftRandomTileLine() {
 
-  let debug = 0;
+  let debug = 1;
 
   // Shift a random row/column of tiles by 1 in a random direction
 
