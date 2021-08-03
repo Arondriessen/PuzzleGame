@@ -6,6 +6,7 @@ state = 0; // 0 = menu, 1 = levels, 2 = puzzle, 3 = settings, 4 = level-gen
 uiLoaded = 0;
 uiHover = 0;
 uiHover2 = "";
+elementID = "";
 uiSelected = "undefined";
 uiScale = 1;
 designMode = 0;
@@ -791,20 +792,16 @@ function draw() {
     if (activeUIAnims.length > 0) { animateUIElement(); }
 
 
-    if (uiHover == 0) {
-
-      uiHover2 = "";
-    }
-
-
     if (uiSelected != "undefined") { // Reset hover effect if not hovering on UI anymore
 
-      if (uiHover == 0) {
+      if (uiHover2 == "") {
 
         if (uiSelected[3][2] != 0) {
 
           uiSelected[3][2]();
           uiSelected = "undefined";
+
+          console.log("Hover Out 1");
         }
       }
     }
@@ -1043,9 +1040,9 @@ function draw() {
                   }
                 }
 
-                if (mouseIsOnElement) {
+                elementID = (str(s) + "-" + str(i) + "-" + str(v) + "-" + str(h));
 
-                  elementID = (str(s) + "-" + str(i) + "-" + str(v) + "-" + str(h));
+                if (mouseIsOnElement) {
 
                   if (uiHover2 != elementID) {
 
@@ -1053,6 +1050,7 @@ function draw() {
                       if (uiSelected[3][2] != 0) {
 
                         uiSelected[3][2]();
+                        console.log("Hover Out 2");
                       }
                     }
                   }
@@ -1064,9 +1062,17 @@ function draw() {
                   if (uiSelected[3][1] != 0) {
 
                     uiSelected[3][1]();
+                    if (uiHover2 != elementID) { console.log("Hover In"); }
                   }
 
                   uiHover2 = elementID;
+
+                } else {
+
+                  if (uiHover2 == elementID) {
+
+                    uiHover2 = "";
+                  }
                 }
               }
 
@@ -1140,7 +1146,7 @@ function draw() {
                   let hA = ((boxW * a[4][4]) - (a[4][2] / 2)); // Horizontal aligning
                   let vA = ((boxH * a[4][5]) - (a[4][2] / 2)); // Vertical aligning
 
-                  image(a[4][1], xx + hA, yy + vA, a[4][2], a[4][2]);
+                  image(a[4][1], xx + hA, yy + vA, a[4][2], a[4][2]); // ***** Cause fatal error in firefox only *****
                 }
               }
             }
