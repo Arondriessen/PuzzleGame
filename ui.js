@@ -19,8 +19,8 @@ ui = [
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 420 * uiScale, // width
-          /* 05 */ 420 * uiScale, // height
+          /* 04 */ bgTileSize * uiScale, // width
+          /* 05 */ bgTileSize * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -36,10 +36,10 @@ ui = [
           /* 14 */ function() { return 25; }, // items
           /* 15 */ function() { return 5; }, // h-number
           /* 16 */ function() { return 3; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return 840 * uiScale; }, // x-offset
+          /* 17 */ function() { return (bgTileSize * 2) * uiScale; }, // x-offset
           /* 18 */ function() { return 0; }, // y-offset
-          /* 19 */ function() { return 420 * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return 420 * uiScale; } // y-offset (new line)
+          /* 19 */ function() { return bgTileSize * uiScale; }, // x-offset (new line)
+          /* 20 */ function() { return bgTileSize * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -72,8 +72,8 @@ ui = [
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 420 * uiScale, // width
-          /* 05 */ 420 * uiScale, // height
+          /* 04 */ bgTileSize * uiScale, // width
+          /* 05 */ bgTileSize * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -113,9 +113,9 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
-          /* 03 */ (height / 2) - (200 * uiScale), // y pos
-          /* 04 */ 180 * uiScale, // width
-          /* 05 */ 180 * uiScale, // height
+          /* 03 */ (height / 2) - ((bgTileSize / 2) * uiScale), // y pos
+          /* 04 */ (bgTileSize / 2) * uiScale, // width
+          /* 05 */ (bgTileSize / 2) * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
@@ -155,9 +155,9 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
-          /* 03 */ (height / 2) + (200 * uiScale), // y pos
-          /* 04 */ 180 * uiScale, // width
-          /* 05 */ 180 * uiScale, // height
+          /* 03 */ (height / 2) + (((bgTileSize / 2) - (menuBTMargin / 1.5)) * uiScale), // y pos
+          /* 04 */ ((bgTileSize / 2) - (menuBTMargin * 2)) * uiScale, // width
+          /* 05 */ ((bgTileSize / 2) - (menuBTMargin * 2)) * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -172,7 +172,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ "Continue", // text
-          /* 02 */ 26 * uiScale, // text-size
+          /* 02 */ menuBTTxtSize * uiScale, // text-size
           /* 03 */ 255, // text-colour
           /* 04 */ 255, // text-alpha
           /* 05 */ 0.5, // text-h-align
@@ -196,10 +196,10 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) + (200 * uiScale), // x pos
+          /* 02 */ (width / 2) + (((bgTileSize / 2) - (menuBTMargin / 1.5)) * uiScale), // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 180 * uiScale, // width
-          /* 05 */ 180 * uiScale, // height
+          /* 04 */ ((bgTileSize / 2) - (menuBTMargin * 2)) * uiScale, // width
+          /* 05 */ ((bgTileSize / 2) - (menuBTMargin * 2)) * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -214,7 +214,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ "Levels", // text
-          /* 02 */ 26 * uiScale, // text-size
+          /* 02 */ menuBTTxtSize * uiScale, // text-size
           /* 03 */ 255, // text-colour
           /* 04 */ 255, // text-alpha
           /* 05 */ 0.5, // text-h-align
@@ -238,10 +238,10 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) - (200 * uiScale), // x pos
+          /* 02 */ (width / 2) - (((bgTileSize / 2) - (menuBTMargin / 1.5)) * uiScale), // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 180 * uiScale, // width
-          /* 05 */ 180 * uiScale, // height
+          /* 04 */ ((bgTileSize / 2) - (menuBTMargin * 2)) * uiScale, // width
+          /* 05 */ ((bgTileSize / 2) - (menuBTMargin * 2)) * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -256,7 +256,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ "Settings", // text
-          /* 02 */ 26 * uiScale, // text-size
+          /* 02 */ menuBTTxtSize * uiScale, // text-size
           /* 03 */ 255, // text-colour
           /* 04 */ 255, // text-alpha
           /* 05 */ 0.5, // text-h-align
@@ -281,7 +281,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
-          /* 03 */ (height / 2) + (256 * uiScale), // y pos
+          /* 03 */ (height / 2) + (((bgTileSize / 2) - menuBTMargin + 60) * uiScale), // y pos
           /* 04 */ 0, // width
           /* 05 */ 0, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
@@ -298,7 +298,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return ("W " + world + "  /  L " + level); }, // text
-          /* 02 */ 16 * uiScale, // text-size
+          /* 02 */ 17 * uiScale, // text-size
           /* 03 */ 255, // text-colour
           /* 04 */ 255, // text-alpha
           /* 05 */ 0.5, // text-h-align
@@ -323,7 +323,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
-          /* 03 */ (height / 2) - (200 * uiScale), // y pos
+          /* 03 */ (height / 2) - (((bgTileSize / 2) - menuBTMargin) * uiScale), // y pos
           /* 04 */ 0, // width
           /* 05 */ 0, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
@@ -340,7 +340,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ "Puzzle Game", // text
-          /* 02 */ 28 * uiScale, // text-size
+          /* 02 */ menuBTTxtSize * uiScale, // text-size
           /* 03 */ 255, // text-colour
           /* 04 */ 255, // text-alpha
           /* 05 */ 0.5, // text-h-align
@@ -374,8 +374,8 @@ ui = [
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 420 * uiScale, // width
-          /* 05 */ 420 * uiScale, // height
+          /* 04 */ bgTileSize * uiScale, // width
+          /* 05 */ bgTileSize * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -391,10 +391,10 @@ ui = [
           /* 14 */ function() { return 25; }, // items
           /* 15 */ function() { return 5; }, // h-number
           /* 16 */ function() { return 3; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return 840 * uiScale; }, // x-offset
+          /* 17 */ function() { return (bgTileSize * 2) * uiScale; }, // x-offset
           /* 18 */ function() { return 0; }, // y-offset
-          /* 19 */ function() { return 420 * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return 420 * uiScale; } // y-offset (new line)
+          /* 19 */ function() { return bgTileSize * uiScale; }, // x-offset (new line)
+          /* 20 */ function() { return bgTileSize * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -427,8 +427,8 @@ ui = [
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 420 * uiScale, // width
-          /* 05 */ 420 * uiScale, // height
+          /* 04 */ bgTileSize * uiScale, // width
+          /* 05 */ bgTileSize * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -467,7 +467,7 @@ ui = [
 
           /* 00 */ function() { return ((levelsWorld - 1) > 0); }, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) - (580 * uiScale), // x pos
+          /* 02 */ (width / 2) - ((bgTileSize + 120 + (menuBTMargin * 2)) * uiScale), // x pos
           /* 03 */ height / 2, // y pos
           /* 04 */ 120 * uiScale, // width
           /* 05 */ 120 * uiScale, // height
@@ -509,7 +509,7 @@ ui = [
 
           /* 00 */ function() { return ((levelsWorld + 1) < 4); }, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) + (580 * uiScale), // x pos
+          /* 02 */ (width / 2) + ((bgTileSize + 120 + (menuBTMargin * 2)) * uiScale), // x pos
           /* 03 */ height / 2, // y pos
           /* 04 */ 120 * uiScale, // width
           /* 05 */ 120 * uiScale, // height
@@ -551,10 +551,10 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) - (420 * uiScale), // x pos
-          /* 03 */ (height / 2) + (420 * uiScale), // y pos
-          /* 04 */ 210 * uiScale, // width
-          /* 05 */ 210 * uiScale, // height
+          /* 02 */ (width / 2) - (bgTileSize * uiScale), // x pos
+          /* 03 */ (height / 2) + (bgTileSize * uiScale), // y pos
+          /* 04 */ (bgTileSize / 2) * uiScale, // width
+          /* 05 */ (bgTileSize / 2) * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -600,8 +600,8 @@ ui = [
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 94 * uiScale, // width
-          /* 05 */ 94 * uiScale, // height
+          /* 04 */ levelBTSize * uiScale, // width
+          /* 05 */ levelBTSize * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
@@ -616,10 +616,10 @@ ui = [
           /* 14 */ function() { return levelData[0].length; }, // items
           /* 15 */ function() { return 4; }, // h-number
           /* 16 */ function() { return 4; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return 102 * uiScale; }, // x-offset
-          /* 18 */ function() { return 102 * uiScale; }, // y-offset
-          /* 19 */ function() { return -102 * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return 102 * uiScale; } // y-offset (new line)
+          /* 17 */ function() { return levelBTOffset * uiScale; }, // x-offset
+          /* 18 */ function() { return levelBTOffset * uiScale; }, // y-offset
+          /* 19 */ function() { return -levelBTOffset * uiScale; }, // x-offset (new line)
+          /* 20 */ function() { return levelBTOffset * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -658,8 +658,8 @@ ui = [
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 94 * uiScale, // width
-          /* 05 */ 94 * uiScale, // height
+          /* 04 */ levelBTSize * uiScale, // width
+          /* 05 */ levelBTSize * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
@@ -674,10 +674,10 @@ ui = [
           /* 14 */ function() { return levelData[1].length; }, // items
           /* 15 */ function() { return 4; }, // h-number
           /* 16 */ function() { return 4; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return 102 * uiScale; }, // x-offset
-          /* 18 */ function() { return 102 * uiScale; }, // y-offset
-          /* 19 */ function() { return -102 * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return 102 * uiScale; } // y-offset (new line)
+          /* 17 */ function() { return levelBTOffset * uiScale; }, // x-offset
+          /* 18 */ function() { return levelBTOffset * uiScale; }, // y-offset
+          /* 19 */ function() { return -levelBTOffset * uiScale; }, // x-offset (new line)
+          /* 20 */ function() { return levelBTOffset * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -716,8 +716,8 @@ ui = [
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 94 * uiScale, // width
-          /* 05 */ 94 * uiScale, // height
+          /* 04 */ levelBTSize * uiScale, // width
+          /* 05 */ levelBTSize * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
@@ -732,10 +732,10 @@ ui = [
           /* 14 */ function() { return levelData[2].length; }, // items
           /* 15 */ function() { return 4; }, // h-number
           /* 16 */ function() { return 4; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return 102 * uiScale; }, // x-offset
-          /* 18 */ function() { return 102 * uiScale; }, // y-offset
-          /* 19 */ function() { return -102 * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return 102 * uiScale; } // y-offset (new line)
+          /* 17 */ function() { return levelBTOffset * uiScale; }, // x-offset
+          /* 18 */ function() { return levelBTOffset * uiScale; }, // y-offset
+          /* 19 */ function() { return -levelBTOffset * uiScale; }, // x-offset (new line)
+          /* 20 */ function() { return levelBTOffset * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -1044,8 +1044,8 @@ ui = [
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 420 * uiScale, // width
-          /* 05 */ 420 * uiScale, // height
+          /* 04 */ (tileSize * tiles) * uiScale, // width
+          /* 05 */ (tileSize * tiles) * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -1058,7 +1058,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ "Success!", // text
           /* 02 */ 60 * uiScale, // text-size
           /* 03 */ 255, // text-colour
@@ -1073,6 +1073,16 @@ ui = [
           /* 01 */ 0, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
           /* 03 */ 0 // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return checmarkIcon; }, // image
+          /* 02 */ 180 * uiScale, // image-size
+          /* 03 */ 40, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ]
     ],
@@ -1420,7 +1430,7 @@ ui = [
 
     [ // /* 03 */ Row/Column Shifting
 
-      /* 00 */ function() { return levelData[world - 1][level - 1][5][2]; }, // state (0 = off, 1 = on)
+      /* 00 */ function() { return (levelData[world - 1][level - 1][5][2] * (solved != 1)); }, // state (0 = off, 1 = on)
 
       [ // /* 01 */ Shift Row/Column (Top Left)
 
@@ -1673,7 +1683,7 @@ ui = [
 
     [ // /* 04 */ Corner Tiles Rotation
 
-      /* 00 */ function() { return levelData[world - 1][level - 1][5][3]; }, // state (0 = off, 1 = on)
+      /* 00 */ function() { return (levelData[world - 1][level - 1][5][3]  * (solved != 1)); }, // state (0 = off, 1 = on)
 
       [ // /* 01 */ Rotate Corner Tiles (Top)
 
@@ -1711,16 +1721,16 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 16; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { /*boxOp = 0;*/ }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { rotateCornerTiles(0, 0); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 16; uiData[2][4][5][1][0] = 1; uiData[2][4][5][4][0] = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][5][1][0] = 0; uiData[2][4][5][4][0] = 0; }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { rotateCornerTiles(0, 0, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return rotCornerTop; }, // image
-          /* 02 */ 72 * uiScale, // image-size
+          /* 01 */ function() { return rotCorner; }, // image
+          /* 02 */ 60 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -1763,16 +1773,16 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 16; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { /*boxOp = 0;*/ }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { rotateCornerTiles(1, 0); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 16; uiData[2][4][6][1][0] = 1; uiData[2][4][6][4][0] = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][6][1][0] = 0; uiData[2][4][6][4][0] = 0; }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { rotateCornerTiles(1, 0, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return rotCornerRight; }, // image
-          /* 02 */ 72 * uiScale, // image-size
+          /* 01 */ function() { return rotCorner; }, // image
+          /* 02 */ 60 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -1815,16 +1825,16 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 16; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { rotateCornerTiles(1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 16; uiData[2][4][7][1][0] = 1; uiData[2][4][7][4][0] = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][7][1][0] = 0; uiData[2][4][7][4][0] = 0; }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { rotateCornerTiles(1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return rotCornerBottom; }, // image
-          /* 02 */ 72 * uiScale, // image-size
+          /* 01 */ function() { return rotCorner; }, // image
+          /* 02 */ 60 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -1867,21 +1877,229 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 16; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { rotateCornerTiles(0, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 16; uiData[2][4][8][1][0] = 1; uiData[2][4][8][4][0] = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][8][1][0] = 0; uiData[2][4][8][4][0] = 0; }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { rotateCornerTiles(0, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return rotCornerLeft; }, // image
-          /* 02 */ 72 * uiScale, // image-size
+          /* 01 */ function() { return rotCorner; }, // image
+          /* 02 */ 60 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
-      ]
+      ],
+
+      [ // /* 05 */ Highlight Corner Tiles (Top)
+
+        1, // /* 00 */ Type (1 = single, 2 = list)1
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width / 2, // x pos
+          /* 03 */ function() { return (height / 2) - (tileSize * ((tiles - 3) / 4)); }, // y pos
+          /* 04 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // width
+          /* 05 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 80, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 200, // outline-alpha
+          /* 13 */ 2, // outline-width
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ function() { return rotCornerLeft; }, // image
+          /* 02 */ function() { return ((tileSize * ((tiles - 2) / 3.6)) * uiScale); }, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 06 */ Highlight Corner Tiles (Right)
+
+        1, // /* 00 */ Type (1 = single, 2 = list)1
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) + (tileSize * ((tiles - 3) / 4)); }, // x pos
+          /* 03 */ height / 2, // y pos
+          /* 04 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // width
+          /* 05 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 80, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 50, // outline-alpha
+          /* 13 */ 2, // outline-width
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ function() { return rotCornerLeft; }, // image
+          /* 02 */ function() { return ((tileSize * ((tiles - 2) / 3.6)) * uiScale); }, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 07 */ Highlight Corner Tiles (Bottom)
+
+        1, // /* 00 */ Type (1 = single, 2 = list)1
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width / 2, // x pos
+          /* 03 */ function() { return (height / 2) + (tileSize * ((tiles - 3) / 4)); }, // y pos
+          /* 04 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // width
+          /* 05 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 80, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 50, // outline-alpha
+          /* 13 */ 2, // outline-width
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ function() { return rotCornerLeft; }, // image
+          /* 02 */ function() { return ((tileSize * ((tiles - 2) / 3.6)) * uiScale); }, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 08 */ Highlight Corner Tiles (Left)
+
+        1, // /* 00 */ Type (1 = single, 2 = list)1
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) - (tileSize * ((tiles - 3) / 4)); }, // x pos
+          /* 03 */ height / 2, // y pos
+          /* 04 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // width
+          /* 05 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 80, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 50, // outline-alpha
+          /* 13 */ 2, // outline-width
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ function() { return rotCornerLeft; }, // image
+          /* 02 */ function() { return ((tileSize * ((tiles - 2) / 3.6)) * uiScale); }, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
     ],
   ],
 
