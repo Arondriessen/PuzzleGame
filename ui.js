@@ -1721,8 +1721,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 16; uiData[2][4][5][1][0] = 1; uiData[2][4][5][4][0] = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][5][1][0] = 0; uiData[2][4][5][4][0] = 0; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 16;  uiData[2][4][5][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][5][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][5][4][0] = 0; animateUIElement([[uiData[2][4][5][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(0, 0, 1); } // onClick event (0 = no event)
         ],
 
@@ -1773,8 +1773,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 16; uiData[2][4][6][1][0] = 1; uiData[2][4][6][4][0] = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][6][1][0] = 0; uiData[2][4][6][4][0] = 0; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 16; uiData[2][4][6][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][6][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][6][4][0] = 0; animateUIElement([[uiData[2][4][6][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(1, 0, 1); } // onClick event (0 = no event)
         ],
 
@@ -1825,8 +1825,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 16; uiData[2][4][7][1][0] = 1; uiData[2][4][7][4][0] = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][7][1][0] = 0; uiData[2][4][7][4][0] = 0; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 16; uiData[2][4][7][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][7][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][7][4][0] = 0; animateUIElement([[uiData[2][4][7][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(1, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -1877,8 +1877,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 16; uiData[2][4][8][1][0] = 1; uiData[2][4][8][4][0] = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][8][1][0] = 0; uiData[2][4][8][4][0] = 0; }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 16; uiData[2][4][8][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][8][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][8][4][0] = 0; animateUIElement([[uiData[2][4][8][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(0, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -1899,7 +1899,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ function() { return (height / 2) - (tileSize * ((tiles - 3) / 4)); }, // y pos
@@ -1908,11 +1908,11 @@ ui = [
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
-          /* 09 */ 80, // alpha
+          /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ 200, // outline-alpha
-          /* 13 */ 2, // outline-width
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
         ],
 
         [ // /* 02 */ Text
@@ -1951,7 +1951,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return (width / 2) + (tileSize * ((tiles - 3) / 4)); }, // x pos
           /* 03 */ height / 2, // y pos
@@ -1960,7 +1960,7 @@ ui = [
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
-          /* 09 */ 80, // alpha
+          /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
@@ -2003,7 +2003,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ function() { return (height / 2) + (tileSize * ((tiles - 3) / 4)); }, // y pos
@@ -2012,7 +2012,7 @@ ui = [
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
-          /* 09 */ 80, // alpha
+          /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
@@ -2055,7 +2055,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return (width / 2) - (tileSize * ((tiles - 3) / 4)); }, // x pos
           /* 03 */ height / 2, // y pos
@@ -2064,7 +2064,7 @@ ui = [
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
-          /* 09 */ 80, // alpha
+          /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
