@@ -84,7 +84,7 @@ function preload() {
   rotCornerRight = loadImage('assets/rotCornerRight.svg');
   rotCornerBottom = loadImage('assets/rotCornerBottom.svg');
   rotCornerLeft = loadImage('assets/rotCornerLeft.svg');
-  checkmarkIcon = loadImage('assets/checkMarkIcon.svg');
+  checkMarkIcon = loadImage('assets/checkMarkIcon.svg');
 }
 
 

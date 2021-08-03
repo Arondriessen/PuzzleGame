@@ -1078,7 +1078,7 @@ ui = [
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return checkmarkIcon; }, // image
+          /* 01 */ function() { return checkMarkIcon; }, // image
           /* 02 */ 180 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
