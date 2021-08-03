@@ -86,6 +86,7 @@ function preload() {
   rotCornerBottom = loadImage('assets/rotCornerBottom.svg');
   rotCornerLeft = loadImage('assets/rotCornerLeft.svg');
   checkMarkIcon = loadImage('assets/checkMarkIcon.svg');
+  lockedIcon = loadImage('assets/lockedIcon.svg');
 }
 
 
@@ -801,7 +802,7 @@ function draw() {
           uiSelected[3][2]();
           uiSelected = "undefined";
 
-          console.log("Hover Out 1");
+          //console.log("Hover Out 1");
         }
       }
     }
@@ -1050,7 +1051,7 @@ function draw() {
                       if (uiSelected[3][2] != 0) {
 
                         uiSelected[3][2]();
-                        console.log("Hover Out 2");
+                        //console.log("Hover Out 2");
                       }
                     }
                   }
@@ -1062,7 +1063,7 @@ function draw() {
                   if (uiSelected[3][1] != 0) {
 
                     uiSelected[3][1]();
-                    if (uiHover2 != elementID) { console.log("Hover In"); }
+                    //if (uiHover2 != elementID) { console.log("Hover In"); }
                   }
 
                   uiHover2 = elementID;

@@ -624,21 +624,31 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ function() { return levelData[0][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 40 * uiScale, // text-size
           /* 03 */ 255, // text-colour
-          /* 04 */ function() { return 25 + (levelData[0][((v * hNum) + h)][0] * 175) }, // text-alpha
+          /* 04 */ 200, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5 // text-v-align
         ],
 
         [ // /* 03 */ Button Events
 
-          /* 00 */ function() { return levelData[0][((v * hNum) + h)][0] }, // state (0 = off, 1 = on)
+          /* 00 */ function() { return levelData[0][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 50; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
           /* 03 */ function() { world = levelsWorld; level = uiSelectedIndex; prepareLevelData(); state = 2; } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ function() { return !levelData[0][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
+          /* 01 */ function() { return lockedIcon; }, // image
+          /* 02 */ (levelBTSize - 24) * uiScale, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ]
 
@@ -682,7 +692,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ function() { return levelData[1][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 40 * uiScale, // text-size
           /* 03 */ 255, // text-colour
@@ -697,6 +707,16 @@ ui = [
           /* 01 */ function() { boxOp = 50; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
           /* 03 */ function() { world = levelsWorld; level = uiSelectedIndex; prepareLevelData(); state = 2; } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ function() { return !levelData[1][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
+          /* 01 */ function() { return lockedIcon; }, // image
+          /* 02 */ (levelBTSize - 24) * uiScale, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ]
 
@@ -740,7 +760,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ function() { return levelData[2][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 40 * uiScale, // text-size
           /* 03 */ 255, // text-colour
@@ -755,6 +775,16 @@ ui = [
           /* 01 */ function() { boxOp = 50; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
           /* 03 */ function() { world = levelsWorld; level = uiSelectedIndex; prepareLevelData(); state = 2; } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ function() { return !levelData[2][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
+          /* 01 */ function() { return lockedIcon; }, // image
+          /* 02 */ (levelBTSize - 24) * uiScale, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ]
 
@@ -1938,7 +1968,7 @@ ui = [
 
           /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCornerLeft; }, // image
-          /* 02 */ function() { return ((tileSize * ((tiles - 2) / 3.6)) * uiScale); }, // image-size
+          /* 02 */ function() { return (max(tileSize * ((tiles - 2) / 3.6), 160) * uiScale); }, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -1990,7 +2020,7 @@ ui = [
 
           /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCornerLeft; }, // image
-          /* 02 */ function() { return ((tileSize * ((tiles - 2) / 3.6)) * uiScale); }, // image-size
+          /* 02 */ function() { return (max(tileSize * ((tiles - 2) / 3.6), 160) * uiScale); }, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -2042,7 +2072,7 @@ ui = [
 
           /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCornerLeft; }, // image
-          /* 02 */ function() { return ((tileSize * ((tiles - 2) / 3.6)) * uiScale); }, // image-size
+          /* 02 */ function() { return (max(tileSize * ((tiles - 2) / 3.6), 160) * uiScale); }, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -2094,7 +2124,7 @@ ui = [
 
           /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCornerLeft; }, // image
-          /* 02 */ function() { return ((tileSize * ((tiles - 2) / 3.6)) * uiScale); }, // image-size
+          /* 02 */ function() { return (max(tileSize * ((tiles - 2) / 3.6), 160) * uiScale); }, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
