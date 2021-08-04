@@ -583,6 +583,48 @@ ui = [
           /* 02 */ function() { animateUIElement([[uiData[1][0][5][1], 9], [uiData[1][0][5][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { state = 0; } // onClick event (0 = no event)
         ]
+      ],
+
+      [ // /* 06 */ Current World Text
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ (width / 2) - (bgTileSize * uiScale), // x pos
+          /* 03 */ (height / 2) + (bgTileSize * uiScale), // y pos
+          /* 04 */ (bgTileSize / 2) * uiScale, // width
+          /* 05 */ (bgTileSize / 2) * uiScale, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ btFill, // alpha
+          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ btStr, // outline-alpha
+          /* 13 */ 4 * uiScale // outline-width
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ "Back", // text
+          /* 02 */ btTxtSize * uiScale, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 255, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
       ]
     ],
 
