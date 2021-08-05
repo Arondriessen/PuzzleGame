@@ -87,6 +87,9 @@ function preload() {
   rotCornerLeft = loadImage('assets/rotCornerLeft.svg');
   checkMarkIcon = loadImage('assets/checkMarkIcon.svg');
   lockedIcon = loadImage('assets/lockedIcon.svg');
+  arrowLeft = loadImage('assets/arrowLeft.svg');
+  arrowRight = loadImage('assets/arrowRight.svg');
+  arrowBottomLeft = loadImage('assets/arrowBottomLeft.svg');
 }
 
 
@@ -108,7 +111,7 @@ function setup() {
   level = max(1, getItem('level'));
   world = max(1, getItem('world'));
   unlockedLevel = getItem('unlockedLevel');
-  if (unlockedLevel == null) { unlockedLevel = [1, 1]; }
+  if (unlockedLevel == null) { unlockedLevel = [1, 1, 1]; }
 
 
   // Load level data from js file
@@ -972,14 +975,14 @@ function draw() {
 
           if (a[0] == 2) { // Is it a list item?
 
-            limit = a[1][14]();
-            hNum = Math.min(a[1][15](), limit);
-            vNum2 = Math.ceil(limit / a[1][15]());
-            vNum = Math.max(vNum2, a[1][16]());
-            xOff = a[1][17]();
-            yOff = a[1][18]();
-            xOff2 = a[1][19]();
-            yOff2 = a[1][20]();
+            limit = a[1][15]();
+            hNum = Math.min(a[1][16](), limit);
+            vNum2 = Math.ceil(limit / a[1][16]());
+            vNum = Math.max(vNum2, a[1][17]());
+            xOff = a[1][18]();
+            yOff = a[1][19]();
+            xOff2 = a[1][20]();
+            yOff2 = a[1][21]();
           }
 
           for (v = 0; v < vNum2; v++) { // Cycle through rows
@@ -1014,8 +1017,14 @@ function draw() {
               boxOutlineOp = a[1][12];
               if (a[4] != undefined) { imgOp = a[4][3]; }
 
+
+              // Moves drawing start position to top-left corner regardless of alignments
+
               xx = (a[1][2] - (a[1][6] * boxW)) - ((hNum - 1) * (xOff / 2)) - ((vNum - 1) * (xOff2 / 2)) + (xOff * h) + (xOff2 * v);
               yy = (a[1][3] - (a[1][7] * boxH)) - ((hNum - 1) * (yOff / 2)) - ((vNum - 1) * (yOff2 / 2)) + (yOff * h) + (yOff2 * v);
+
+              hAlign = a[1][6];
+              vAlign = a[1][7];
 
 
               if (a[3][0] == 1) { // Is it interactive?
@@ -1035,7 +1044,7 @@ function draw() {
                   }
                 } else if  (a[1][1] == 4){ // Rotated Rectangular Hitbox
 
-                  if ((abs(mouseX - (xx + (boxW / 2))) + abs(mouseY - (yy + (boxH / 2)))) < (boxW)) {
+                  if ((abs(mouseX - (xx + (boxW * (1 - hAlign)))) + abs(mouseY - (yy + (boxH * (1 - vAlign))))) < (boxW)) {
 
                     mouseIsOnElement = 1;
                   }
@@ -1078,6 +1087,22 @@ function draw() {
               }
 
 
+              // Reset positions to take alignment into account
+
+              xx = (a[1][2]) - ((hNum - 1) * (xOff / 2)) - ((vNum - 1) * (xOff2 / 2)) + (xOff * h) + (xOff2 * v);
+              yy = (a[1][3]) - ((hNum - 1) * (yOff / 2)) - ((vNum - 1) * (yOff2 / 2)) + (yOff * h) + (yOff2 * v);
+
+
+              push();
+              translate(xx, yy);
+
+              if (a[1][14] != 0) { // Apply rotation if applicable
+
+                angleMode(DEGREES);
+                rotate(a[1][14]);
+              }
+
+
               if (a[1][0] == 1) { // Is box element active?
 
                 fill(a[1][8], boxOp);
@@ -1101,17 +1126,20 @@ function draw() {
 
                 switch(a[1][1]) {
 
-                  case 1: rect(xx, yy, boxW, boxH);
+                  case 1: rect(- (boxW * hAlign), - (boxH * vAlign), boxW, boxH);
                   break;
 
-                  case 2: rect(xx, yy, boxW, boxH, min(boxW, boxH) / 3.4);
+                  case 2: rect(- (boxW * hAlign), - (boxH * vAlign), boxW, boxH, min(boxW, boxH) / 3.4);
                   break;
 
-                  case 3: circle(xx + (boxW / 2), yy + (boxH / 2), boxW);
+                  case 3: circle(- (boxW * hAlign), - (boxH * vAlign), boxW);
                   break;
 
                   case 4:
-                  quad(xx + (boxW / 2), yy - (boxH * 0.5), xx + (boxW * 1.5), yy + (boxH / 2), xx + (boxW / 2), yy + (boxH * 1.5), xx - (boxW * 0.5), yy + (boxH / 2));
+                  quad(- (boxW * hAlign) + (boxW * (1 - hAlign)), - ((boxH * 2) * vAlign),
+                  ((boxW * 2) * (1 - hAlign)), - (boxH * vAlign) + (boxH * (1 - vAlign)),
+                  - (boxW * hAlign) + (boxW * (1 - hAlign)), ((boxH * 2) * (1 - vAlign)),
+                  - ((boxW * 2) * hAlign), - (boxH * vAlign) + (boxH * (1 - vAlign)));
                   break;
                 }
 
@@ -1132,11 +1160,12 @@ function draw() {
                 noStroke();
                 textAlign(LEFT, TOP);
 
-                let hA = ((boxW * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
-                let vA =((boxH * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
+                let hA = (((boxW * (1 + (a[1][1] == 4))) * a[2][5]) - (textWidth(a[2][1]) * a[2][5])); // Horizontal aligning
+                let vA = (((boxH * (1 + (a[1][1] == 4))) * a[2][6]) - (a[2][2] * a[2][6])); // Vertical aligning
                 let vC = -(a[2][2] / 7); // Small vertical correction for font height
 
-                text(a[2][1], xx + hA, yy + vA + vC);
+                text(a[2][1], hA - ((boxW * (1 + (a[1][1] == 4))) * hAlign), vA + vC - ((boxH * (1 + (a[1][1] == 4))) * vAlign));
+
               }
 
 
@@ -1144,12 +1173,15 @@ function draw() {
 
                 if (a[4][0] == 1) { // Is image element active?
 
-                  let hA = ((boxW * a[4][4]) - (a[4][2] / 2)); // Horizontal aligning
-                  let vA = ((boxH * a[4][5]) - (a[4][2] / 2)); // Vertical aligning
+                  let hA = (((boxW * (1 + (a[1][1] == 4))) * a[4][4]) - (a[4][2] / 2)); // Horizontal aligning
+                  let vA = (((boxH * (1 + (a[1][1] == 4))) * a[4][5]) - (a[4][2] / 2)); // Vertical aligning
 
-                  image(a[4][1], xx + hA, yy + vA, a[4][2], a[4][2]); // ***** Cause fatal error in firefox only *****
+                  image(a[4][1], hA - ((boxW * (1 + (a[1][1] == 4))) * hAlign), vA - ((boxH * (1 + (a[1][1] == 4))) * vAlign), a[4][2], a[4][2]); // ***** Cause fatal error in firefox only *****
                 }
               }
+
+
+              pop(); // Reset translate/rotation
             }
           }
         }

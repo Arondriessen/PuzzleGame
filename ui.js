@@ -29,17 +29,18 @@ ui = [
           /* 11 */ 255, // outline-colour
           /* 12 */ 10, // outline-alpha
           /* 13 */ 1, // outline-width
+          /* 14 */ 0, // rot-angle
 
 
           // List Settings
 
-          /* 14 */ function() { return 25; }, // items
-          /* 15 */ function() { return 5; }, // h-number
-          /* 16 */ function() { return 3; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return (bgTileSize * 2) * uiScale; }, // x-offset
-          /* 18 */ function() { return 0; }, // y-offset
-          /* 19 */ function() { return bgTileSize * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return bgTileSize * uiScale; } // y-offset (new line)
+          /* 15 */ function() { return 25; }, // items
+          /* 16 */ function() { return 5; }, // h-number
+          /* 17 */ function() { return 3; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return (bgTileSize * 2) * uiScale; }, // x-offset
+          /* 19 */ function() { return 0; }, // y-offset
+          /* 20 */ function() { return bgTileSize * uiScale; }, // x-offset (new line)
+          /* 21 */ function() { return bgTileSize * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -81,7 +82,8 @@ ui = [
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -123,7 +125,8 @@ ui = [
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -165,7 +168,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -207,7 +211,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -249,7 +254,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -291,7 +297,8 @@ ui = [
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
-          /* 13 */ 0 // outline-width
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -333,7 +340,8 @@ ui = [
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
-          /* 13 */ 0 // outline-width
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -384,17 +392,18 @@ ui = [
           /* 11 */ 255, // outline-colour
           /* 12 */ 10, // outline-alpha
           /* 13 */ 1, // outline-width
+          /* 14 */ 0, // rot-angle
 
 
           // List Settings
 
-          /* 14 */ function() { return 25; }, // items
-          /* 15 */ function() { return 5; }, // h-number
-          /* 16 */ function() { return 3; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return (bgTileSize * 2) * uiScale; }, // x-offset
-          /* 18 */ function() { return 0; }, // y-offset
-          /* 19 */ function() { return bgTileSize * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return bgTileSize * uiScale; } // y-offset (new line)
+          /* 15 */ function() { return 25; }, // items
+          /* 16 */ function() { return 5; }, // h-number
+          /* 17 */ function() { return 3; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return (bgTileSize * 2) * uiScale; }, // x-offset
+          /* 19 */ function() { return 0; }, // y-offset
+          /* 20 */ function() { return bgTileSize * uiScale; }, // x-offset (new line)
+          /* 21 */ function() { return bgTileSize * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -436,7 +445,8 @@ ui = [
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -467,23 +477,24 @@ ui = [
 
           /* 00 */ function() { return ((levelsWorld - 1) > 0); }, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) - ((bgTileSize + 120 + (menuBTMargin * 2)) * uiScale), // x pos
+          /* 02 */ (width / 2) - ((bgTileSize + (menuBTMargin * 2)) * uiScale), // x pos
           /* 03 */ height / 2, // y pos
           /* 04 */ 120 * uiScale, // width
           /* 05 */ 120 * uiScale, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ btFill, // alpha
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
 
-          /* 00 */ function() { return ((levelsWorld - 1) > 0); }, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return ("W " + (levelsWorld - 1)); }, // text
           /* 02 */ btTxtSize * 0.8, // text-size
           /* 03 */ 255, // text-colour
@@ -498,6 +509,16 @@ ui = [
           /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[1][0][3][1], 9], [uiData[1][0][3][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { animateUIElement([[uiData[1][0][3][1], 9], [uiData[1][0][3][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { levelsWorld = Math.max(1, levelsWorld - 1); } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ function() { return ((levelsWorld - 1) > 0); }, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowLeft; }, // image
+          /* 02 */ 50 * uiScale, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ],
 
@@ -509,23 +530,24 @@ ui = [
 
           /* 00 */ function() { return ((levelsWorld + 1) < 4); }, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) + ((bgTileSize + 120 + (menuBTMargin * 2)) * uiScale), // x pos
+          /* 02 */ (width / 2) + ((bgTileSize + (menuBTMargin * 2)) * uiScale), // x pos
           /* 03 */ height / 2, // y pos
           /* 04 */ 120 * uiScale, // width
           /* 05 */ 120 * uiScale, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ btFill, // alpha
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
 
-          /* 00 */ function() { return ((levelsWorld + 1) < 4); }, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return ("W " + (levelsWorld + 1)); }, // text
           /* 02 */ btTxtSize * 0.8, // text-size
           /* 03 */ 255, // text-colour
@@ -540,6 +562,16 @@ ui = [
           /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[1][0][4][1], 9], [uiData[1][0][4][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { animateUIElement([[uiData[1][0][4][1], 9], [uiData[1][0][4][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { levelsWorld = Math.min(3, levelsWorld + 1); } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ function() { return ((levelsWorld + 1) < 4); }, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowRight; }, // image
+          /* 02 */ 50 * uiScale, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ],
 
@@ -562,12 +594,13 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ "Back", // text
           /* 02 */ btTxtSize * uiScale, // text-size
           /* 03 */ 255, // text-colour
@@ -582,6 +615,16 @@ ui = [
           /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[1][0][5][1], 9], [uiData[1][0][5][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { animateUIElement([[uiData[1][0][5][1], 9], [uiData[1][0][5][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { state = 0; } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return arrowBottomLeft; }, // image
+          /* 02 */ 50 * uiScale, // image-size
+          /* 03 */ 0, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ],
 
@@ -591,31 +634,32 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 0, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ (width / 2) - (bgTileSize * uiScale), // x pos
-          /* 03 */ (height / 2) + (bgTileSize * uiScale), // y pos
-          /* 04 */ (bgTileSize / 2) * uiScale, // width
-          /* 05 */ (bgTileSize / 2) * uiScale, // height
+          /* 03 */ (height / 2) - (bgTileSize * uiScale), // y pos
+          /* 04 */ bgTileSize * 1.2 * uiScale, // width
+          /* 05 */ bgTileSize * 1.1 * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 255, // colour
-          /* 09 */ btFill, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 08 */ 0, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ -45 // rot-angle
         ],
 
         [ // /* 02 */ Text
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ "Back", // text
-          /* 02 */ btTxtSize * uiScale, // text-size
+          /* 01 */ function() { return ("W O R L D   " + levelsWorld); }, // text
+          /* 02 */ 30 * uiScale, // text-size
           /* 03 */ 255, // text-colour
-          /* 04 */ 255, // text-alpha
-          /* 05 */ 0.5, // text-h-align
-          /* 06 */ 0.5 // text-v-align
+          /* 04 */ 80, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 1 // text-v-align
         ],
 
         [ // /* 03 */ Button Events
@@ -625,7 +669,93 @@ ui = [
           /* 02 */ 0, // onHoverOut event (0 = no event)
           /* 03 */ 0 // onClick event (0 = no event)
         ]
-      ]
+      ],
+
+      [ // /* 07 */ Current World Progress Text
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ (width / 2) - (bgTileSize * uiScale), // x pos
+          /* 03 */ (height / 2) - (bgTileSize * uiScale), // y pos
+          /* 04 */ bgTileSize * 1.2 * uiScale, // width
+          /* 05 */ bgTileSize * 1.1 * uiScale, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ -45 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return ("( " + unlockedLevel[levelsWorld - 1] + "   /   " + levelData[levelsWorld - 1].length + " )"); }, // text
+          /* 02 */ 30 * uiScale, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 80, // text-alpha
+          /* 05 */ 1, // text-h-align
+          /* 06 */ 1 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 08 */ Current World Progress Bar
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ (width / 2) - (bgTileSize * uiScale), // x pos
+          /* 03 */ (height / 2), // y pos
+          /* 04 */ function() { return (bgTileSize * 1.41 * (unlockedLevel[levelsWorld - 1] / levelData[levelsWorld - 1].length) * uiScale); }, // width
+          /* 05 */ 20 * uiScale, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ 10, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ -45 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
     ],
 
     [ // /* 01 */ World 1 State
@@ -652,16 +782,17 @@ ui = [
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
           /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0, // rot-angle
 
           // List Settings
 
-          /* 14 */ function() { return levelData[0].length; }, // items
-          /* 15 */ function() { return 4; }, // h-number
-          /* 16 */ function() { return 4; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return levelBTOffset * uiScale; }, // x-offset
-          /* 18 */ function() { return levelBTOffset * uiScale; }, // y-offset
-          /* 19 */ function() { return -levelBTOffset * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return levelBTOffset * uiScale; } // y-offset (new line)
+          /* 15 */ function() { return levelData[0].length; }, // items
+          /* 16 */ function() { return 4; }, // h-number
+          /* 17 */ function() { return 4; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return levelBTOffset * uiScale; }, // x-offset
+          /* 19 */ function() { return levelBTOffset * uiScale; }, // y-offset
+          /* 20 */ function() { return -levelBTOffset * uiScale; }, // x-offset (new line)
+          /* 21 */ function() { return levelBTOffset * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -720,16 +851,17 @@ ui = [
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
           /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0, // rot-angle
 
           // List Settings
 
-          /* 14 */ function() { return levelData[1].length; }, // items
-          /* 15 */ function() { return 4; }, // h-number
-          /* 16 */ function() { return 4; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return levelBTOffset * uiScale; }, // x-offset
-          /* 18 */ function() { return levelBTOffset * uiScale; }, // y-offset
-          /* 19 */ function() { return -levelBTOffset * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return levelBTOffset * uiScale; } // y-offset (new line)
+          /* 15 */ function() { return levelData[1].length; }, // items
+          /* 16 */ function() { return 4; }, // h-number
+          /* 17 */ function() { return 4; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return levelBTOffset * uiScale; }, // x-offset
+          /* 19 */ function() { return levelBTOffset * uiScale; }, // y-offset
+          /* 20 */ function() { return -levelBTOffset * uiScale; }, // x-offset (new line)
+          /* 21 */ function() { return levelBTOffset * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -788,16 +920,18 @@ ui = [
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
           /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0, // rot-angle
+
 
           // List Settings
 
-          /* 14 */ function() { return levelData[2].length; }, // items
-          /* 15 */ function() { return 4; }, // h-number
-          /* 16 */ function() { return 4; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return levelBTOffset * uiScale; }, // x-offset
-          /* 18 */ function() { return levelBTOffset * uiScale; }, // y-offset
-          /* 19 */ function() { return -levelBTOffset * uiScale; }, // x-offset (new line)
-          /* 20 */ function() { return levelBTOffset * uiScale; } // y-offset (new line)
+          /* 15 */ function() { return levelData[2].length; }, // items
+          /* 16 */ function() { return 4; }, // h-number
+          /* 17 */ function() { return 4; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return levelBTOffset * uiScale; }, // x-offset
+          /* 19 */ function() { return levelBTOffset * uiScale; }, // y-offset
+          /* 20 */ function() { return -levelBTOffset * uiScale; }, // x-offset (new line)
+          /* 21 */ function() { return levelBTOffset * uiScale; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -858,7 +992,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 80, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -900,7 +1035,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 80, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -942,7 +1078,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -984,7 +1121,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1036,7 +1174,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1083,7 +1222,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1125,7 +1265,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1182,7 +1323,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1224,7 +1366,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1266,7 +1409,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1308,7 +1452,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1350,7 +1495,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1392,7 +1538,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1434,7 +1581,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1476,7 +1624,8 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
-          /* 13 */ 4 * uiScale // outline-width
+          /* 13 */ 4 * uiScale, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1524,16 +1673,17 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
 
           // List Settings
 
-          /* 14 */ function() { return (tiles - 2); }, // items
-          /* 15 */ function() { return (tiles - 2); }, // h-number
-          /* 16 */ function() { return 1; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return -(tileSize / 2); }, // x-offset (spacing)
-          /* 18 */ function() { return (tileSize / 2); }, // y-offset (spacing)
-          /* 19 */ function() { return 0; }, // x-offset (new line)
-          /* 20 */ function() { return 0; } // y-offset (new line)
+          /* 15 */ function() { return (tiles - 2); }, // items
+          /* 16 */ function() { return (tiles - 2); }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return -(tileSize / 2); }, // x-offset (spacing)
+          /* 19 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -1586,16 +1736,17 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
 
           // List Settings
 
-          /* 14 */ function() { return (tiles - 2); }, // items
-          /* 15 */ function() { return (tiles - 2); }, // h-number
-          /* 16 */ function() { return 1; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return (tileSize / 2); }, // x-offset (spacing)
-          /* 18 */ function() { return (tileSize / 2); }, // y-offset (spacing)
-          /* 19 */ function() { return 0; }, // x-offset (new line)
-          /* 20 */ function() { return 0; } // y-offset (new line)
+          /* 15 */ function() { return (tiles - 2); }, // items
+          /* 16 */ function() { return (tiles - 2); }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return (tileSize / 2); }, // x-offset (spacing)
+          /* 19 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -1648,16 +1799,17 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
 
           // List Settings
 
-          /* 14 */ function() { return (tiles - 2); }, // items
-          /* 15 */ function() { return (tiles - 2); }, // h-number
-          /* 16 */ function() { return 1; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return (tileSize / 2); }, // x-offset (spacing)
-          /* 18 */ function() { return (tileSize / 2); }, // y-offset (spacing)
-          /* 19 */ function() { return 0; }, // x-offset (new line)
-          /* 20 */ function() { return 0; } // y-offset (new line)
+          /* 15 */ function() { return (tiles - 2); }, // items
+          /* 16 */ function() { return (tiles - 2); }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return (tileSize / 2); }, // x-offset (spacing)
+          /* 19 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -1710,16 +1862,17 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
 
           // List Settings
 
-          /* 14 */ function() { return (tiles - 2); }, // items
-          /* 15 */ function() { return (tiles - 2); }, // h-number
-          /* 16 */ function() { return 1; }, // v-number (min, dynamically adjusted)
-          /* 17 */ function() { return -(tileSize / 2); }, // x-offset (spacing)
-          /* 18 */ function() { return (tileSize / 2); }, // y-offset (spacing)
-          /* 19 */ function() { return 0; }, // x-offset (new line)
-          /* 20 */ function() { return 0; } // y-offset (new line)
+          /* 15 */ function() { return (tiles - 2); }, // items
+          /* 16 */ function() { return (tiles - 2); }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return -(tileSize / 2); }, // x-offset (spacing)
+          /* 19 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; } // y-offset (new line)
         ],
 
         [ // /* 02 */ Text
@@ -1777,6 +1930,7 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1829,6 +1983,7 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1881,6 +2036,7 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1933,6 +2089,7 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -1985,6 +2142,7 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -2037,6 +2195,7 @@ ui = [
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
           /* 13 */ 2, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -2089,6 +2248,7 @@ ui = [
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
           /* 13 */ 2, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -2141,6 +2301,7 @@ ui = [
           /* 11 */ 255, // outline-colour
           /* 12 */ 50, // outline-alpha
           /* 13 */ 2, // outline-width
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
@@ -2171,7 +2332,7 @@ ui = [
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
-      ],
+      ]
     ],
   ],
 
