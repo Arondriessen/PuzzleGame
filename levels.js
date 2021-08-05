@@ -349,7 +349,7 @@ levels = [
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
-        1, // Row / Column Shifting (0 = Off, 1 = On)
+        0, // Row / Column Shifting (0 = Off, 1 = On)
         1 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
