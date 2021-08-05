@@ -150,9 +150,9 @@ function setup() {
   // Set backround colour
 
   colorMode(HSB);
-  //cc = color(random(360), 80, 60); // Colour
-  cc = color(355, 80, 60); // Colour
+  cc = color(random(360), 80, 60); // Random Colour
   colorMode(RGB);
+  //cc = color('rgba(153, 35, 31, 255)'); // Red Colour
   ccbg = color("#25252b"); // Gray
 
   bgSaved = 0;
