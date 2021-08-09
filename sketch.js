@@ -124,9 +124,14 @@ function setup() {
 
     for (i = 0; i < (unlockedLevel.length); i++) {
 
-      for (y = 0; y < (unlockedLevel[i]); y++) {
+      for (y = 0; y < (unlockedLevel[i] - 1); y++) {
 
         levelData[i][y][0] = 1;
+      }
+
+      if (typeof levelData[i][unlockedLevel[i] - 1] !== "undefined") {
+
+        levelData[i][unlockedLevel[i] - 1][0] = 1;
       }
     }
 
@@ -150,9 +155,13 @@ function setup() {
   // Set backround colour
 
   colorMode(HSB);
-  cc = color(random(360), 80, 60); // Random Colour
+  //cc = color(random(360), 80, 60); // Random Colour
   colorMode(RGB);
-  //cc = color('rgba(153, 35, 31, 255)'); // Red Colour
+  //cc = color('rgba(153, 35, 31, 255)'); // Red
+  //cc = color('rgba(153, 31, 49, 255)'); // Red 2
+  //cc = color('rgba(153, 86, 31, 255)'); // Orange
+  cc = color('rgba(153, 63, 31, 255)'); // Orange 2
+
   ccbg = color("#25252b"); // Gray
 
   bgSaved = 0;
@@ -379,7 +388,9 @@ function prepareLevelData() {
   hoverGrowth = 1.12;
 
   let smallerDimension = min(width, height);
-  tileSize = min((smallerDimension / 6) * tileSpread, (smallerDimension / tiles) - (80 / tiles)); // the size a single tile occupies (tiles themselves can be smaller)
+  //tileSize = min(((bgTileSize * uiScale) / 3) * 2, ((bgTileSize * uiScale) / (tiles - 2)) * 2); // the size a single tile occupies (tiles themselves can be smaller)
+  tileSize = (((bgTileSize * 2) * uiScale) / 5);
+  endPieceSize = min(50 * uiScale, tileSize / 4);
   selected = [];
   clicked = 0;
   clickTimer = 0;
@@ -666,7 +677,7 @@ function isSolved() {
                 puzzlePieceColour = 255;
 
                 animateUIElement([[puzzlePieceOp, 0], [endPieceOp, 0]], [30, 255], [0, 0], 20, 0);
-                animateUIElement([[uiData[2][1][2][1], 4], [uiData[2][1][2][1], 5], [uiData[2][1][2][1], 9], [uiData[2][1][2][2], 4]], [(tileSize * ((tiles - 2) / 2)) * uiScale, (tileSize * ((tiles - 2) / 2)) * uiScale, 0, 0], [(tileSize * (tiles / 2)) * uiScale, (tileSize * (tiles / 2)) * uiScale, 5, 255], 15, 0);
+                animateUIElement([[uiData[2][1][2][1], 4], [uiData[2][1][2][1], 5], [uiData[2][1][2][1], 9], [uiData[2][1][2][2], 4]], [(bgTileSize / 2) * uiScale, (bgTileSize / 2) * uiScale, 0, 0], [bgTileSize * uiScale, bgTileSize * uiScale, 5, 255], 15, 0);
 
                 for (let x = 0; x < tiles; x++) {
 
@@ -684,8 +695,9 @@ function isSolved() {
 
                   levelData[world - 1][level][0] = 1;
                   storeItem('level', level + 1);
-                  if ((level + 1) > unlockedLevel[world - 1]) { unlockedLevel[world - 1] += 1; storeItem('unlockedLevel', unlockedLevel); }
                 }
+
+                if ((level + 1) > unlockedLevel[world - 1]) { unlockedLevel[world - 1] += 1; storeItem('unlockedLevel', unlockedLevel); }
 
                 exitMainLoop = 1;
 
@@ -942,7 +954,7 @@ function draw() {
           let posX = tileData[endPieces[i][1]][endPieces[i][0]][0];
           let posY = tileData[endPieces[i][1]][endPieces[i][0]][1];
 
-          quad(posX, posY - (tileSize / 8), posX + (tileSize / 8), posY, posX, posY + (tileSize / 8), posX - (tileSize / 8), posY);
+          quad(posX, posY - (endPieceSize / 2), posX + (endPieceSize / 2), posY, posX, posY + (endPieceSize / 2), posX - (endPieceSize / 2), posY);
         }
       }
     }
@@ -1298,7 +1310,7 @@ function rotateCornerTiles(cornerX, cornerY, animate) {
     let cornerTiles = (tiles - 1) / 2; // No. of tiles in a corner (diameter)
     let cX = Math.max(1, cornerX * cornerTiles); // x index of top-left piece in selected corner (start post of rotation)
     let cY = Math.max(1, cornerY * cornerTiles); // y index of top-left piece in selected corner (start post of rotation)
-    let loops = (cornerTiles - 1) / 2; // No. of "circles" to rotate
+    let loops = (cornerTiles + 1) / 2; // No. of "circles" to rotate (center-piece is also handled as a circle which might not be the best solution)
 
     let a = [];
     let tC = [];
@@ -1352,6 +1364,8 @@ function rotateCornerTiles(cornerX, cornerY, animate) {
 
           puzzlePieces[tC[off][4]][0] = a[y][1];
           puzzlePieces[tC[off][4]][1] = a[y][0];
+
+          rotatePuzzlePiece(tC[off][4], 1);
         }
 
         //off = (y + (len - 1)) % (a.length);
@@ -1374,6 +1388,8 @@ function generateLevel() {
 
   if (debug) { console.log("Generated Level"); }
 
+  rPieces = 5;
+
   tileRots = 0;
   tileMoves = 0;
   tileSwitches = 0; // not yet implemented
@@ -1393,8 +1409,6 @@ function generateLevel() {
 
     cRotationsDone.push(rotateRandomCornerTiles());
   }
-
-  let rPieces = 9;
 
   for (let i = 1; i < (tiles - 1); i++) {
     for (let y = 1; y < (tiles - 1); y++) {
@@ -1489,16 +1503,16 @@ function generateLevel() {
 
                 if (i < (rPieces - 1)) { // Normal Pieces
 
-                  puzzlePieces[i] = [x, y, [rot1, "Middle", "Middle"], 0];
-                  puzzlePiecesCopy[i] = [x, y, [rot1, "Middle", "Middle"], 0];
-                  puzzlePiecesCopy2[i] = [x, y, [rot1, "Middle", "Middle"], 0];
+                  puzzlePieces[i] = [x, y, [rot1, "Middle", "Middle"], 0, 0];
+                  puzzlePiecesCopy[i] = [x, y, [rot1, "Middle", "Middle"], 0, 0];
+                  puzzlePiecesCopy2[i] = [x, y, [rot1, "Middle", "Middle"], 0, 0];
                   tileData[y][x][4] = i; // Save new puzzle piece's id in the array of the tile it sits on
 
                 } else { // Last End Piece
 
-                  puzzlePieces[i] = [x, y, ["Middle", rot1], 0];
-                  puzzlePiecesCopy[i] = [x, y, ["Middle", rot1], 0];
-                  puzzlePiecesCopy2[i] = [x, y, ["Middle", rot1], 0];
+                  puzzlePieces[i] = [x, y, ["Middle", rot1], 0, 0];
+                  puzzlePiecesCopy[i] = [x, y, ["Middle", rot1], 0, 0];
+                  puzzlePiecesCopy2[i] = [x, y, ["Middle", rot1], 0, 0];
                   tileData[y][x][4] = i; // Save new puzzle piece's id in the array of the tile it sits on
 
                   endPieces[0] = [puzzlePieces[0][0], puzzlePieces[0][1]];
@@ -1520,9 +1534,9 @@ function generateLevel() {
 
               } else { // First End Piece
 
-                puzzlePieces[i] = [x, y, ["Middle", rot1], 0];
-                puzzlePiecesCopy[i] = [x, y, ["Middle", rot1], 0];
-                puzzlePiecesCopy2[i] = [x, y, ["Middle", rot1], 0];
+                puzzlePieces[i] = [x, y, ["Middle", rot1], 0, 0];
+                puzzlePiecesCopy[i] = [x, y, ["Middle", rot1], 0, 0];
+                puzzlePiecesCopy2[i] = [x, y, ["Middle", rot1], 0, 0];
                 tileData[y][x][4] = i; // Save new puzzle piece's id in the array of the tile it sits on
               }
 
@@ -1675,9 +1689,9 @@ function resetGenLevel() {
 
   for (let i = 0; i < ppC.length; i++) {
 
-    puzzlePieces[i] = [4];
+    puzzlePieces[i] = [5];
 
-    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+    for (y = 0; y < 5; y++) { // Cycle through piece parameters
 
       if (typeof ppC[i][y] === "object") { // Is it an object? (array)
 
@@ -1816,9 +1830,9 @@ function retryGenLevel() {
 
   for (let i = 0; i < ppC.length; i++) {
 
-    puzzlePieces[i] = [4];
+    puzzlePieces[i] = [5];
 
-    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+    for (y = 0; y < 5; y++) { // Cycle through piece parameters
 
       if (typeof ppC[i][y] === "object") { // Is it an object? (array)
 
@@ -1853,9 +1867,9 @@ function retryGenLevel() {
 
   for (let i = 0; i < ppC2.length; i++) {
 
-    puzzlePieces[i] = [4];
+    puzzlePieces[i] = [5];
 
-    for (y = 0; y < 4; y++) { // Cycle through piece parameters
+    for (y = 0; y < 5; y++) { // Cycle through piece parameters
 
       if (typeof ppC2[i][y] === "object") { // Is it an object? (array)
 
