@@ -1172,13 +1172,13 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ width - (90 * uiScale), // x pos
-          /* 03 */ height - (210 * uiScale), // y pos
-          /* 04 */ 270 * uiScale, // width
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return ((width / 2) + ((bgTileSize - menuBTMargin) * uiScale * 2)); }, // x pos
+          /* 03 */ function() { return ((height / 2) + bgTileSize * uiScale); }, // y pos
+          /* 04 */ 96 * uiScale, // width
           /* 05 */ 96 * uiScale, // height
           /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 1, // outline (0 = no, 1 = yes)
@@ -1191,7 +1191,7 @@ ui = [
         [ // /* 02 */ Text
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { let txt = "Off"; if (designMode) { txt = "On"; } return ("Design Mode: " + txt); }, // text
+          /* 01 */ function() { let txt = "Off"; if (designMode) { txt = "On"; } return ("DM: " + txt); }, // text
           /* 02 */ btTxtSize * 0.7, // text-size
           /* 03 */ 255, // text-colour
           /* 04 */ 255, // text-alpha
