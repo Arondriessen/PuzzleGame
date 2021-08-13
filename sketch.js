@@ -55,16 +55,14 @@ levelBTOffset = 110;
 // Animation Variables
 
 btFill = 0;
-//btStr = 25;
 btStr = 20;
+btStrWidth = 3;
 
-//btFillHov = 30;
 btFillHov = 20;
-//btStrHov = 75;
 btStrHov = 0;
 
-btHovInSpd = 3;
-btHovOutSpd = 3;
+btHovInSpd = 4;
+btHovOutSpd = 4;
 
 btTxtSize = 36;
 
@@ -90,6 +88,7 @@ function preload() {
   arrowLeft = loadImage('assets/arrowLeft.svg');
   arrowRight = loadImage('assets/arrowRight.svg');
   arrowBottomLeft = loadImage('assets/arrowBottomLeft.svg');
+  resetIcon = loadImage('assets/resetIcon.png');
 }
 
 
@@ -785,12 +784,39 @@ function draw() {
 
     for (let i = (s * 1); i > 0; i -= 10) {
 
-      iN = i / s;
+      iN = (i / s);
       lerpNum = 1 - (1 - iN) * (1 - iN);
       fill(lerpColor(cc, ccbg, lerpNum));
       noStroke();
       circle(width / 2, height / 2, i);
     }
+
+    //img2 = get((width / 2) - (((bgTileSize * uiScale) / 2) * 1.44), (height / 2) - (((bgTileSize * uiScale) / 2) * 1.44), ((bgTileSize * uiScale) * 1.44), ((bgTileSize * uiScale) * 1.44));
+
+    //background(ccbg);
+
+    push();
+    translate(width / 2, height / 2);
+    angleMode(DEGREES);
+
+    /*for (let i = s; i > ((bgTileSize * 1.44) * uiScale); i -= (((bgTileSize * 1.44) * uiScale) / 4)) {
+
+      iN = (i / s);
+      //iN = (((i - (bgTileSize)) * (s / (s - bgTileSize))) / s);
+      //iN = ((i * ((s - bgTileSize) / s)) / s);
+      lerpNum = 1 - (1 - iN) * (1 - iN) * (1 - iN) * (1 - iN);
+      fill(lerpColor(cc, ccbg, lerpNum));
+      noStroke();
+      rotate(22.5);
+      square(-(i / 2) * 0.81, -(i / 2) * 0.81, i * 0.81);
+    }*/
+
+    //image(img2, - (((bgTileSize * uiScale) / 2) * 1.44), - (((bgTileSize * uiScale) / 2) * 1.44));
+
+    pop();
+
+    //fill(0, 100);
+    //rect(0, 0, width, height);
 
     img = get();
 
@@ -1203,13 +1229,13 @@ function draw() {
 }
 
 
-function shiftTileLine(row, column, dir, animate) {
+function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
 
   // row = row number or -1 if moving a column
   // column = column number or -1 if moving a row
   // dir = direction of line movement (1 = right/down, -1 = left/up)
-  // stepsToMove = steps to move in given direction ***multiple steps doesn't actually work rn***
-  // toggle to animate the movement (0 = no, 1 = yes)
+  // animate = toggle to animate the movement (0 = no, 1 = yes)
+  // movePuzzlePieces = toggle to move the pieces on the tiles (0 = no, 1 = yes)
 
   let debug = 1;
 
@@ -1221,7 +1247,7 @@ function shiftTileLine(row, column, dir, animate) {
     let dirRev = dir * -1;
     let dirRevNorm = Math.max(0, dirRev);
     let isGo = 0;
-    let puzzlePiecesMoved = 0;
+    let puzzlePiecesMoved = 1;
 
     if (row != -1) {
 
@@ -1236,10 +1262,14 @@ function shiftTileLine(row, column, dir, animate) {
             tileData[row][y][2] = tileData[row][y + dirRev][2];
             tileData[row][y][4] = tileData[row][y + dirRev][4];
 
-            if (tileData[row][y][4] != -1) {
+            if (tileData[row][y][4] != -1) { // Check if there is a puzzle piece on this tile
 
-              puzzlePieces[tileData[row][y][4]][0] = y;
-              puzzlePieces[tileData[row][y][4]][1] = row;
+              if (movePuzzlePieces) { // Check if puzzle pieces should be moved
+
+                puzzlePieces[tileData[row][y][4]][0] = y;
+                puzzlePieces[tileData[row][y][4]][1] = row;
+              }
+
               puzzlePiecesMoved++;
             }
 
@@ -1254,7 +1284,7 @@ function shiftTileLine(row, column, dir, animate) {
 
         tileData[row][((tiles - 1) * dirRevNorm)][2] = -1;
         tileData[row][((tiles - 1) * dirRevNorm)][4] = -1;
-        isGo = 1;
+        isGo = 1; // Tiles have room to move
     }
 
     } else {
@@ -1270,10 +1300,14 @@ function shiftTileLine(row, column, dir, animate) {
             tileData[y][column][2] = tileData[y + dirRev][column][2];
             tileData[y][column][4] = tileData[y + dirRev][column][4];
 
-            if (tileData[y][column][4] != -1) {
+            if (tileData[y][column][4] != -1) { // Check if there is a puzzle piece on this tile
 
-              puzzlePieces[tileData[y][column][4]][0] = column;
-              puzzlePieces[tileData[y][column][4]][1] = y;
+              if (movePuzzlePieces) { // Check if puzzle pieces should be moved
+
+                puzzlePieces[tileData[y][column][4]][0] = column;
+                puzzlePieces[tileData[y][column][4]][1] = y;
+              }
+
               puzzlePiecesMoved++;
             }
 
@@ -1288,7 +1322,7 @@ function shiftTileLine(row, column, dir, animate) {
 
         tileData[((tiles - 1) * dirRevNorm)][column][2] = -1;
         tileData[((tiles - 1) * dirRevNorm)][column][4] = -1;
-        isGo = 1;
+        isGo = 1; // Tiles have room to move
       }
     }
 
@@ -1297,6 +1331,8 @@ function shiftTileLine(row, column, dir, animate) {
       updateEndpoints();
       useStep(); isSolved();
     }
+
+    if (debug) { console.log("Tiles have room to move = " + isGo); console.log("Puzzle Pieces Affected = " + puzzlePiecesMoved); }
 
     return [isGo, puzzlePiecesMoved];
   }
@@ -1388,17 +1424,27 @@ function generateLevel() {
 
   if (debug) { console.log("Generated Level"); }
 
-  rPieces = 5;
+  rPieces = 7;
 
   tileRots = 0;
   tileMoves = 0;
   tileSwitches = 0; // not yet implemented
-  shiftMoves = 0;
-  cRotationMoves = 1;
+  shiftMoves = 12;
+  cRotationMoves = 0;
+
   shiftsDone = [];
   cRotationsDone = [];
   shiftsDone.length = 0;
   cRotationsDone.length = 0;
+
+  for (let i = 1; i < (tiles - 1); i++) {
+    for (let y = 1; y < (tiles - 1); y++) {
+      tileData[i][y][4] = -1; // Empty references to previous puzzle pieces
+    }
+  }
+
+
+  // Scramble tiles by applying tile shifts and corner rotations
 
   for (let i = 0; i < shiftMoves; i++) {
 
@@ -1410,11 +1456,6 @@ function generateLevel() {
     cRotationsDone.push(rotateRandomCornerTiles());
   }
 
-  for (let i = 1; i < (tiles - 1); i++) {
-    for (let y = 1; y < (tiles - 1); y++) {
-      tileData[i][y][4] = -1; // Empty references to previous puzzle pieces
-    }
-  }
 
   puzzlePieces.length = 0;
   endPieces.length = 0;
@@ -1440,6 +1481,9 @@ function generateLevel() {
   let startRot = Math.round(random(1, 4));
   let positionsPlaced = 0;
   let posPlaced = 0;
+
+
+  // Generate the solved puzzle path
 
   while (positionsPlaced == 0) { // Loop for placing solved puzzle path
 
@@ -1664,7 +1708,7 @@ function resetGenLevel() {
 
   for (let i = 0; i < shiftsDone.length; i++) {
 
-    shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2], 0);
+    shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2], 0, 1);
   }
 
 
@@ -1723,7 +1767,7 @@ function resetGenLevel() {
 
   for (let i = (shiftsDone.length - 1); i > -1; i--) {
 
-    shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2] * -1, 0);
+    shiftTileLine(shiftsDone[i][0], shiftsDone[i][1], shiftsDone[i][2] * -1, 0, 1);
   }
 
 

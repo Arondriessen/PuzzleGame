@@ -80,9 +80,9 @@ ui = [
           /* 08 */ 255, // colour
           /* 09 */ 5, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -168,7 +168,7 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -211,7 +211,7 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -254,7 +254,7 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -445,7 +445,7 @@ ui = [
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -477,18 +477,18 @@ ui = [
 
           /* 00 */ function() { return ((levelsWorld - 1) > 0); }, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) - ((bgTileSize + (menuBTMargin * 2)) * uiScale), // x pos
+          /* 02 */ (width / 2) - (bgTileSize * uiScale), // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 120 * uiScale, // width
-          /* 05 */ 120 * uiScale, // height
+          /* 04 */ (bgTileSize / 2) * uiScale, // width
+          /* 05 */ (bgTileSize / 2) * uiScale, // height
           /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ btFill, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -506,8 +506,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[1][0][3][1], 9], [uiData[1][0][3][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[1][0][3][1], 9], [uiData[1][0][3][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[1][0][3][1], 9], [uiData[1][0][3][1], 12]], [btFill, btStr], [(btFillHov / 2), btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[1][0][3][1], 9], [uiData[1][0][3][1], 12]], [(btFillHov / 2), btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { levelsWorld = Math.max(1, levelsWorld - 1); } // onClick event (0 = no event)
         ],
 
@@ -530,18 +530,18 @@ ui = [
 
           /* 00 */ function() { return ((levelsWorld + 1) < 4); }, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) + ((bgTileSize + (menuBTMargin * 2)) * uiScale), // x pos
+          /* 02 */ (width / 2) + (bgTileSize * uiScale), // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 120 * uiScale, // width
-          /* 05 */ 120 * uiScale, // height
+          /* 04 */ (bgTileSize / 2) * uiScale, // width
+          /* 05 */ (bgTileSize / 2) * uiScale, // height
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ btFill, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -559,8 +559,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[1][0][4][1], 9], [uiData[1][0][4][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[1][0][4][1], 9], [uiData[1][0][4][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[1][0][4][1], 9], [uiData[1][0][4][1], 12]], [btFill, btStr], [(btFillHov / 2), btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[1][0][4][1], 9], [uiData[1][0][4][1], 12]], [(btFillHov / 2), btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { levelsWorld = Math.min(3, levelsWorld + 1); } // onClick event (0 = no event)
         ],
 
@@ -594,7 +594,7 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -729,7 +729,7 @@ ui = [
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
-          /* 09 */ 10, // alpha
+          /* 09 */ 5, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
@@ -779,9 +779,9 @@ ui = [
           /* 08 */ 0, // colour
           /* 09 */ function() { return 5 + (levelData[0][((v * hNum) + h)][0] * 10) }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
           /* 14 */ 0, // rot-angle
 
           // List Settings
@@ -848,9 +848,9 @@ ui = [
           /* 08 */ 0, // colour
           /* 09 */ function() { return 5 + (levelData[1][((v * hNum) + h)][0] * 10) }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
           /* 14 */ 0, // rot-angle
 
           // List Settings
@@ -868,7 +868,7 @@ ui = [
 
           /* 00 */ function() { return levelData[1][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
-          /* 02 */ 36 * uiScale, // text-size
+          /* 02 */ 30 * uiScale, // text-size
           /* 03 */ 255, // text-colour
           /* 04 */ function() { return 25 + (levelData[1][((v * hNum) + h)][0] * 175) }, // text-alpha
           /* 05 */ 0.5, // text-h-align
@@ -887,7 +887,7 @@ ui = [
 
           /* 00 */ function() { return !levelData[1][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
           /* 01 */ function() { return lockedIcon; }, // image
-          /* 02 */ (levelBTSize - 32) * uiScale, // image-size
+          /* 02 */ (levelBTSize - 36) * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -917,9 +917,9 @@ ui = [
           /* 08 */ 0, // colour
           /* 09 */ function() { return 5 + (levelData[2][((v * hNum) + h)][0] * 10) }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
           /* 14 */ 0, // rot-angle
 
 
@@ -938,7 +938,7 @@ ui = [
 
           /* 00 */ function() { return levelData[2][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
-          /* 02 */ 36 * uiScale, // text-size
+          /* 02 */ 30 * uiScale, // text-size
           /* 03 */ 255, // text-colour
           /* 04 */ function() { return 25 + (levelData[2][((v * hNum) + h)][0] * 175) }, // text-alpha
           /* 05 */ 0.5, // text-h-align
@@ -957,7 +957,7 @@ ui = [
 
           /* 00 */ function() { return !levelData[2][((v * hNum) + h)][0]; }, // state (0 = off, 1 = on)
           /* 01 */ function() { return lockedIcon; }, // image
-          /* 02 */ (levelBTSize - 32) * uiScale, // image-size
+          /* 02 */ (levelBTSize - 36) * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -980,29 +980,29 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ 90 * uiScale, // x pos
-          /* 03 */ 90 * uiScale, // y pos
-          /* 04 */ 250 * uiScale, // width
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return ((width / 2) - (bgTileSize * uiScale * 2)); }, // x pos
+          /* 03 */ function() { return ((height / 2) - bgTileSize * uiScale); }, // y pos
+          /* 04 */ 200 * uiScale, // width
           /* 05 */ 96 * uiScale, // height
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
           /* 09 */ 0, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
-          /* 12 */ 80, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
-          /* 14 */ 0 // rot-angle
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ -45 // rot-angle
         ],
 
         [ // /* 02 */ Text
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return ("W " + world + "   /   L " + level); }, // text
-          /* 02 */ btTxtSize * 0.8, // text-size
+          /* 02 */ btTxtSize * uiScale, // text-size
           /* 03 */ 255, // text-colour
-          /* 04 */ 200, // text-alpha
+          /* 04 */ 100, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5 // text-v-align
         ],
@@ -1023,19 +1023,19 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return (((width / 2) - (((tiles - 2) / 2) * tileSize)) / 2); }, // x pos
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return max((width / 2) - (bgTileSize * 2 * uiScale), ((width / 2) - tileSize - (bgTileSize * uiScale)) / 2); }, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 140 * uiScale, // width
-          /* 05 */ 140 * uiScale, // height
+          /* 04 */ 120 * uiScale, // width
+          /* 05 */ 120 * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 0, // colour
           /* 09 */ 0, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
-          /* 12 */ 80, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -1043,7 +1043,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return steps; }, // text
-          /* 02 */ 60 * uiScale, // text-size
+          /* 02 */ 70 * uiScale, // text-size
           /* 03 */ 255, // text-colour
           /* 04 */ 200, // text-alpha
           /* 05 */ 0.5, // text-h-align
@@ -1066,25 +1066,25 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ 90 * uiScale, // x pos
-          /* 03 */ height - (90 * uiScale), // y pos
-          /* 04 */ 250 * uiScale, // width
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return ((width / 2) - ((bgTileSize - menuBTMargin) * uiScale * 2)); }, // x pos
+          /* 03 */ function() { return ((height / 2) + bgTileSize * uiScale); }, // y pos
+          /* 04 */ 96 * uiScale, // width
           /* 05 */ 96 * uiScale, // height
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ btFill, // alpha
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ "Reset", // text
           /* 02 */ btTxtSize, // text-size
           /* 03 */ 255, // text-colour
@@ -1099,6 +1099,16 @@ ui = [
           /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][0][3][1], 9], [uiData[2][0][3][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { animateUIElement([[uiData[2][0][3][1], 9], [uiData[2][0][3][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { prepareLevelData(); } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { return resetIcon; }, // image
+          /* 02 */ 44 * uiScale, // image-size
+          /* 03 */ 255, // image-alpha
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
         ]
       ],
 
@@ -1109,19 +1119,19 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 2, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ width - (90 * uiScale), // x pos
-          /* 03 */ 90 * uiScale, // y pos
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return ((width / 2) + ((bgTileSize - menuBTMargin) * uiScale * 2)); }, // x pos
+          /* 03 */ function() { return ((height / 2) - bgTileSize * uiScale); }, // y pos
           /* 04 */ 96 * uiScale, // width
           /* 05 */ 96 * uiScale, // height
           /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ btFill, // alpha
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -1174,7 +1184,7 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -1216,7 +1226,7 @@ ui = [
           /* 09 */ 0, // alpha
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
-          /* 12 */ 10, // outline-alpha
+          /* 12 */ 5, // outline-alpha
           /* 13 */ 1, // outline-width
           /* 14 */ 0, // rot-angle
 
@@ -1265,18 +1275,18 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ (width / 2) + ((bgTileSize + (menuBTMargin * 2)) * uiScale), // x pos
+          /* 02 */ (width / 2) + (bgTileSize * uiScale), // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ 120 * uiScale, // width
-          /* 05 */ 120 * uiScale, // height
+          /* 04 */ (bgTileSize / 2) * uiScale, // width
+          /* 05 */ (bgTileSize / 2) * uiScale, // height
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ btFill, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ btStr, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -1294,9 +1304,9 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][1][1][1], 9], [uiData[2][1][1][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[2][1][1][1], 9], [uiData[2][1][1][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { nextLevel(); } // onClick event (0 = no event)
+          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][1][1][1], 9], [uiData[2][1][1][1], 12]], [0, btStr], [(btFillHov / 2), btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[2][1][1][1], 9], [uiData[2][1][1][1], 12]], [(btFillHov / 2), btStrHov], [0, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { uiData[2][1][1][1][9] = 0; nextLevel(); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -1320,8 +1330,8 @@ ui = [
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
-          /* 04 */ (tileSize * tiles) * uiScale, // width
-          /* 05 */ (tileSize * tiles) * uiScale, // height
+          /* 04 */ bgTileSize * uiScale, // width
+          /* 05 */ bgTileSize * uiScale, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -1329,7 +1339,7 @@ ui = [
           /* 10 */ 1, // outline (0 = no, 1 = yes)
           /* 11 */ 255, // outline-colour
           /* 12 */ 25, // outline-alpha
-          /* 13 */ 4 * uiScale, // outline-width
+          /* 13 */ btStrWidth, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -1829,7 +1839,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 12; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex, -1, 1); } // onClick event (0 = no event)
+          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex, -1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -1892,7 +1902,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 12; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex, 1, 1); } // onClick event (0 = no event)
+          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -1955,7 +1965,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 12; }, // onHoverIn event (0 = no event)
           /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(uiSelectedIndex, -1, 1, 1, 1, 1); } // onClick event (0 = no event)
+          /* 03 */ function() { shiftTileLine(uiSelectedIndex, -1, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
