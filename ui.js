@@ -1282,11 +1282,11 @@ ui = [
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
-          /* 09 */ btFill, // alpha
+          /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ btStr, // outline-alpha
-          /* 13 */ btStrWidth, // outline-width
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -1304,9 +1304,9 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][1][1][1], 9], [uiData[2][1][1][1], 12]], [0, btStr], [(btFillHov / 2), btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[2][1][1][1], 9], [uiData[2][1][1][1], 12]], [(btFillHov / 2), btStrHov], [0, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { uiData[2][1][1][1][9] = 0; nextLevel(); } // onClick event (0 = no event)
+          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][1][1][1], 9]], [0], [(btFillHov / 2)], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[2][1][1][1], 9]], [(btFillHov / 2)], [0], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { nextLevel(); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
