@@ -156,10 +156,10 @@ function setup() {
   colorMode(HSB);
   //cc = color(random(360), 80, 60); // Random Colour
   colorMode(RGB);
-  //cc = color('rgba(153, 35, 31, 255)'); // Red
+  cc = color('rgba(153, 35, 31, 255)'); // Red
   //cc = color('rgba(153, 31, 49, 255)'); // Red 2
   //cc = color('rgba(153, 86, 31, 255)'); // Orange
-  cc = color('rgba(153, 63, 31, 255)'); // Orange 2
+  //cc = color('rgba(153, 63, 31, 255)'); // Orange 2
 
   ccbg = color("#25252b"); // Gray
 
@@ -834,21 +834,6 @@ function draw() {
     if (activeUIAnims.length > 0) { animateUIElement(); }
 
 
-    if (uiSelected != "undefined") { // Reset hover effect if not hovering on UI anymore
-
-      if (uiHover2 == "") {
-
-        if (uiSelected[3][2] != 0) {
-
-          uiSelected[3][2]();
-          uiSelected = "undefined";
-
-          //console.log("Hover Out 1");
-        }
-      }
-    }
-
-
     // Levels Menu
 
     if (state == 1) {
@@ -1222,6 +1207,23 @@ function draw() {
               pop(); // Reset translate/rotation
             }
           }
+        }
+      }
+    }
+
+
+    // Reset hover effect if not hovering on UI anymore
+
+    if (uiHover == 0) {
+
+      if (uiSelected != "undefined") {
+
+        if (uiSelected[3][2] != 0) {
+
+          uiSelected[3][2]();
+          uiSelected = "undefined";
+
+          //console.log("Hover Out 1");
         }
       }
     }
