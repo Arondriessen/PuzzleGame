@@ -11,6 +11,12 @@ uiSelected = "undefined";
 uiScale = 1;
 designMode = 0;
 activeUIAnims = [];
+gameMechanicNames = [
+  "Tile Rotation",
+  "Tile Movement",
+  "Line Shifting",
+  "Corner Rotation"
+];
 
 
 // Menu Data
@@ -89,6 +95,8 @@ function preload() {
   arrowRight = loadImage('assets/arrowRight.svg');
   arrowBottomLeft = loadImage('assets/arrowBottomLeft.svg');
   resetIcon = loadImage('assets/resetIcon.png');
+  checkmarkCircle = loadImage('assets/checkmarkCircle.svg');
+  xCircle = loadImage('assets/xCircle.svg');
 }
 
 
