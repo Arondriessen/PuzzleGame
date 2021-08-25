@@ -981,7 +981,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return ((width / 2) - (bgTileSize * uiScale * 2) + (30)); }, // x pos
+          /* 02 */ function() { return ((width / 2) - (bgTileSize * uiScale * 2) + (36)); }, // x pos
           /* 03 */ function() { return ((height / 2) - bgTileSize * uiScale); }, // y pos
           /* 04 */ 0, // width
           /* 05 */ 0, // height
