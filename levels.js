@@ -27,10 +27,7 @@ levels = [
       1, // Number of Moves
 
       [ // Puzzle Mechanics Enabled
-        1, // Piece Rotation (0 = Off, 1 = On)
-        0, // Piece Movement (0 = Off, 1 = On)
-        0, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
+        1 // Piece Rotation (0 = Off, 1 = On)
       ]
     ],
 
@@ -57,8 +54,6 @@ levels = [
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
-        0, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ],
 
@@ -90,8 +85,6 @@ levels = [
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
-        0, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ],
 
@@ -120,8 +113,6 @@ levels = [
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
-        0, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ],
 
@@ -153,8 +144,6 @@ levels = [
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
-        0, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ],
 
@@ -183,8 +172,6 @@ levels = [
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
-        0, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ],
 
@@ -216,8 +203,6 @@ levels = [
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
-        0, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ],
 
@@ -249,8 +234,6 @@ levels = [
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
-        0, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ],
 
@@ -280,8 +263,6 @@ levels = [
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
-        0, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ]
     ]
 
@@ -313,7 +294,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -344,7 +324,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -375,7 +354,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -408,7 +386,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -440,7 +417,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -471,7 +447,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -503,7 +478,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -536,7 +510,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -569,7 +542,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -602,7 +574,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -635,7 +606,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -669,7 +639,6 @@ levels = [
         1, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -696,13 +665,12 @@ levels = [
         [2, 4]
       ],
 
-      5, // Number of Moves
+      3, // Number of Moves
 
       [ // Puzzle Mechanics Enabled
         0, // Piece Rotation (0 = Off, 1 = On)
         0, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -735,7 +703,6 @@ levels = [
         0, // Piece Rotation (0 = Off, 1 = On)
         0, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -768,7 +735,6 @@ levels = [
         0, // Piece Rotation (0 = Off, 1 = On)
         0, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts
@@ -800,7 +766,6 @@ levels = [
         0, // Piece Rotation (0 = Off, 1 = On)
         0, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
-        0 // Corner Tiles Rotation (0 = Off, 1 = On)
       ],
 
       [ // Pre-Applied Line Shifts

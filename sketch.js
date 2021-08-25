@@ -3,6 +3,7 @@
 // General
 
 state = 0; // 0 = menu, 1 = levels, 2 = puzzle, 3 = settings, 4 = level-gen
+gameState = 0; // 0 = pre-game-info, 1 = solving puzzle, 2 = puzzle solved, 3 = puzzle failed (ran out of steps)
 uiLoaded = 0;
 uiHover = 0;
 uiHover2 = "";
@@ -11,6 +12,12 @@ uiSelected = "undefined";
 uiScale = 1;
 designMode = 0;
 activeUIAnims = [];
+gameMechanicNames = [
+  "Tile Rotation",
+  "Tile Movement",
+  "Line Shifting",
+  "Corner Rotation"
+];
 
 
 // Menu Data
@@ -56,13 +63,13 @@ levelBTOffset = 110;
 
 btFill = 0;
 btStr = 20;
-btStrWidth = 3;
+btStrWidth = 2;
 
 btFillHov = 20;
 btStrHov = 0;
 
-btHovInSpd = 4;
-btHovOutSpd = 4;
+btHovInSpd = 5;
+btHovOutSpd = 5;
 
 btTxtSize = 36;
 
@@ -89,6 +96,19 @@ function preload() {
   arrowRight = loadImage('assets/arrowRight.svg');
   arrowBottomLeft = loadImage('assets/arrowBottomLeft.svg');
   resetIcon = loadImage('assets/resetIcon.png');
+  checkmarkCircle = loadImage('assets/checkmarkCircle.svg');
+  xCircle = loadImage('assets/xCircle.svg');
+  moveTileMechanic = loadImage('assets/moveTileMechanic.svg');
+  rotateTileMechanic = loadImage('assets/rotateTileMechanic.svg');
+  lineShiftingMechanic = loadImage('assets/lineShiftingMechanic.svg');
+  cornerRotationMechanic = loadImage('assets/cornerRotationMechanic.svg');
+
+  gameMechanicIcons = [
+    rotateTileMechanic,
+    moveTileMechanic,
+    lineShiftingMechanic,
+    cornerRotationMechanic
+  ];
 }
 
 
@@ -154,12 +174,14 @@ function setup() {
   // Set backround colour
 
   colorMode(HSB);
-  //cc = color(random(360), 80, 60); // Random Colour
+  cc = color(random(360), 80, 60); // Random Colour
   colorMode(RGB);
+
   cc = color('rgba(153, 35, 31, 255)'); // Red
   //cc = color('rgba(153, 31, 49, 255)'); // Red 2
   //cc = color('rgba(153, 86, 31, 255)'); // Orange
-  //cc = color('rgba(153, 63, 31, 255)'); // Orange 2
+  //cc = color('rgba(153, 63, 31, 255)'); // Orange
+  //cc = color('rgba(90, 31, 153, 255)'); // Purple
 
   ccbg = color("#25252b"); // Gray
 
@@ -194,7 +216,7 @@ function mousePressed() {
     if (state == 2) {
 
       // Is the puzzle still unsolved? If not you shouldn't be able to move the pieces anymore.
-      if (solved == 0) {
+      if (gameState == 1) {
 
         // Is the cursor on a tile?
         if (selected.length != 0) {
@@ -397,7 +419,7 @@ function prepareLevelData() {
   clickX = 0;
   clickY = 0;
   dragAmount = 0;
-  solved = 0;
+  gameState = 0;
   puzzlePieceColour = cc;
   puzzlePieceOp = [255];
   endPieceOp = [255];
@@ -520,7 +542,7 @@ function useStep() {
     steps -= 1;
 
     if (steps < 1) {
-      solved = -1;
+      gameState = 3;
     }
   }
 }
@@ -672,7 +694,7 @@ function isSolved() {
 
                 if (debug) { console.log("//////////////// Level Finished! ////////////////"); }
 
-                solved = 1;
+                gameState = 2;
                 puzzlePieceColour = 255;
 
                 animateUIElement([[puzzlePieceOp, 0], [endPieceOp, 0]], [30, 255], [0, 0], 20, 0);
@@ -846,126 +868,129 @@ function draw() {
 
     if (state == 2) {
 
-      noStroke();
+      if (gameState) {
 
-      // Check if all level data is ready
-      if (levelLoaded == 1) {
-
-        if (clicked == 1) {
-
-          if (levelData[world - 1][level - 1][5][1]) {
-
-            // Has the mouse moved since clicking a puzzle piece?
-            if ((mouseX != clickX) || (mouseY != clickY)) {
-              dragAmount = 1;
-            }
-
-            // If so set piece state to 'being dragged'
-            if (dragAmount > 0) {
-              if (isMovablePiece(clickedPuzzlePiece, 0, 0) == 1) {
-                puzzlePieces[clickedPuzzlePiece][3] = 1;
-              }
-            }
-          }
-        }
-
-
-        // Draw level completed anim
-        fill(levelCompleteAnim[2], levelCompleteAnim[3]);
-        quad(width / 2, (height / 2) - (levelCompleteAnim[0] / 2), (width / 2) + (levelCompleteAnim[0] / 2), height / 2, width / 2, (height / 2) + (levelCompleteAnim[0] / 2), (width / 2) - (levelCompleteAnim[0] / 2), height / 2);
-
-
-        rectMode(CENTER);
-        fill(255, 50);
-
-        selected.length = 0;
-
-        for (let i = 0; i < tiles; i++) { // Cycle through tiles, check for mouse hover, and draw tiles
-          for (let y = 0; y < tiles; y++) {
-
-            if (tileData[i][y][2] != -1) { // Exclude outer ring tiles (empty tiles)
-
-              // Check for mouse selection
-
-              let posX = tileData[i][y][0]; // Store x position
-              let posY = tileData[i][y][1]; // Store y position
-              let scale = tileSpread;
-
-              if ((abs(mouseX - posX) + abs(mouseY - posY)) < (tileSize / 2)) {
-
-                scale = tileSpread * hoverGrowth; // If cursor is on tile resize it (hover effect)
-                selected = [i, y]; // Save index of selected tile
-                //selected = [tileIndexes[i][y][0], tileIndexes[i][y][1]]; // Save index of selected tile
-                //selected = [tileData[i][y][3][0], tileData[i][y][3][1]]; // Save index of selected tile
-              }
-
-              // Draw tiles
-
-              push();
-              translate(posX, posY);
-              angleMode(DEGREES);
-              //console.log(tileData[i][y][4]);
-              //if (tileData[i][y][4] != -1) { rotate(puzzlePieces[tileData[i][y][4]][4]); }
-
-              strokeWeight(0);
-              fill(0, tileData[i][y][2]);
-              quad(0, - (((tileSize / 2) * tileData[i][y][3]) / scale), (((tileSize / 2) * tileData[i][y][3]) / scale), 0, 0, (((tileSize / 2) * tileData[i][y][3]) / scale), - (((tileSize / 2) * tileData[i][y][3]) / scale), 0);
-
-              translate(0, 0);
-              pop();
-            }
-          }
-        }
-
-
-        // Draw puzzle pieces
-
-        noFill();
-        if (typeof(puzzlePieceColour) == "object") { stroke(puzzlePieceColour); } else { stroke(puzzlePieceColour, puzzlePieceOp[0]); }
-        strokeWeight((8 / (tiles / 5)) * uiScale);
-        strokeCap(SQUARE);
-
-        for (let i = 0; i < puzzlePieces.length; i++) {
-
-          let posX = tileData[puzzlePieces[i][1]][puzzlePieces[i][0]][0];
-          let posY = tileData[puzzlePieces[i][1]][puzzlePieces[i][0]][1];
-
-          if (puzzlePieces[i][3] == 1) {
-
-            posX = mouseX + (posX - clickX);
-            posY = mouseY + (posY - clickY);
-          }
-
-          // Animate rotation
-
-          push();
-          translate(posX, posY);
-          angleMode(DEGREES);
-          rotate(puzzlePieces[i][4]);
-
-          beginShape();
-
-          for (let y = 0; y < (puzzlePieces[i][2].length); y++) {
-
-            vertex((positions[puzzlePieces[i][2][y]][0] * (tileSize / 4)), (positions[puzzlePieces[i][2][y]][1] * (tileSize / 4)));
-          }
-
-          endShape();
-
-          pop();
-        }
-
-        // Draw end pieces
-
-        fill(255, endPieceOp[0]);
         noStroke();
 
-        for (let i = 0; i < (endPieces.length); i++) {
+        // Check if all level data is ready
+        if (levelLoaded == 1) {
 
-          let posX = tileData[endPieces[i][1]][endPieces[i][0]][0];
-          let posY = tileData[endPieces[i][1]][endPieces[i][0]][1];
+          if (clicked == 1) {
 
-          quad(posX, posY - (endPieceSize / 2), posX + (endPieceSize / 2), posY, posX, posY + (endPieceSize / 2), posX - (endPieceSize / 2), posY);
+            if (levelData[world - 1][level - 1][5][1]) {
+
+              // Has the mouse moved since clicking a puzzle piece?
+              if ((mouseX != clickX) || (mouseY != clickY)) {
+                dragAmount = 1;
+              }
+
+              // If so set piece state to 'being dragged'
+              if (dragAmount > 0) {
+                if (isMovablePiece(clickedPuzzlePiece, 0, 0) == 1) {
+                  puzzlePieces[clickedPuzzlePiece][3] = 1;
+                }
+              }
+            }
+          }
+
+
+          // Draw level completed anim
+          fill(levelCompleteAnim[2], levelCompleteAnim[3]);
+          quad(width / 2, (height / 2) - (levelCompleteAnim[0] / 2), (width / 2) + (levelCompleteAnim[0] / 2), height / 2, width / 2, (height / 2) + (levelCompleteAnim[0] / 2), (width / 2) - (levelCompleteAnim[0] / 2), height / 2);
+
+
+          rectMode(CENTER);
+          fill(255, 50);
+
+          selected.length = 0;
+
+          for (let i = 0; i < tiles; i++) { // Cycle through tiles, check for mouse hover, and draw tiles
+            for (let y = 0; y < tiles; y++) {
+
+              if (tileData[i][y][2] != -1) { // Exclude outer ring tiles (empty tiles)
+
+                // Check for mouse selection
+
+                let posX = tileData[i][y][0]; // Store x position
+                let posY = tileData[i][y][1]; // Store y position
+                let scale = tileSpread;
+
+                if ((abs(mouseX - posX) + abs(mouseY - posY)) < (tileSize / 2)) {
+
+                  scale = tileSpread * hoverGrowth; // If cursor is on tile resize it (hover effect)
+                  selected = [i, y]; // Save index of selected tile
+                  //selected = [tileIndexes[i][y][0], tileIndexes[i][y][1]]; // Save index of selected tile
+                  //selected = [tileData[i][y][3][0], tileData[i][y][3][1]]; // Save index of selected tile
+                }
+
+                // Draw tiles
+
+                push();
+                translate(posX, posY);
+                angleMode(DEGREES);
+                //console.log(tileData[i][y][4]);
+                //if (tileData[i][y][4] != -1) { rotate(puzzlePieces[tileData[i][y][4]][4]); }
+
+                strokeWeight(0);
+                fill(0, tileData[i][y][2]);
+                quad(0, - (((tileSize / 2) * tileData[i][y][3]) / scale), (((tileSize / 2) * tileData[i][y][3]) / scale), 0, 0, (((tileSize / 2) * tileData[i][y][3]) / scale), - (((tileSize / 2) * tileData[i][y][3]) / scale), 0);
+
+                translate(0, 0);
+                pop();
+              }
+            }
+          }
+
+
+          // Draw puzzle pieces
+
+          noFill();
+          if (typeof(puzzlePieceColour) == "object") { stroke(puzzlePieceColour); } else { stroke(puzzlePieceColour, puzzlePieceOp[0]); }
+          strokeWeight((8 / (tiles / 5)) * uiScale);
+          strokeCap(SQUARE);
+
+          for (let i = 0; i < puzzlePieces.length; i++) {
+
+            let posX = tileData[puzzlePieces[i][1]][puzzlePieces[i][0]][0];
+            let posY = tileData[puzzlePieces[i][1]][puzzlePieces[i][0]][1];
+
+            if (puzzlePieces[i][3] == 1) {
+
+              posX = mouseX + (posX - clickX);
+              posY = mouseY + (posY - clickY);
+            }
+
+            // Animate rotation
+
+            push();
+            translate(posX, posY);
+            angleMode(DEGREES);
+            rotate(puzzlePieces[i][4]);
+
+            beginShape();
+
+            for (let y = 0; y < (puzzlePieces[i][2].length); y++) {
+
+              vertex((positions[puzzlePieces[i][2][y]][0] * (tileSize / 4)), (positions[puzzlePieces[i][2][y]][1] * (tileSize / 4)));
+            }
+
+            endShape();
+
+            pop();
+          }
+
+          // Draw end pieces
+
+          fill(255, endPieceOp[0]);
+          noStroke();
+
+          for (let i = 0; i < (endPieces.length); i++) {
+
+            let posX = tileData[endPieces[i][1]][endPieces[i][0]][0];
+            let posY = tileData[endPieces[i][1]][endPieces[i][0]][1];
+
+            quad(posX, posY - (endPieceSize / 2), posX + (endPieceSize / 2), posY, posX, posY + (endPieceSize / 2), posX - (endPieceSize / 2), posY);
+          }
         }
       }
     }
@@ -1241,7 +1266,7 @@ function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
 
   let debug = 1;
 
-  if (solved == 0) {
+  if (gameState == 1) {
 
     // Move tiles
 
@@ -1343,7 +1368,7 @@ function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
 
 function rotateCornerTiles(cornerX, cornerY, animate) {
 
-  if (solved == 0) {
+  if (gameState == 1) {
 
     let cornerTiles = (tiles - 1) / 2; // No. of tiles in a corner (diameter)
     let cX = Math.max(1, cornerX * cornerTiles); // x index of top-left piece in selected corner (start post of rotation)
@@ -1830,7 +1855,7 @@ function resetGenLevel() {
   }
 
 
-  solved = 0;
+  gameState = 1;
 
   console.log("***** SOLUTION *****");
 
@@ -1930,7 +1955,7 @@ function retryGenLevel() {
 
   updatePuzzlePieceIDsInTileData();
 
-  solved = 0;
+  gameState = 1;
 }
 
 
