@@ -84,7 +84,7 @@ function preload() {
   arrowTopRightIMG = loadImage('assets/arrowTopRightIMG3.svg');
   arrowBottomLeftIMG = loadImage('assets/arrowBottomLeftIMG3.svg');
   arrowBottomRightIMG = loadImage('assets/arrowBottomRightIMG3.svg');
-  menuIconIMG = loadImage('assets/menuIconIMG.svg');
+  menuIconIMG = loadImage('assets/menuIconIMG.png');
   rotCorner = loadImage('assets/rotCorner.svg');
   rotCornerTop = loadImage('assets/rotCornerTop.svg');
   rotCornerRight = loadImage('assets/rotCornerRight.svg');
@@ -98,10 +98,10 @@ function preload() {
   resetIcon = loadImage('assets/resetIcon.png');
   checkmarkCircle = loadImage('assets/checkmarkCircle.svg');
   xCircle = loadImage('assets/xCircle.svg');
-  moveTileMechanic = loadImage('assets/moveTileMechanic.svg');
-  rotateTileMechanic = loadImage('assets/rotateTileMechanic.svg');
-  lineShiftingMechanic = loadImage('assets/lineShiftingMechanic.svg');
-  cornerRotationMechanic = loadImage('assets/cornerRotationMechanic.svg');
+  moveTileMechanic = loadImage('assets/moveTileMechanic.png');
+  rotateTileMechanic = loadImage('assets/rotateTileMechanic.png');
+  lineShiftingMechanic = loadImage('assets/lineShiftingMechanic.png');
+  cornerRotationMechanic = loadImage('assets/cornerRotationMechanic.png');
 
   gameMechanicIcons = [
     rotateTileMechanic,
@@ -423,6 +423,15 @@ function prepareLevelData() {
   puzzlePieceColour = cc;
   puzzlePieceOp = [255];
   endPieceOp = [255];
+  activeMechanics = [];
+
+  for (let i = 0; i < levelData[world - 1][level - 1][5].length; i++) {
+
+    if (levelData[world - 1][level - 1][5][i] == 1) {
+
+      activeMechanics.push(i);
+    }
+  }
 
   mid = floor(tiles / 2);
   offset = (mid * tileSize);
@@ -543,6 +552,8 @@ function useStep() {
 
     if (steps < 1) {
       gameState = 3;
+
+      animateUIElement([[uiData[2][6][2][1], 4], [uiData[2][6][2][1], 5], [uiData[2][6][2][1], 9], [uiData[2][6][2][2], 4]], [(bgTileSize / 2) * uiScale, (bgTileSize / 2) * uiScale, 0, 0], [bgTileSize * uiScale, bgTileSize * uiScale, 5, 255], 15, 0);
     }
   }
 }
@@ -1020,6 +1031,8 @@ function draw() {
           yOff = 0;
           xOff2 = 0;
           yOff2 = 0;
+          listHAlign =  0;
+          listVAlign =  0;
 
           if (a[0] == 2) { // Is it a list item?
 
@@ -1031,6 +1044,8 @@ function draw() {
             yOff = a[1][19]();
             xOff2 = a[1][20]();
             yOff2 = a[1][21]();
+            listHAlign =  a[1][22];
+            listVAlign =  a[1][23];
           }
 
           for (v = 0; v < vNum2; v++) { // Cycle through rows
@@ -1068,8 +1083,8 @@ function draw() {
 
               // Moves drawing start position to top-left corner regardless of alignments
 
-              xx = (a[1][2] - (a[1][6] * boxW)) - ((hNum - 1) * (xOff / 2)) - ((vNum - 1) * (xOff2 / 2)) + (xOff * h) + (xOff2 * v);
-              yy = (a[1][3] - (a[1][7] * boxH)) - ((hNum - 1) * (yOff / 2)) - ((vNum - 1) * (yOff2 / 2)) + (yOff * h) + (yOff2 * v);
+              xx = (a[1][2] - (a[1][6] * boxW)) - ((hNum - 1) * (xOff * listHAlign)) - ((vNum - 1) * (xOff2 * listHAlign)) + (xOff * h) + (xOff2 * v);
+              yy = (a[1][3] - (a[1][7] * boxH)) - ((hNum - 1) * (yOff * listVAlign)) - ((vNum - 1) * (yOff2 * listVAlign)) + (yOff * h) + (yOff2 * v);
 
               hAlign = a[1][6];
               vAlign = a[1][7];
@@ -1137,8 +1152,8 @@ function draw() {
 
               // Reset positions to take alignment into account
 
-              xx = (a[1][2]) - ((hNum - 1) * (xOff / 2)) - ((vNum - 1) * (xOff2 / 2)) + (xOff * h) + (xOff2 * v);
-              yy = (a[1][3]) - ((hNum - 1) * (yOff / 2)) - ((vNum - 1) * (yOff2 / 2)) + (yOff * h) + (yOff2 * v);
+              xx = (a[1][2]) - ((hNum - 1) * (xOff * listHAlign)) - ((vNum - 1) * (xOff2 * listHAlign)) + (xOff * h) + (xOff2 * v);
+              yy = (a[1][3]) - ((hNum - 1) * (yOff * listVAlign)) - ((vNum - 1) * (yOff2 * listVAlign)) + (yOff * h) + (yOff2 * v);
 
 
               push();
