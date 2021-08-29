@@ -2108,7 +2108,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 12;  uiData[2][4][5][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][5][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
           /* 02 */ function() { uiData[2][4][5][4][0] = 0; animateUIElement([[uiData[2][4][5][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { rotateCornerTiles(0, 0, 1); } // onClick event (0 = no event)
+          /* 03 */ function() { rotateCornerTiles(0, 0, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -2161,7 +2161,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 12; uiData[2][4][6][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][6][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
           /* 02 */ function() { uiData[2][4][6][4][0] = 0; animateUIElement([[uiData[2][4][6][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { rotateCornerTiles(1, 0, 1); } // onClick event (0 = no event)
+          /* 03 */ function() { rotateCornerTiles(1, 0, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -2214,7 +2214,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 12; uiData[2][4][7][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][7][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
           /* 02 */ function() { uiData[2][4][7][4][0] = 0; animateUIElement([[uiData[2][4][7][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { rotateCornerTiles(1, 1, 1); } // onClick event (0 = no event)
+          /* 03 */ function() { rotateCornerTiles(1, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -2267,7 +2267,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { boxOp = 12; uiData[2][4][8][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][8][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
           /* 02 */ function() { uiData[2][4][8][4][0] = 0; animateUIElement([[uiData[2][4][8][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { rotateCornerTiles(0, 1, 1); } // onClick event (0 = no event)
+          /* 03 */ function() { rotateCornerTiles(0, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -2761,7 +2761,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][5][5][1], 9]], [5], [btFillHov], 6, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { animateUIElement([[uiData[2][5][5][1], 9]], [btFillHov], [5], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { prepareLevelData(); gameState = 1; } // onClick event (0 = no event)
+          /* 03 */ function() { gameState = 1; } // onClick event (0 = no event)
         ]
       ],
     ],
@@ -2965,7 +2965,7 @@ ui = [
 
         [ // /* 03 */ Button Events
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][6][4][1], 9]], [5], [btFillHov], 6, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { animateUIElement([[uiData[2][6][4][1], 9]], [btFillHov], [5], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { prepareLevelData(); gameState = 1; } // onClick event (0 = no event)
