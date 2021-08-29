@@ -910,7 +910,83 @@ levels = [
       3, // Number of Moves
 
       [ // Puzzle Mechanics Enabled
-        1, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 5
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [3, 3, ["Middle", "Bottom"], 0],
+        [4, 3, ["Bottom", "Middle", "Right"], 0],
+        [4, 4, ["Top", "Middle", "Bottom"], 0],
+        [4, 5, ["Left", "Middle", "Top"], 0],
+        [5, 3, ["Middle", "Left"], 0]
+      ],
+
+      [ // End-Pieces
+        [3, 3],
+        [5, 3]
+      ],
+
+      4, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 6
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [5, 1, ["Middle", "Left"], 0],
+        [3, 1, ["Top", "Middle", "Right"], 0],
+        [4, 1, ["Left", "Middle", "Right"], 0],
+        [3, 2, ["Top", "Middle", "Right"], 0],
+        [4, 2, ["Left", "Middle", "Bottom"], 0],
+        [4, 3, ["Top", "Middle", "Right"], 0],
+        [5, 3, ["Middle", "Left"], 0]
+      ],
+
+      [ // End-Pieces
+        [5, 1],
+        [5, 3]
+      ],
+
+      3, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
         1, // Piece Movement (0 = Off, 1 = On)
         1, // Row / Column Shifting (0 = Off, 1 = On)
         1 // Corner Tiles Rotation (0 = Off, 1 = On)
@@ -922,6 +998,407 @@ levels = [
 
       [ // Pre-Applied Corner Rotations
         // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 7
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [1, 3, ["Middle", "Right"], 0],
+        [3, 1, ["Top", "Middle", "Bottom"], 0],
+        [4, 3, ["Top", "Middle", "Bottom"], 0],
+        [3, 5, ["Top", "Middle", "Bottom"], 0],
+        [5, 3, ["Middle", "Left"], 0]
+      ],
+
+      [ // End-Pieces
+        [1, 3],
+        [5, 3]
+      ],
+
+      3, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        1, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 8
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [2, 1, ["Middle", "Right"], 0],
+        [3, 3, ["Left", "Middle", "Right"], 0],
+        [4, 5, ["Middle", "Left"], 0]
+      ],
+
+      [ // End-Pieces
+        [2, 1],
+        [4, 5]
+      ],
+
+      4, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 9
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [5, 3, ["Middle", "Bottom"], 0],
+        [2, 3, ["Top", "Middle", "Bottom"], 0],
+        [4, 4, ["Left", "Middle", "Right"], 0],
+        [5, 4, ["Top", "Middle", "Bottom"], 0],
+        [5, 5, ["Middle", "Left"], 0]
+      ],
+
+      [ // End-Pieces
+        [5, 3],
+        [5, 5]
+      ],
+
+      4, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 10
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [3, 2, ["Middle", "Bottom"], 0],
+        [1, 3, ["Left", "Middle", "Bottom"], 0],
+        [2, 3, ["Left", "Middle", "Top"], 0],
+        [3, 3, ["Top", "Middle", "Bottom"], 0],
+        [1, 4, ["Middle", "Right"], 0]
+      ],
+
+      [ // End-Pieces
+        [3, 2],
+        [1, 4]
+      ],
+
+      4, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 11
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [3, 2, ["Middle", "Bottom"], 0],
+        [2, 3, ["Top", "Middle", "Right"], 0],
+        [3, 3, ["Left", "Middle", "Top"], 0],
+        [3, 4, ["Middle", "Left"], 0]
+      ],
+
+      [ // End-Pieces
+        [3, 2],
+        [3, 4]
+      ],
+
+      5, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 12
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [3, 3, ["Middle", "Bottom"], 0],
+        [2, 3, ["Left", "Middle", "Right"], 0],
+        [3, 4, ["Left", "Middle", "Right"], 0],
+        [3, 5, ["Left", "Middle", "Top"], 0],
+        [4, 3, ["Middle", "Bottom"], 0]
+      ],
+
+      [ // End-Pieces
+        [3, 3],
+        [4, 3]
+      ],
+
+      4, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 13
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [1, 4, ["Middle", "Bottom"], 0],
+        [2, 2, ["Bottom", "Middle", "Right"], 0],
+        [3, 2, ["Left", "Middle", "Right"], 0],
+        [2, 3, ["Top", "Middle", "Right"], 0],
+        [1, 5, ["Top", "Middle", "Right"], 0],
+        [2, 5, ["Left", "Middle", "Top"], 0],
+        [4, 5, ["Middle", "Left"], 0]
+      ],
+
+      [ // End-Pieces
+        [1, 4],
+        [4, 5]
+      ],
+
+      5, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 14
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [4, 2, ["Middle", "Bottom"], 0],
+        [3, 2, ["Left", "Middle", "Right"], 0],
+        [2, 3, ["Top", "Middle", "Right"], 0],
+        [3, 3, ["Left", "Middle", "Top"], 0],
+        [4, 3, ["Top", "Middle", "Bottom"], 0],
+        [5, 3, ["Left", "Middle", "Top"], 0],
+        [4, 5, ["Middle", "Left"], 0]
+      ],
+
+      [ // End-Pieces
+        [4, 2],
+        [4, 5]
+      ],
+
+      4, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 15
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [1, 3, ["Middle", "Top"], 0],
+        [3, 2, ["Top", "Middle", "Bottom"], 0],
+        [5, 1, ["Bottom", "Middle", "Right"], 0],
+        [3, 4, ["Top", "Middle", "Right"], 0],
+        [4, 4, ["Top", "Middle", "Bottom"], 0],
+        [5, 5, ["Left", "Middle", "Top"], 0],
+        [4, 2, ["Middle", "Right"], 0]
+      ],
+
+      [ // End-Pieces
+        [1, 3],
+        [4, 2]
+      ],
+
+      5, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+      ]
+    ],
+
+    [   // Level 16
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+        [5, 1, ["Middle", "Bottom"], 0],
+        [1, 1, ["Top", "Middle", "Right"], 0],
+        [2, 1, ["Left", "Middle", "Right"], 0],
+        [3, 1, ["Left", "Middle", "Right"], 0],
+        [4, 1, ["Top", "Middle", "Bottom"], 0],
+        [4, 0, ["Left", "Middle", "Bottom"], 0],
+        [2, 2, ["Bottom", "Middle", "Right"], 0],
+        [3, 2, ["Left", "Middle", "Right"], 0],
+        [4, 2, ["Top", "Middle", "Bottom"], 0],
+        [5, 2, ["Top", "Middle", "Bottom"], 0],
+        [1, 3, ["Top", "Middle", "Right"], 0],
+        [2, 3, ["Left", "Middle", "Right"], 0],
+        [3, 3, ["Left", "Middle", "Right"], 0],
+        [4, 3, ["Left", "Middle", "Right"], 0],
+        [5, 3, ["Left", "Middle", "Bottom"], 0],
+        [1, 4, ["Top", "Middle", "Bottom"], 0],
+        [2, 4, ["Top", "Middle", "Bottom"], 0],
+        [3, 4, ["Left", "Middle", "Right"], 0],
+        [4, 4, ["Left", "Middle", "Top"], 0],
+        [2, 5, ["Top", "Middle", "Bottom"], 0],
+        [3, 5, ["Top", "Middle", "Bottom"], 0],
+        [4, 5, ["Left", "Middle", "Right"], 0],
+        [5, 5, ["Left", "Middle", "Bottom"], 0],
+        [2, 6, ["Top", "Middle", "Right"], 0],
+        [1, 5, ["Middle", "Top"], 0]
+      ],
+
+      [ // End-Pieces
+        [5, 1],
+        [1, 5]
+      ],
+
+      4, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        0, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+        1 // Corner Tiles Rotation (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+        // [row, column, dir]
+        [-1, 2, 1],
+        [-1, 4, -1],
+      ],
+
+      [ // Pre-Applied Corner Rotations
+        // [left/right = 0/1, top/bottom = 0/1]
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [1, 1],
+        [1, 1],
+        [1, 1]
       ]
     ]
 
