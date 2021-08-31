@@ -180,9 +180,9 @@ function setup() {
   //cc = color('rgba(153, 35, 31, 255)'); // Red
   //cc = color('rgba(153, 31, 49, 255)'); // Red 2
   //cc = color('rgba(153, 86, 31, 255)'); // Orange
-  //cc = color('rgba(153, 63, 31, 255)'); // Orange
+  cc = color('rgba(153, 63, 31, 255)'); // Orange
   //cc = color('rgba(90, 31, 153, 255)'); // Purple
-  cc = color('rgba(153, 94, 31, 255)'); // Yellow
+  //cc = color('rgba(153, 94, 31, 255)'); // Yellow
 
   ccbg = color("#25252b"); // Gray
 
@@ -816,7 +816,7 @@ function draw() {
 
   background(ccbg);
 
-  if (bgSaved < 1) {
+  if (bgSaved < 2) {
 
     // Draw background and save as image
     textFont(fontRegular);
