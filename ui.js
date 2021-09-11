@@ -991,8 +991,8 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return ((width / 2) - (bgTileSize * uiScale * 2) + (36)); }, // x pos
-          /* 03 */ function() { return ((height / 2) - bgTileSize * uiScale); }, // y pos
+          /* 02 */ width / 2, // x pos
+          /* 03 */ 100 * uiScale, // y pos
           /* 04 */ 0, // width
           /* 05 */ 0, // height
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
@@ -1003,18 +1003,19 @@ ui = [
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
           /* 13 */ 0, // outline-width
-          /* 14 */ -45 // rot-angle
+          /* 14 */ 0 // rot-angle
         ],
 
         [ // /* 02 */ Text
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return ("W " + world + "   /   L " + level); }, // text
-          /* 02 */ btTxtSize * uiScale, // text-size
+          /* 02 */ 34 * uiScale, // text-size
           /* 03 */ 255, // text-colour
-          /* 04 */ 100, // text-alpha
-          /* 05 */ 0, // text-h-align
-          /* 06 */ 0 // text-v-align
+          /* 04 */ 120, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0, // text-v-align
+          /* 07 */ fontItalic
         ],
 
         [ // /* 03 */ Button Events
@@ -1034,7 +1035,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return max((width / 2) - (bgTileSize * 2 * uiScale), ((width / 2) - tileSize - (bgTileSize * uiScale)) / 2); }, // x pos
+          /* 02 */ function() { return ((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2.2; }, // x pos
           /* 03 */ height / 2, // y pos
           /* 04 */ 120 * uiScale, // width
           /* 05 */ 120 * uiScale, // height
@@ -1053,11 +1054,12 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return steps; }, // text
-          /* 02 */ 70 * uiScale, // text-size
+          /* 02 */ 96 * uiScale, // text-size
           /* 03 */ 255, // text-colour
-          /* 04 */ 200, // text-alpha
+          /* 04 */ 255, // text-alpha
           /* 05 */ 0.5, // text-h-align
-          /* 06 */ 0.5 // text-v-align
+          /* 06 */ 0.5, // text-v-align
+          /* 07 */ fontLightItalic
         ],
 
         [ // /* 03 */ Button Events
@@ -1076,12 +1078,12 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return ((width / 2) - ((bgTileSize - menuBTMargin) * uiScale * 2)); }, // x pos
-          /* 03 */ function() { return ((height / 2) + bgTileSize * uiScale); }, // y pos
-          /* 04 */ 96 * uiScale, // width
-          /* 05 */ 96 * uiScale, // height
-          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return ((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2.2; }, // x pos
+          /* 03 */ function() { return ((height / 2) + (tileSize * ((tiles + 1) / 2))); }, // y pos
+          /* 04 */ 136 * uiScale, // width
+          /* 05 */ 136 * uiScale, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ btFill, // alpha
@@ -1106,8 +1108,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][0][3][1], 9], [uiData[2][0][3][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[2][0][3][1], 9], [uiData[2][0][3][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][0][3][1], 9], [uiData[2][0][3][1], 12], [uiData[2][0][3][1], 4], [uiData[2][0][3][1], 5], [uiData[2][0][3][4], 2]], [btFill, btStr, 136 * uiScale, 136 * uiScale, 44 * uiScale], [btFillHov, btStrHov, 154 * uiScale, 154 * uiScale, 56 * uiScale], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[2][0][3][1], 9], [uiData[2][0][3][1], 12], [uiData[2][0][3][1], 4], [uiData[2][0][3][1], 5], [uiData[2][0][3][4], 2]], [btFillHov, btStrHov, 154 * uiScale, 154 * uiScale, 56 * uiScale], [btFill, btStr, 136 * uiScale, 136 * uiScale, 44 * uiScale], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { prepareLevelData(); gameState = 1; } // onClick event (0 = no event)
         ],
 
@@ -1129,12 +1131,12 @@ ui = [
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return ((width / 2) + ((bgTileSize - menuBTMargin) * uiScale * 2)); }, // x pos
-          /* 03 */ function() { return ((height / 2) - bgTileSize * uiScale); }, // y pos
-          /* 04 */ 96 * uiScale, // width
-          /* 05 */ 96 * uiScale, // height
-          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2.2); }, // x pos
+          /* 03 */ function() { return ((height / 2) - (tileSize * ((tiles + 1) / 2))); }, // y pos
+          /* 04 */ 140 * uiScale, // width
+          /* 05 */ 140 * uiScale, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ btFill, // alpha
@@ -1159,8 +1161,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][0][4][1], 9], [uiData[2][0][4][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[2][0][4][1], 9], [uiData[2][0][4][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][0][4][1], 9], [uiData[2][0][4][1], 12], [uiData[2][0][4][1], 4], [uiData[2][0][4][1], 5], [uiData[2][0][4][4], 2]], [btFill, btStr, 136 * uiScale, 136 * uiScale, 38 * uiScale], [btFillHov, btStrHov, 154 * uiScale, 154 * uiScale, 46 * uiScale], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[2][0][4][1], 9], [uiData[2][0][4][1], 12], [uiData[2][0][4][1], 4], [uiData[2][0][4][1], 5], [uiData[2][0][4][4], 2]], [btFillHov, btStrHov, 154 * uiScale, 154 * uiScale, 46 * uiScale], [btFill, btStr, 136 * uiScale, 136 * uiScale, 38 * uiScale], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { state = 0; } // onClick event (0 = no event)
         ],
 
@@ -1181,13 +1183,13 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return ((width / 2) + ((bgTileSize - menuBTMargin) * uiScale * 2)); }, // x pos
-          /* 03 */ function() { return ((height / 2) + bgTileSize * uiScale); }, // y pos
-          /* 04 */ 96 * uiScale, // width
-          /* 05 */ 96 * uiScale, // height
-          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2.2); }, // x pos
+          /* 03 */ function() { return ((height / 2) + (tileSize * ((tiles + 1) / 2))); }, // y pos
+          /* 04 */ 160 * uiScale, // width
+          /* 05 */ 160 * uiScale, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
@@ -1200,7 +1202,7 @@ ui = [
 
         [ // /* 02 */ Text
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { let txt = "Off"; if (designMode) { txt = "On"; } return ("DM: " + txt); }, // text
           /* 02 */ btTxtSize * 0.7, // text-size
           /* 03 */ 255, // text-colour
@@ -1211,70 +1213,14 @@ ui = [
 
         [ // /* 03 */ Button Events
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][0][5][1], 9], [uiData[2][0][5][1], 12]], [btFill, btStr], [btFillHov, btStrHov], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
           /* 02 */ function() { animateUIElement([[uiData[2][0][5][1], 9], [uiData[2][0][5][1], 12]], [btFillHov, btStrHov], [btFill, btStr], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { designMode = !designMode; if (designMode) { gameState = 1; } else { if (steps < 1) { gameState = 3; } } } // onClick event (0 = no event)
         ]
       ],
 
-      [ // /* 06 */ Background Tiles
-
-        2, // /* 00 */ Type (1 = single, 2 = list)
-
-        [ // /* 01 */ Box
-
-          /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ width / 2, // x pos
-          /* 03 */ height / 2, // y pos
-          /* 04 */ bgTileSize * uiScale, // width
-          /* 05 */ bgTileSize * uiScale, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 255, // colour
-          /* 09 */ 0, // alpha
-          /* 10 */ 1, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ 5, // outline-alpha
-          /* 13 */ 1, // outline-width
-          /* 14 */ 0, // rot-angle
-
-
-          // List Settings
-
-          /* 15 */ function() { return 25; }, // items
-          /* 16 */ function() { return 5; }, // h-number
-          /* 17 */ function() { return 3; }, // v-number (min, dynamically adjusted)
-          /* 18 */ function() { return (bgTileSize * 2) * uiScale; }, // x-offset
-          /* 19 */ function() { return 0; }, // y-offset
-          /* 20 */ function() { return bgTileSize * uiScale; }, // x-offset (new line)
-          /* 21 */ function() { return bgTileSize * uiScale; }, // y-offset (new line)
-          /* 22 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 23 */ 0.5 // v-align (0 = top, 0.5 = centre, 1 = bottom)
-        ],
-
-        [ // /* 02 */ Text
-
-          /* 00 */ 0, // state (0 = off, 1 = on)
-          /* 01 */ 0, // text
-          /* 02 */ 0 * uiScale, // text-size
-          /* 03 */ 0, // text-colour
-          /* 04 */ 0, // text-alpha
-          /* 05 */ 0, // text-h-align
-          /* 06 */ 0 // text-v-align
-        ],
-
-        [ // /* 03 */ Button Events
-
-          /* 00 */ 0, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 2; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ 0 // onClick event (0 = no event)
-        ]
-      ],
-
-      [ // /* 08 */ Active Mechanics Used in Level
+      [ // /* 06 */ Active Mechanics Used in Level
 
         2, // /* 00 */ Type (1 = single, 2 = list)
 
@@ -1282,13 +1228,13 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return ((width / 2) - (bgTileSize * uiScale * 2) + (130 * uiScale)); }, // x pos
-          /* 03 */ function() { return ((height / 2) - (bgTileSize * uiScale) + (40 * uiScale)); }, // y pos
-          /* 04 */ 180 * uiScale, // width
-          /* 05 */ 34 * uiScale, // height
-          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 02 */ function() { return (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2.2) + (12 * uiScale); }, // x pos
+          /* 03 */ function() { return ((height / 2) - (tileSize * ((tiles + 1) / 2))); }, // y pos
+          /* 04 */ 55, // width
+          /* 05 */ 55, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 255, // colour
+          /* 08 */ 0, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -1299,12 +1245,12 @@ ui = [
           // List Settings
 
           /* 15 */ function() { return activeMechanics.length; }, // items
-          /* 16 */ function() { return 3; }, // h-number
+          /* 16 */ function() { return 1; }, // h-number
           /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
-          /* 18 */ function() { return 50 * uiScale; }, // x-offset
-          /* 19 */ function() { return -50 * uiScale; }, // y-offset
-          /* 20 */ function() { return 50 * uiScale; }, // x-offset (new line)
-          /* 21 */ function() { return 50 * uiScale; }, // y-offset (new line)
+          /* 18 */ function() { return 0; }, // x-offset
+          /* 19 */ function() { return 0; }, // y-offset
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 76 * uiScale; }, // y-offset (new line)
           /* 22 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 23 */ 0 // v-align (0 = top, 0.5 = centre, 1 = bottom)
         ],
@@ -1312,10 +1258,10 @@ ui = [
         [ // /* 02 */ Text
 
           /* 00 */ 0, // state (0 = off, 1 = on)
-          /* 01 */ function() { return gameMechanicNames[activeMechanics[(v * hNum) + h]]; }, // text
-          /* 02 */ 20 * uiScale, // text-size
-          /* 03 */ 255, // text-colour
-          /* 04 */ function() { return (30 + (levelData[world - 1][level - 1][5][(v * hNum) + h] * 90)); }, // text-alpha
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
           /* 05 */ 0, // text-h-align
           /* 06 */ 0 // text-v-align
         ],
@@ -1332,10 +1278,97 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return gameMechanicIcons[activeMechanics[(v * hNum) + h]]; }, // image
-          /* 02 */ 55 * uiScale, // image-size
+          /* 02 */ 62 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
-          /* 04 */ 0, // image-h-align
+          /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 07 */ Steps Underline
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2.2); }, // x pos
+          /* 03 */ (height / 2) + (66 * uiScale), // y pos
+          /* 04 */ 26 * uiScale, // width
+          /* 05 */ 0, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 11 */ cc, // outline-colour
+          /* 12 */ 255, // outline-alpha
+          /* 13 */ 4, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 08 */ Steps Underline Text
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2.2); }, // x pos
+          /* 03 */ (height / 2) + (92 * uiScale), // y pos
+          /* 04 */ 120 * uiScale, // width
+          /* 05 */ 120 * uiScale, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ "S T E P S", // text
+          /* 02 */ 17 * uiScale, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 120, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5, // text-v-align
+          /* 07 */ fontItalic
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
         ]
       ]
     ],
@@ -1804,18 +1837,18 @@ ui = [
 
       /* 00 */ function() { return (levelData[world - 1][level - 1][5][2] * (gameState == 1)); }, // state (0 = off, 1 = on)
 
-      [ // /* 01 */ Shift Row/Column (Top Left)
+      [ // /* 01 */ Shift Column (Top)
 
         2, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return (width / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))); }, // x pos
-          /* 03 */ function() { return (height / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))); }, // y pos
-          /* 04 */ function() { return (tileSize / 2); }, // width
-          /* 05 */ function() { return (tileSize / 2); }, // height
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width / 2, // x pos
+          /* 03 */ function() { return (height / 2) - (tileSize * (Math.ceil(tiles / 2))); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -1828,15 +1861,15 @@ ui = [
 
           // List Settings
 
-          /* 15 */ function() { return (tiles - 2); }, // items
-          /* 16 */ function() { return (tiles - 2); }, // h-number
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
           /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
-          /* 18 */ function() { return -(tileSize / 2); }, // x-offset (spacing)
-          /* 19 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 18 */ function() { return tileSize; }, // x-offset (spacing)
+          /* 19 */ function() { return 0; }, // y-offset (spacing)
           /* 20 */ function() { return 0; }, // x-offset (new line)
           /* 21 */ function() { return 0; }, // y-offset (new line)
           /* 22 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 23 */ 0.5 // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 23 */ 0 // v-align (0 = top, 0.5 = centre, 1 = bottom)
         ],
 
         [ // /* 02 */ Text
@@ -1853,15 +1886,15 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 12; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(uiSelectedIndex, -1, -1, 1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [0, 200], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [2, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex - 1, -1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return arrowBottomRightIMG; }, // image
+          /* 01 */ function() { return arrowTopIcon; }, // image
           /* 02 */ 22 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
@@ -1869,18 +1902,18 @@ ui = [
         ]
       ],
 
-      [ // /* 02 */ Shift Row/Column (Top Right)
+      [ // /* 02 */ Shift Row (Right)
 
         2, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return (width / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))); }, // x pos
-          /* 03 */ function() { return (height / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))); }, // y pos
-          /* 04 */ function() { return (tileSize / 2); }, // width
-          /* 05 */ function() { return (tileSize / 2); }, // height
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) + (tileSize * (Math.ceil(tiles / 2))); }, // x pos
+          /* 03 */ height / 2, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -1893,14 +1926,14 @@ ui = [
 
           // List Settings
 
-          /* 15 */ function() { return (tiles - 2); }, // items
-          /* 16 */ function() { return (tiles - 2); }, // h-number
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
           /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
-          /* 18 */ function() { return (tileSize / 2); }, // x-offset (spacing)
-          /* 19 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 18 */ function() { return 0; }, // x-offset (spacing)
+          /* 19 */ function() { return tileSize; }, // y-offset (spacing)
           /* 20 */ function() { return 0; }, // x-offset (new line)
           /* 21 */ function() { return 0; }, // y-offset (new line)
-          /* 22 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 22 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 23 */ 0.5 // v-align (0 = top, 0.5 = centre, 1 = bottom)
         ],
 
@@ -1918,15 +1951,15 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 12; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex, -1, 1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [0, 200], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [2, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { shiftTileLine(uiSelectedIndex - 1, 1, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return arrowBottomLeftIMG; }, // image
+          /* 01 */ function() { return arrowRightIcon; }, // image
           /* 02 */ 22 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
@@ -1934,18 +1967,18 @@ ui = [
         ]
       ],
 
-      [ // /* 03 */ Shift Row/Column (Bottom Left)
+      [ // /* 03 */ Shift Column (Bottom)
 
         2, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return (width / 2) - ((tileSize / 2) * (Math.ceil(tiles / 2))); }, // x pos
-          /* 03 */ function() { return (height / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))); }, // y pos
-          /* 04 */ function() { return (tileSize / 2); }, // width
-          /* 05 */ function() { return (tileSize / 2); }, // height
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width / 2, // x pos
+          /* 03 */ function() { return (height / 2) + (tileSize * (Math.ceil(tiles / 2))); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -1958,15 +1991,15 @@ ui = [
 
           // List Settings
 
-          /* 15 */ function() { return (tiles - 2); }, // items
-          /* 16 */ function() { return (tiles - 2); }, // h-number
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
           /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
-          /* 18 */ function() { return (tileSize / 2); }, // x-offset (spacing)
-          /* 19 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 18 */ function() { return tileSize; }, // x-offset (spacing)
+          /* 19 */ function() { return 0; }, // y-offset (spacing)
           /* 20 */ function() { return 0; }, // x-offset (new line)
           /* 21 */ function() { return 0; }, // y-offset (new line)
           /* 22 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 23 */ 0.5 // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 23 */ 0 // v-align (0 = top, 0.5 = centre, 1 = bottom)
         ],
 
         [ // /* 02 */ Text
@@ -1983,15 +2016,15 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 12; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex, 1, 1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [0, 200], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [2, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex - 1, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return arrowTopRightIMG; }, // image
+          /* 01 */ function() { return arrowBottomIcon; }, // image
           /* 02 */ 22 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
@@ -1999,18 +2032,18 @@ ui = [
         ]
       ],
 
-      [ // /* 04 */ Shift Row/Column (Bottom Right)
+      [ // /* 04 */ Shift Row (Left)
 
         2, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle, 4 = rotated rect)
-          /* 02 */ function() { return (width / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))); }, // x pos
-          /* 03 */ function() { return (height / 2) + ((tileSize / 2) * (Math.ceil(tiles / 2))); }, // y pos
-          /* 04 */ function() { return (tileSize / 2); }, // width
-          /* 05 */ function() { return (tileSize / 2); }, // height
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle, 4 = rotated rect)
+          /* 02 */ function() { return (width / 2) - (tileSize * (Math.ceil(tiles / 2))); }, // x pos
+          /* 03 */ height / 2, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
@@ -2023,14 +2056,14 @@ ui = [
 
           // List Settings
 
-          /* 15 */ function() { return (tiles - 2); }, // items
-          /* 16 */ function() { return (tiles - 2); }, // h-number
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
           /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
-          /* 18 */ function() { return -(tileSize / 2); }, // x-offset (spacing)
-          /* 19 */ function() { return (tileSize / 2); }, // y-offset (spacing)
+          /* 18 */ function() { return 0; }, // x-offset (spacing)
+          /* 19 */ function() { return tileSize; }, // y-offset (spacing)
           /* 20 */ function() { return 0; }, // x-offset (new line)
           /* 21 */ function() { return 0; }, // y-offset (new line)
-          /* 22 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 22 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 23 */ 0.5 // v-align (0 = top, 0.5 = centre, 1 = bottom)
         ],
 
@@ -2048,41 +2081,371 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 12; }, // onHoverIn event (0 = no event)
-          /* 02 */ 0, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(uiSelectedIndex, -1, 1, 1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [0, 200], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [2, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { shiftTileLine(uiSelectedIndex - 1, -1, -1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { return arrowTopLeftIMG; }, // image
+          /* 01 */ function() { return arrowLeftIcon; }, // image
           /* 02 */ 22 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
-      ]
+      ],
+
+      [ // /* 05 */ Shift Column Hover (Top)
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width / 2, // x pos
+          /* 03 */ function() { return (height / 2) - (tileSize * (Math.ceil(tiles / 2))); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ ccbg, // colour
+          /* 09 */ [-1, 200], // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
+
+          // List Settings
+
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return tileSize; }, // x-offset (spacing)
+          /* 19 */ function() { return 0; }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; }, // y-offset (new line)
+          /* 22 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 23 */ 0 // v-align (0 = top, 0.5 = centre, 1 = bottom)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
+          /* 02 */ 36 * uiScale, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 200, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 06 */ Shift Row Hover (Right)
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) + (tileSize * (Math.ceil(tiles / 2))); }, // x pos
+          /* 03 */ height / 2, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ ccbg, // colour
+          /* 09 */ [-1, 200], // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
+
+          // List Settings
+
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return 0; }, // x-offset (spacing)
+          /* 19 */ function() { return tileSize; }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; }, // y-offset (new line)
+          /* 22 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 23 */ 0.5 // v-align (0 = top, 0.5 = centre, 1 = bottom)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 07 */ Shift Column Hover (Bottom)
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width / 2, // x pos
+          /* 03 */ function() { return (height / 2) + (tileSize * (Math.ceil(tiles / 2))); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ ccbg, // colour
+          /* 09 */ [-1, 200], // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
+
+          // List Settings
+
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return tileSize; }, // x-offset (spacing)
+          /* 19 */ function() { return 0; }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; }, // y-offset (new line)
+          /* 22 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 23 */ 0 // v-align (0 = top, 0.5 = centre, 1 = bottom)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 08 */ Shift Row Hover (Left)
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle, 4 = rotated rect)
+          /* 02 */ function() { return (width / 2) - (tileSize * (Math.ceil(tiles / 2))); }, // x pos
+          /* 03 */ height / 2, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ ccbg, // colour
+          /* 09 */ [-1, 200], // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
+
+          // List Settings
+
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return 0; }, // x-offset (spacing)
+          /* 19 */ function() { return tileSize; }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; }, // y-offset (new line)
+          /* 22 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 23 */ 0.5 // v-align (0 = top, 0.5 = centre, 1 = bottom)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 09 */ Shift Column Highlight
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width / 2, // x pos
+          /* 03 */ height / 2, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize * tiles; }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ [-1, 0], // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
+
+          // List Settings
+
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return tileSize; }, // x-offset (spacing)
+          /* 19 */ function() { return 0; }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; }, // y-offset (new line)
+          /* 22 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 23 */ 0.5 // v-align (0 = top, 0.5 = centre, 1 = bottom)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 10 */ Shift Row Highlight
+
+        2, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ width / 2, // x pos
+          /* 03 */ height / 2, // y pos
+          /* 04 */ function() { return tileSize * tiles; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ [-1, 0], // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0, // rot-angle
+
+          // List Settings
+
+          /* 15 */ function() { return tiles; }, // items
+          /* 16 */ function() { return tiles; }, // h-number
+          /* 17 */ function() { return 1; }, // v-number (min, dynamically adjusted)
+          /* 18 */ function() { return 0; }, // x-offset (spacing)
+          /* 19 */ function() { return tileSize; }, // y-offset (spacing)
+          /* 20 */ function() { return 0; }, // x-offset (new line)
+          /* 21 */ function() { return 0; }, // y-offset (new line)
+          /* 22 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 23 */ 0.5 // v-align (0 = top, 0.5 = centre, 1 = bottom)
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
     ],
 
     [ // /* 04 */ Corner Tiles Rotation
 
       /* 00 */ function() { return (levelData[world - 1][level - 1][5][3]  * (gameState == 1)); }, // state (0 = off, 1 = on)
 
-      [ // /* 01 */ Rotate Corner Tiles (Top)
+      [ // /* 01 */ Rotate Corner Tiles (Top Left)
 
         1, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ width / 2, // x pos
-          /* 03 */ function() { return (height / 2) - ((tileSize / 2) * (tiles - 1)); }, // y pos
-          /* 04 */ function() { return (tileSize / 2); }, // width
-          /* 05 */ function() { return (tileSize / 2); }, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) - ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) - ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
@@ -2106,8 +2469,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 12;  uiData[2][4][5][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][5][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][5][4][0] = 0; animateUIElement([[uiData[2][4][5][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][5][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [0, 200], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][5][4][0] = 0; animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [5, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(0, 0, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2115,27 +2478,27 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCorner; }, // image
-          /* 02 */ 60 * uiScale, // image-size
+          /* 02 */ 34 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
       ],
 
-      [ // /* 02 */ Rotate Corner Tiles (Right)
+      [ // /* 02 */ Rotate Corner Tiles (Top Right)
 
         1, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return (width / 2) + ((tileSize / 2) * (tiles - 1)); }, // x pos
-          /* 03 */ height / 2, // y pos
-          /* 04 */ function() { return (tileSize / 2); }, // width
-          /* 05 */ function() { return (tileSize / 2); }, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) + ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) - ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
@@ -2159,8 +2522,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 12; uiData[2][4][6][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][6][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][6][4][0] = 0; animateUIElement([[uiData[2][4][6][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][6][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [0, 200], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][6][4][0] = 0; animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [5, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(1, 0, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2168,27 +2531,27 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCorner; }, // image
-          /* 02 */ 60 * uiScale, // image-size
+          /* 02 */ 34 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
       ],
 
-      [ // /* 03 */ Rotate Corner Tiles (Bottom)
+      [ // /* 03 */ Rotate Corner Tiles (Bottom Right)
 
         1, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ width / 2, // x pos
-          /* 03 */ function() { return (height / 2) + ((tileSize / 2) * (tiles - 1)); }, // y pos
-          /* 04 */ function() { return (tileSize / 2); }, // width
-          /* 05 */ function() { return (tileSize / 2); }, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) + ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) + ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
@@ -2212,8 +2575,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 12; uiData[2][4][7][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][7][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][7][4][0] = 0; animateUIElement([[uiData[2][4][7][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][7][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [0, 200], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][7][4][0] = 0; animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [5, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(1, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2221,27 +2584,27 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCorner; }, // image
-          /* 02 */ 60 * uiScale, // image-size
+          /* 02 */ 34 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
       ],
 
-      [ // /* 04 */ Rotate Corner Tiles (Left)
+      [ // /* 04 */ Rotate Corner Tiles (Bottom Left)
 
         1, // /* 00 */ Type (1 = single, 2 = list)
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return (width / 2) - ((tileSize / 2) * (tiles - 1)); }, // x pos
-          /* 03 */ height / 2, // y pos
-          /* 04 */ function() { return (tileSize / 2); }, // width
-          /* 05 */ function() { return (tileSize / 2); }, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) - ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) + ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
@@ -2265,8 +2628,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 12; uiData[2][4][8][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][8][1], 9]], [0], [80], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][8][4][0] = 0; animateUIElement([[uiData[2][4][8][1], 9]], [80], [0], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][8][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [0, 200], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { uiData[2][4][8][4][0] = 0; animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [5, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(0, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2274,28 +2637,28 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCorner; }, // image
-          /* 02 */ 60 * uiScale, // image-size
+          /* 02 */ 34 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
         ]
       ],
 
-      [ // /* 05 */ Highlight Corner Tiles (Top)
+      [ // /* 05 */ Highlight Corner Tiles (Top Left)
 
         1, // /* 00 */ Type (1 = single, 2 = list)1
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ width / 2, // x pos
-          /* 03 */ function() { return (height / 2) - (tileSize * ((tiles - 3) / 4)); }, // y pos
-          /* 04 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // width
-          /* 05 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 0, // colour
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) - ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) - ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // width
+          /* 05 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -2334,26 +2697,26 @@ ui = [
         ]
       ],
 
-      [ // /* 06 */ Highlight Corner Tiles (Right)
+      [ // /* 06 */ Highlight Corner Tiles (Top Right)
 
         1, // /* 00 */ Type (1 = single, 2 = list)1
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return (width / 2) + (tileSize * ((tiles - 3) / 4)); }, // x pos
-          /* 03 */ height / 2, // y pos
-          /* 04 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // width
-          /* 05 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 0, // colour
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) + ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) - ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // width
+          /* 05 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // height
+          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ 50, // outline-alpha
-          /* 13 */ 2, // outline-width
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -2387,26 +2750,26 @@ ui = [
         ]
       ],
 
-      [ // /* 07 */ Highlight Corner Tiles (Bottom)
+      [ // /* 07 */ Highlight Corner Tiles (Bottom Right)
 
         1, // /* 00 */ Type (1 = single, 2 = list)1
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ width / 2, // x pos
-          /* 03 */ function() { return (height / 2) + (tileSize * ((tiles - 3) / 4)); }, // y pos
-          /* 04 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // width
-          /* 05 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 0, // colour
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) + ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) + ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // width
+          /* 05 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // height
+          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ 50, // outline-alpha
-          /* 13 */ 2, // outline-width
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -2440,26 +2803,26 @@ ui = [
         ]
       ],
 
-      [ // /* 08 */ Highlight Corner Tiles (Left)
+      [ // /* 08 */ Highlight Corner Tiles (Bottom Left)
 
         1, // /* 00 */ Type (1 = single, 2 = list)1
 
         [ // /* 01 */ Box
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
-          /* 02 */ function() { return (width / 2) - (tileSize * ((tiles - 3) / 4)); }, // x pos
-          /* 03 */ height / 2, // y pos
-          /* 04 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // width
-          /* 05 */ function() { return (tileSize * ((tiles - 1) / 4)); }, // height
-          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
-          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 0, // colour
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) - ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) + ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // width
+          /* 05 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
-          /* 11 */ 255, // outline-colour
-          /* 12 */ 50, // outline-alpha
-          /* 13 */ 2, // outline-width
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
           /* 14 */ 0 // rot-angle
         ],
 
@@ -2490,6 +2853,178 @@ ui = [
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 09 */ Rotate Corner Tiles Hover (Top Left)
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) - ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) - ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ ccbg, // colour
+          /* 09 */ 200, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 10 */ Rotate Corner Tiles Hover (Top Right)
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) + ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) - ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ ccbg, // colour
+          /* 09 */ 200, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 11 */ Rotate Corner Tiles Hover (Bottom Right)
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) + ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) + ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ ccbg, // colour
+          /* 09 */ 200, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 12 */ Rotate Corner Tiles Hover (Bottom Left)
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return (width / 2) - ((tileSize / 2) * tiles); }, // x pos
+          /* 03 */ function() { return (height / 2) + ((tileSize / 2) * tiles); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ ccbg, // colour
+          /* 09 */ 200, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
         ]
       ]
     ],
