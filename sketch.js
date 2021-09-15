@@ -12,6 +12,8 @@ uiSelected = "undefined";
 uiScale = 1;
 designMode = 0;
 activeUIAnims = [];
+lineShiftHover = [-1, -1, 0];
+cornerRotHover = [-1, -1];
 gameMechanicNames = [
   "Tile Rotation",
   "Tile Movement",
@@ -34,23 +36,24 @@ endPieces = [];
 positions = [];
 posRotTab = [
   "TopLeft",
-  "TopMid",
+  "Top",
   "TopRight",
-  "MidRight",
+  "Right",
   "BottomRight",
-  "BottomMid",
+  "Bottom",
   "BottomLeft",
-  "MidLeft"
+  "Left"
 ];
 
+positions["Mid"] = [0.5, 0.5];
 positions["TopLeft"] = [0, 0];
-positions["TopMid"] = [0.5, 0];
+positions["Top"] = [0.5, 0];
 positions["TopRight"] = [1, 0];
-positions["MidRight"] = [1, 0.5];
+positions["Right"] = [1, 0.5];
 positions["BottomRight"] = [1, 1];
-positions["BottomMid"] = [0.5, 1];
+positions["Bottom"] = [0.5, 1];
 positions["BottomLeft"] = [0, 1];
-positions["MidLeft"] = [0, 0.5];
+positions["Left"] = [0, 0.5];
 
 cc = 255;
 levelLoaded = 0;
@@ -114,6 +117,8 @@ function preload() {
   moveIcon = loadImage('assets/moveIcon.svg');
   gradientLineV = loadImage('assets/gradientLineV.svg');
   gradientLineH = loadImage('assets/gradientLineH.svg');
+  rotateTileIcon = loadImage('assets/rotateTileIcon.svg');
+  rotateTileIcon2 = loadImage('assets/rotateTileIcon2.svg');
 
   gameMechanicIcons = [
     rotateTileMechanic,
@@ -190,8 +195,9 @@ function setup() {
   //cc = color('rgba(153, 94, 31, 255)'); // Yellow
 
   //cc = color("#ff9999"); // Light Red/Pink
-  cc = color('rgba(250, 255, 148, 1)'); // Yellow/Lime
-  //cc = color("#97d5ff"); // Light Blue
+  //cc = color('rgba(250, 255, 148, 1)'); // Yellow/Lime
+  //cc = color('rgba(151, 213, 255, 1)'); // Light Blue
+  cc = color('rgba(146, 255, 185, 1)'); // Light Blue
 
   //ccbg = color("#25252b"); // Gray
   ccbg = color("#111114"); // Gray 2
@@ -300,7 +306,7 @@ function mouseReleased() {
                       // Rotate Puzzle Piece
                       rotatePuzzlePiece(i, 1);
                       useStep();
-                      setTimeout(function() { isSolved(); }, 150);
+                      setTimeout(function() { isSolved(); }, 200);
                     }
 
                   } else {
@@ -393,6 +399,7 @@ function prepareLevelData() {
 
   tiles = levelData[world - 1][level - 1][1]; // squared = total number of tiles
   puzzlePieces = levelData[world - 1][level - 1][2];
+
   let pp = levelData[world - 1][level - 1][2];
   let ep = levelData[world - 1][level - 1][3];
 
@@ -433,21 +440,9 @@ function prepareLevelData() {
       puzzlePieces[i][6] = [];
 
     } else { puzzlePieces[i][4] = 0; }
-
-    for (let y = 0; y < (puzzlePieces[i][2].length); y++) {
-
-      puzzlePieces[i][5].push([positions[puzzlePieces[i][2][y]][0], positions[puzzlePieces[i][2][y]][1]]);
-    }
-
-    for (let y = 0; y < (puzzlePieces[i][4].length); y++) {
-
-      if (puzzlePieces[i][4][y] != -1) {
-
-        puzzlePieces[i][6].push([ [ positions[puzzlePieces[i][4][y][0]][0], positions[puzzlePieces[i][4][y][0]][1] ], [ positions[puzzlePieces[i][4][y][1]][0], positions[puzzlePieces[i][4][y][1]][1] ] ]);
-
-      } else { puzzlePieces[i][6].push(-1); }
-    }
   }
+
+  updatePPPoints();
 
   endPieces = [ep.length];
 
@@ -463,7 +458,7 @@ function prepareLevelData() {
 
   let smallerDimension = min(width, height);
   //tileSize = min(((bgTileSize * uiScale) / 3) * 2, ((bgTileSize * uiScale) / (tiles - 2)) * 2); // the size a single tile occupies (tiles themselves can be smaller)
-  tileSize = ((smallerDimension * 0.7) / (tiles + 2));
+  tileSize = min((smallerDimension * 0.8) / (tiles + 2), (smallerDimension * 0.14));
   endPieceSize = min(50 * uiScale, tileSize / 4);
   selected = [];
   clicked = 0;
@@ -546,9 +541,34 @@ function prepareLevelData() {
     }
   }
 
-  // Apply corner rotations
+  // If level has corner rotation
 
   if (levelData[world - 1][level - 1][5][3]) {
+
+    // Pre-calculate corner rotations and save tile posiiton changes to an array
+
+    let diam = ((tiles + 1) / 2);
+    cornerRotPositions = [[[], []], [[], []]];
+
+    for (let i = 0; i < 2; i++) {
+
+      for (let z = 0; z < 2; z++) {
+
+        cornerRotPositions[i][z] = [diam];
+
+        for (let x = 0; x < diam; x++) {
+
+          cornerRotPositions[i][z][x] = [diam];
+        }
+      }
+    }
+
+    preCalcCornerRot(0, 0);
+    preCalcCornerRot(1, 0);
+    preCalcCornerRot(1, 1);
+    preCalcCornerRot(0, 1);
+
+    // Apply corner rotations
 
     for (let i = 0; i < levelData[world - 1][level - 1][7].length; i++) {
 
@@ -568,6 +588,34 @@ function prepareLevelData() {
   storeItem('world', world);
 
   levelLoaded = 1;
+}
+
+
+function updatePPPoints() {
+
+  for (i = 0; i < puzzlePieces.length; i++) {
+
+    puzzlePieces[i][5].length = 0;
+
+    for (let y = 0; y < (puzzlePieces[i][2].length); y++) {
+
+      puzzlePieces[i][5].push([positions[puzzlePieces[i][2][y]][0], positions[puzzlePieces[i][2][y]][1]]);
+    }
+
+    if (puzzlePieces[i][4] != 0) {
+
+      puzzlePieces[i][6].length = 0;
+
+      for (let y = 0; y < (puzzlePieces[i][4].length); y++) {
+
+        if (puzzlePieces[i][4][y] != -1) {
+
+          puzzlePieces[i][6].push([ [ positions[puzzlePieces[i][4][y][0]][0], positions[puzzlePieces[i][4][y][0]][1] ], [ positions[puzzlePieces[i][4][y][1]][0], positions[puzzlePieces[i][4][y][1]][1] ] ]);
+
+        } else { puzzlePieces[i][6].push(-1); }
+      }
+    }
+  }
 }
 
 
@@ -625,47 +673,50 @@ function rotatePuzzlePiece(i, animate) {
 
   for (let y = 0; y < puzzlePieces[i][2].length; y++) {
 
-    let pos = posRotTab.indexOf(puzzlePieces[i][2][y]);
-    let pos2 = 0;
-    let pos3 = 0;
+    if (puzzlePieces[i][2][y] != "Mid") {
 
-    pos = (pos + 2) % 8;
-    puzzlePieces[i][2][y] = posRotTab[pos];
+      let pos = posRotTab.indexOf(puzzlePieces[i][2][y]);
+      let pos2 = 0;
+      let pos3 = 0;
 
-    if (puzzlePieces[i][4] != 0) {
-
-      if (puzzlePieces[i][4][y] != undefined) {
-
-        pos2 = posRotTab.indexOf(puzzlePieces[i][4][y][0]);
-        pos3 = posRotTab.indexOf(puzzlePieces[i][4][y][1]);
-        pos2 = (pos2 + 2) % 8;
-        pos3 = (pos3 + 2) % 8;
-        puzzlePieces[i][4][y][0] = posRotTab[pos2];
-        puzzlePieces[i][4][y][1] = posRotTab[pos3];
-      }
-    }
-
-    if (animate) {
-
-      //animateUIElement([[puzzlePieces[i], 4]], [-45], [0], 7, 0);
-      //console.log(puzzlePieces[i][5][y]);
-      animateUIElement([[puzzlePieces[i][5][y], 0]], [puzzlePieces[i][5][y][0]], [positions[posRotTab[pos]][0]], 7 + (y * 0), 0);
-      animateUIElement([[puzzlePieces[i][5][y], 1]], [puzzlePieces[i][5][y][1]], [positions[posRotTab[pos]][1]], 7 + (y * 0), 0);
+      pos = (pos + 2) % 8;
+      puzzlePieces[i][2][y] = posRotTab[pos];
 
       if (puzzlePieces[i][4] != 0) {
 
         if (puzzlePieces[i][4][y] != undefined) {
 
-          if (puzzlePieces[i][4][y] != -1) {
-
-            animateUIElement([[puzzlePieces[i][6][y][0], 0]], [puzzlePieces[i][6][y][0][0]], [positions[posRotTab[pos2]][0]], 7 + (y * 0), 0);
-            animateUIElement([[puzzlePieces[i][6][y][0], 1]], [puzzlePieces[i][6][y][0][1]], [positions[posRotTab[pos2]][1]], 7 + (y * 0), 0);
-
-            animateUIElement([[puzzlePieces[i][6][y][1], 0]], [puzzlePieces[i][6][y][1][0]], [positions[posRotTab[pos3]][0]], 7 + (y * 0), 0);
-            animateUIElement([[puzzlePieces[i][6][y][1], 1]], [puzzlePieces[i][6][y][1][1]], [positions[posRotTab[pos3]][1]], 7 + (y * 0), 0);
-          }
+          pos2 = posRotTab.indexOf(puzzlePieces[i][4][y][0]);
+          pos3 = posRotTab.indexOf(puzzlePieces[i][4][y][1]);
+          pos2 = (pos2 + 2) % 8;
+          pos3 = (pos3 + 2) % 8;
+          puzzlePieces[i][4][y][0] = posRotTab[pos2];
+          puzzlePieces[i][4][y][1] = posRotTab[pos3];
         }
       }
+
+      if (animate) {
+
+        //animateUIElement([[puzzlePieces[i], 4]], [-45], [0], 7, 0);
+        //console.log(puzzlePieces[i][5][y]);
+        animateUIElement([[puzzlePieces[i][5][y], 0]], [puzzlePieces[i][5][y][0]], [positions[posRotTab[pos]][0]], 10, 0);
+        animateUIElement([[puzzlePieces[i][5][y], 1]], [puzzlePieces[i][5][y][1]], [positions[posRotTab[pos]][1]], 10, 0);
+
+        if (puzzlePieces[i][4] != 0) {
+
+          if (puzzlePieces[i][4][y] != undefined) {
+
+            if (puzzlePieces[i][4][y] != -1) {
+
+              animateUIElement([[puzzlePieces[i][6][y][0], 0]], [puzzlePieces[i][6][y][0][0]], [positions[posRotTab[pos2]][0]], 10, 0);
+              animateUIElement([[puzzlePieces[i][6][y][0], 1]], [puzzlePieces[i][6][y][0][1]], [positions[posRotTab[pos2]][1]], 10, 0);
+
+              animateUIElement([[puzzlePieces[i][6][y][1], 0]], [puzzlePieces[i][6][y][1][0]], [positions[posRotTab[pos3]][0]], 10, 0);
+              animateUIElement([[puzzlePieces[i][6][y][1], 1]], [puzzlePieces[i][6][y][1][1]], [positions[posRotTab[pos3]][1]], 10, 0);
+            }
+          }
+        }
+      } else { updatePPPoints(); }
     }
   }
 }
@@ -823,10 +874,10 @@ function levelComplete() {
   if (debug) { console.log("//////////////// Level Finished! ////////////////"); }
 
   gameState = 2;
-  puzzlePieceColour = 255;
+  //puzzlePieceColour = 255;
 
-  animateUIElement([[puzzlePieceOp, 0], [endPieceOp, 0]], [30, 255], [0, 0], 20, 0);
-  animateUIElement([[uiData[2][1][2][1], 4], [uiData[2][1][2][1], 5], [uiData[2][1][2][1], 9], [uiData[2][1][2][2], 4]], [(bgTileSize / 2) * uiScale, (bgTileSize / 2) * uiScale, 0, 0], [bgTileSize * uiScale, bgTileSize * uiScale, 5, 255], 15, 0);
+  //animateUIElement([[puzzlePieceOp, 0], [endPieceOp, 0]], [255, 255], [0, 0], 30, 0);
+  //animateUIElement([[uiData[2][1][2][1], 4], [uiData[2][1][2][1], 5], [uiData[2][1][2][1], 9], [uiData[2][1][2][2], 4]], [(bgTileSize / 2) * uiScale, (bgTileSize / 2) * uiScale, 0, 0], [bgTileSize * uiScale, bgTileSize * uiScale, 5, 255], 15, 0);
 
   for (let x = 0; x < tiles; x++) {
 
@@ -834,8 +885,7 @@ function levelComplete() {
 
       if (tileData[x][y][2] != -1) {
 
-        //animateUIElement([[tileData[x][y], 2], [tileData[x][y], 3]], [tileData[x][y][2], 1], [0, 3], Math.round(random(10, 60)), 0);
-        animateUIElement([[tileData[x][y], 2], [tileData[x][y], 3]], [tileData[x][y][2], 1], [0, 0], Math.round(random(5, 30)), 0);
+        //animateUIElement([[tileData[x][y], 2], [tileData[x][y], 3]], [tileData[x][y][2], 1], [0, 0], Math.round(random(5, 30)), 0);
       }
     }
   }
@@ -1262,17 +1312,17 @@ function draw() {
 
               //line(startX + (tileSize * (i + 1)), startY, startX + (tileSize * (i + 1)), startY + ((tiles + len) * tileSize));
               //line(startX, startY + (tileSize * (i + 1)), startX + ((tiles + len) * tileSize), startY + (tileSize * (i + 1)));
-              image(gradientLineV, startX + (tileSize * (i + 1)), startY, 2, (tiles + len) * tileSize);
-              image(gradientLineH, startX, startY + (tileSize * (i + 1)), (tiles + len) * tileSize, 2);
+              image(gradientLineV, startX + (tileSize * (i + 1)), startY, 1, (tiles + len) * tileSize);
+              image(gradientLineH, startX, startY + (tileSize * (i + 1)), (tiles + len) * tileSize, 1);
 
             } else {
 
               if (len == 2) {
 
-                image(gradientLineV, startX + (tileSize * (i + 1)), startY, 2, (tiles + len) * tileSize);
-                image(gradientLineH, startX, startY + (tileSize * (i + 1)), (tiles + len) * tileSize, 2);
-                image(gradientLineV, startX + (tileSize * (i + 2)), startY, 2, (tiles + len) * tileSize);
-                image(gradientLineH, startX, startY + (tileSize * (i + 2)), (tiles + len) * tileSize, 2);
+                image(gradientLineV, startX + (tileSize * (i + 1)), startY, 1, (tiles + len) * tileSize);
+                image(gradientLineH, startX, startY + (tileSize * (i + 1)), (tiles + len) * tileSize, 1);
+                image(gradientLineV, startX + (tileSize * (i + 2)), startY, 1, (tiles + len) * tileSize);
+                image(gradientLineH, startX, startY + (tileSize * (i + 2)), (tiles + len) * tileSize, 1);
               }
             }
 
@@ -1381,38 +1431,113 @@ function draw() {
 
             if (drawRot) {
 
-              image(resetIcon, - (tileSize / 7.2), - (tileSize / 7.2), tileSize / 3.6, tileSize / 3.6);
+              image(rotateTileIcon, - (tileSize / 3.2), - (tileSize / 3.2), tileSize / 1.6, tileSize / 1.6);
             }
 
             noFill();
 
             let offX = 0;
             let offY = 0;
+            let lShiftHov = 0;
+            let cRotHov = 0;
+            let cT;
 
-            for (let z = puzzlePieces[i][3]; z > -1; z--) {
+            if (cornerRotHover[0] != -1) {
+
+              cT = (tiles + 1) / 2;
+
+              if (abs((((cT + 1) / 2) + (((cT + 1) / 2) * cornerRotHover[0])) - (puzzlePieces[i][0] + 1)) <= ((cT) / 2)) { // If piece x is in range of corner
+
+                if (abs((((cT + 1) / 2) + (((cT + 1) / 2) * cornerRotHover[1])) - (puzzlePieces[i][1] + 1)) <= ((cT) / 2)) { // If piece y in range of corner
+
+                  cRotHov = 1;
+                }
+              }
+            }
+
+            if (lineShiftHover[2] != 0) {
+
+              if (puzzlePieces[i][0] == lineShiftHover[1]) { // In selected column
+
+                if ((tileData[lineShiftHover[1]][(tiles - 1) * (Math.max(0, lineShiftHover[2]))][4]) == -1) { // If it's able to move
+
+                  lShiftHov = 1;
+                }
+
+              } else if (puzzlePieces[i][1] == lineShiftHover[0]) { // In selected row
+
+                if ((tileData[(tiles - 1) * (Math.max(0, lineShiftHover[2]))][lineShiftHover[0]][4]) == -1) { // If it's able to move
+
+                  lShiftHov = 1;
+                }
+              }
+            }
+
+            for (let z = (puzzlePieces[i][3] || lShiftHov || cRotHov); z > -1; z--) {
+
+              offX = 0;
+              offY = 0;
 
               if (z == 0) { // Normal opacity and position
 
                 if (typeof(puzzlePieceColour) == "object") { stroke(puzzlePieceColour); } else { stroke(puzzlePieceColour, puzzlePieceOp[0]); }
 
-                offX = 0;
-                offY = 0;
-
               } else { // Low opacity 2nd path for original position when moving piece
 
-                stroke(lerpColor(cc, ccbg, 0.9));
+                let ccc = color(cc.levels[0], cc.levels[1], cc.levels[2], 25);
+                stroke(ccc);
 
-                offX = tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][0] - posX;
-                offY = tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][1] - posY;
+                if (cRotHov) {
+
+                  let temp = cornerRotPositions[cornerRotHover[0]][cornerRotHover[1]][puzzlePieces[i][0] - (cornerRotHover[0] * (cT - 1))][puzzlePieces[i][1] - (cornerRotHover[1] * (cT - 1))];
+
+                  offX = tileData[temp[0]][temp[1]][0] - posX;
+                  offY = tileData[temp[0]][temp[1]][1] - posY;
+
+                } else if (lShiftHov) { // Line shift position projections
+
+                  if (lineShiftHover[0] != -1) { offX = lineShiftHover[2] * tileSize; }
+                  if (lineShiftHover[1] != -1) { offY = lineShiftHover[2] * tileSize; }
+
+                } else { // Tile movement original position
+
+                  offX = tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][0] - posX;
+                  offY = tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][1] - posY;
+                }
               }
 
               for (let y = 0; y < (puzzlePieces[i][5].length - 1); y++) {
 
-                //console.log(puzzlePieces[i][2][y]);
                 let x1 = offX - (tileSize / 2) + puzzlePieces[i][5][y][0] * tileSize;
                 let y1 = offY - (tileSize / 2) + puzzlePieces[i][5][y][1] * tileSize;
                 let x4 = offX - (tileSize / 2) + puzzlePieces[i][5][y + 1][0] * tileSize;
                 let y4 = offY - (tileSize / 2) + puzzlePieces[i][5][y + 1][1] * tileSize;
+
+                if (z) {
+
+                  if (cRotHov) {
+
+                    if (puzzlePieces[i][2][y] != "Mid") {
+
+                      let pos = posRotTab.indexOf(puzzlePieces[i][2][y]);
+
+                      pos = positions[posRotTab[(pos + 2) % 8]];
+
+                      x1 = offX - (tileSize / 2) + pos[0] * tileSize;
+                      y1 = offY - (tileSize / 2) + pos[1] * tileSize;
+                    }
+
+                    if (puzzlePieces[i][2][y + 1] != "Mid") {
+
+                      let pos2 = posRotTab.indexOf(puzzlePieces[i][2][y + 1]);
+
+                      pos2 = positions[posRotTab[(pos2 + 2) % 8]];
+
+                      x4 = offX - (tileSize / 2) + pos2[0] * tileSize;
+                      y4 = offY - (tileSize / 2) + pos2[1] * tileSize;
+                    }
+                  }
+                }
 
                 let drawBezier = 0;
 
@@ -1434,6 +1559,33 @@ function draw() {
                   let x3 = offX - (tileSize / 2) + puzzlePieces[i][6][y][1][0] * tileSize;
                   let y3 = offY - (tileSize / 2) + puzzlePieces[i][6][y][1][1] * tileSize;
 
+                  if (z) {
+
+                    if (cRotHov) {
+
+                      if (puzzlePieces[i][2][y][0] != "Mid") {
+
+                        let pos = posRotTab.indexOf(puzzlePieces[i][4][y][0]);
+
+                        pos = positions[posRotTab[(pos + 2) % 8]];
+
+                        x2 = offX - (tileSize / 2) + pos[0] * tileSize;
+                        y2 = offY - (tileSize / 2) + pos[1] * tileSize;
+                      }
+
+                      if (puzzlePieces[i][2][y][1] != "Mid") {
+
+                        let pos2 = posRotTab.indexOf(puzzlePieces[i][4][y][1]);
+
+                        pos2 = positions[posRotTab[(pos2 + 2) % 8]];
+
+                        x3 = offX - (tileSize / 2) + pos2[0] * tileSize;
+                        y3 = offY - (tileSize / 2) + pos2[1] * tileSize;
+                      }
+                    }
+                  }
+
+                  //bezier(x1, y1, x1, y4, x1, y4, x4, y4);
                   bezier(x1, y1, x2, y2, x3, y3, x4, y4);
 
                 } else {
@@ -1445,7 +1597,7 @@ function draw() {
 
             if (drawMov) {
 
-              image(moveIcon, - (tileSize / 7.2), - (tileSize / 7.2), tileSize / 3.6, tileSize / 3.6);
+              image(moveIcon, - (tileSize / 3), - (tileSize / 3), tileSize / 1.5, tileSize / 1.5);
             }
 
             pop();
@@ -1599,7 +1751,7 @@ function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
 }
 
 
-function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
+function preCalcCornerRot(cornerX, cornerY) {
 
   if (gameState < 2) {
 
@@ -1614,8 +1766,6 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
     let yy;
     let len;
     let off;
-    let anim = 0;
-    if (animate != undefined) { anim = animate; }
 
     for (let i = 0; i < loops; i++) {
 
@@ -1648,36 +1798,88 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
 
       for (let y = 0; y < a.length; y++) {
 
-        let tD = tileData[a[y][0]][a[y][1]];
-        tC[y] = [tD[0], tD[1], tD[2], tD[3], tD[4]];
+        tC[y] = [a[y][0], a[y][1]];
       }
 
       for (let y = 0; y < a.length; y++) {
 
-        off = (y + a.length - (len - 1)) % (a.length);
-        tileData[a[y][0]][a[y][1]][4] = tC[off][4];
+        off = (y + a.length + (len - 1)) % (a.length);
+
+        //console.log(cornerRotPositions);
+
+        cornerRotPositions[cornerX][cornerY][a[y][0] - cX][a[y][1] - cY] = [tC[off][0], tC[off][1]];
+      }
+    }
+  }
+}
+
+
+function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
+
+  if (gameState < 2) {
+
+    let anim = 0;
+    if (animate != undefined) { anim = animate; }
+
+    let cornerTiles = (tiles + 1) / 2; // No. of tiles in a corner (diameter)
+    let cX = cornerX * (cornerTiles - 1); // x index of top-left piece in selected corner (start post of rotation)
+    let cY = cornerY * (cornerTiles - 1); // y index of top-left piece in selected corner (start post of rotation)
+    let xx = 0;
+    let yy = 0;
+    let tempA = [cornerTiles];
+    let tD;
+
+    for (let x = 0; x < cornerTiles; x++) {
+
+      tempA[x] = [cornerTiles];
+
+      for (let y = 0; y < cornerTiles; y++) {
 
         if (movePuzzlePieces) {
 
-          if (tC[off][4] != -1) {
+          xx = x + cX;
+          yy = y + cY;
 
-            puzzlePieces[tC[off][4]][0] = a[y][0];
-            puzzlePieces[tC[off][4]][1] = a[y][1];
+          newX = cornerRotPositions[cornerX][cornerY][x][y][0];
+          newY = cornerRotPositions[cornerX][cornerY][x][y][1];
 
-            rotatePuzzlePiece(tC[off][4], animate);
+          tD = tileData[xx][yy];
+          tD2 = tileData[newX][newY];
+          tempA[x][y] = [tD[0], tD[1], tD2[0], tD2[1], tD[4]];
+        }
+      }
+    }
+
+    for (let x = 0; x < cornerTiles; x++) {
+
+      for (let y = 0; y < cornerTiles; y++) {
+
+        if (movePuzzlePieces) {
+
+          xx = x + cX;
+          yy = y + cY;
+
+          newX = cornerRotPositions[cornerX][cornerY][x][y][0];
+          newY = cornerRotPositions[cornerX][cornerY][x][y][1];
+
+          tileData[newX][newY][4] = tempA[x][y][4];
+
+          if (tileData[newX][newY][4] != -1) {
+
+            puzzlePieces[tempA[x][y][4]][0] = newX;
+            puzzlePieces[tempA[x][y][4]][1] = newY;
+
+            rotatePuzzlePiece(tempA[x][y][4], animate);
+
+            if (animate) { animateUIElement([[tileData[newX][newY], 0], [tileData[newX][newY], 1]], [tempA[x][y][0], tempA[x][y][1]], [tempA[x][y][2], tempA[x][y][3]], 15, 0); }
           }
         }
-
-        //off = (y + (len - 1)) % (a.length);
-        if (animate) { animateUIElement([[tileData[a[y][0]][a[y][1]], 0], [tileData[a[y][0]][a[y][1]], 1]], [tC[off][0], tC[off][1]], [tileData[a[y][0]][a[y][1]][0], tileData[a[y][0]][a[y][1]][1]], 15, 0); }
       }
-
-      //console.log(a);
     }
 
     updateEndpoints();
     useStep();
-    isSolved();
+    setTimeout(function() { isSolved(); }, 200);
   }
 }
 

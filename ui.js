@@ -992,7 +992,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
-          /* 03 */ 100 * uiScale, // y pos
+          /* 03 */ 80 * uiScale, // y pos
           /* 04 */ 0, // width
           /* 05 */ 0, // height
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
@@ -1436,7 +1436,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 4, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ height / 2, // y pos
@@ -1474,7 +1474,7 @@ ui = [
 
         [ // /* 04 */ Image
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ function() { return checkMarkIcon; }, // image
           /* 02 */ 180 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
@@ -1886,8 +1886,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [0, 200], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [2, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [-1, uiSelectedIndex - 1, -1]; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [0, 230], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { lineShiftHover[2] = 0; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [2, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex - 1, -1, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -1895,7 +1895,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return arrowTopIcon; }, // image
-          /* 02 */ 22 * uiScale, // image-size
+          /* 02 */ 20 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -1951,16 +1951,16 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [0, 200], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [2, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(uiSelectedIndex - 1, 1, 1, 1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [uiSelectedIndex - 1, -1, 1]; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [0, 230], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { lineShiftHover[2] = [0]; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [2, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { shiftTileLine(uiSelectedIndex - 1, -1, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return arrowRightIcon; }, // image
-          /* 02 */ 22 * uiScale, // image-size
+          /* 02 */ 20 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -2016,8 +2016,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [0, 200], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [2, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [-1, uiSelectedIndex - 1, 1]; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [0, 230], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { lineShiftHover[2] = 0; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [2, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex - 1, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2025,7 +2025,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return arrowBottomIcon; }, // image
-          /* 02 */ 22 * uiScale, // image-size
+          /* 02 */ 20 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -2081,8 +2081,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [0, 200], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [2, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [uiSelectedIndex - 1, -1, -1]; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [0, 230], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { lineShiftHover[2] = 0; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [2, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { shiftTileLine(uiSelectedIndex - 1, -1, -1, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2090,7 +2090,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return arrowLeftIcon; }, // image
-          /* 02 */ 22 * uiScale, // image-size
+          /* 02 */ 20 * uiScale, // image-size
           /* 03 */ 40, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -2112,7 +2112,7 @@ ui = [
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ ccbg, // colour
-          /* 09 */ [-1, 200], // alpha
+          /* 09 */ [-1, 230], // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
@@ -2167,7 +2167,7 @@ ui = [
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ ccbg, // colour
-          /* 09 */ [-1, 200], // alpha
+          /* 09 */ [-1, 230], // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
@@ -2222,7 +2222,7 @@ ui = [
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ ccbg, // colour
-          /* 09 */ [-1, 200], // alpha
+          /* 09 */ [-1, 230], // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
@@ -2277,7 +2277,7 @@ ui = [
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ ccbg, // colour
-          /* 09 */ [-1, 200], // alpha
+          /* 09 */ [-1, 230], // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
@@ -2469,8 +2469,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8;  uiData[2][4][5][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [0, 200], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][5][4][0] = 0; animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [5, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][5][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [0, 0]; animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [0, 230], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][5][4][0] = 0; animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [5, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(0, 0, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2478,7 +2478,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCorner; }, // image
-          /* 02 */ 34 * uiScale, // image-size
+          /* 02 */ 24 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -2522,8 +2522,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8;  uiData[2][4][6][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [0, 200], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][6][4][0] = 0; animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [5, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][6][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [1, 0]; animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [0, 230], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][6][4][0] = 0; animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [5, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(1, 0, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2531,7 +2531,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCorner; }, // image
-          /* 02 */ 34 * uiScale, // image-size
+          /* 02 */ 24 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -2575,8 +2575,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8;  uiData[2][4][7][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [0, 200], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][7][4][0] = 0; animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [5, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][7][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [1, 1]; animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [0, 230], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][7][4][0] = 0; animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [5, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(1, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2584,7 +2584,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCorner; }, // image
-          /* 02 */ 34 * uiScale, // image-size
+          /* 02 */ 24 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -2628,8 +2628,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8;  uiData[2][4][8][4][0] = 1; if (uiHover2 != elementID) { animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [0, 200], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { uiData[2][4][8][4][0] = 0; animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [5, 0], [0, 200], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][8][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [0, 1]; animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [0, 230], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][8][4][0] = 0; animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [5, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { rotateCornerTiles(0, 1, 1, 1); } // onClick event (0 = no event)
         ],
 
@@ -2637,7 +2637,7 @@ ui = [
 
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return rotCorner; }, // image
-          /* 02 */ 34 * uiScale, // image-size
+          /* 02 */ 24 * uiScale, // image-size
           /* 03 */ 0, // image-alpha
           /* 04 */ 0.5, // image-h-align
           /* 05 */ 0.5, // image-v-align
@@ -2871,7 +2871,7 @@ ui = [
           /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ ccbg, // colour
-          /* 09 */ 200, // alpha
+          /* 09 */ 230, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
@@ -2914,7 +2914,7 @@ ui = [
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ ccbg, // colour
-          /* 09 */ 200, // alpha
+          /* 09 */ 230, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
@@ -2957,7 +2957,7 @@ ui = [
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ ccbg, // colour
-          /* 09 */ 200, // alpha
+          /* 09 */ 230, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
@@ -3000,7 +3000,7 @@ ui = [
           /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
           /* 08 */ ccbg, // colour
-          /* 09 */ 200, // alpha
+          /* 09 */ 230, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
           /* 12 */ 0, // outline-alpha
