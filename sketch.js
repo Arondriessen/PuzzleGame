@@ -20,6 +20,8 @@ gameMechanicNames = [
   "Line Shifting",
   "Corner Rotation"
 ];
+worldColours = [];
+puzzleAnimTimer = 0;
 
 
 // Menu Data
@@ -66,6 +68,7 @@ menuBTMargin = 15;
 menuBTTxtSize = 28;
 levelBTSize = 102;
 levelBTOffset = 110;
+menuTileSize = 0;
 
 
 // Animation Variables
@@ -102,7 +105,7 @@ function preload() {
   rotCornerRight = loadImage('assets/rotCornerRight.svg');
   rotCornerBottom = loadImage('assets/rotCornerBottom.svg');
   rotCornerLeft = loadImage('assets/rotCornerLeft.svg');
-  checkMarkIcon = loadImage('assets/checkMarkIcon.svg');
+  checkmarkIcon = loadImage('assets/checkmarkIcon.png');
   lockedIcon = loadImage('assets/lockedIcon.svg');
   arrowLeft = loadImage('assets/arrowLeft.svg');
   arrowRight = loadImage('assets/arrowRight.svg');
@@ -119,6 +122,12 @@ function preload() {
   gradientLineH = loadImage('assets/gradientLineH.svg');
   rotateTileIcon = loadImage('assets/rotateTileIcon.svg');
   rotateTileIcon2 = loadImage('assets/rotateTileIcon2.svg');
+  mountainscapeBG = loadImage('assets/mountainscapeBG.png');
+  settingsIcon = loadImage('assets/settingsIcon.svg');
+  playIcon = loadImage('assets/playIcon.svg');
+  levelsIcon = loadImage('assets/levelsIcon.svg');
+  nextLevelIcon = loadImage('assets/nextLevelIcon.png');
+  xIcon = loadImage('assets/xIcon.png');
 
   gameMechanicIcons = [
     rotateTileMechanic,
@@ -140,6 +149,7 @@ function setup() {
 
   uiScale = min(width, height) / 1300;
   btTxtSize =  btTxtSize * uiScale;
+  menuTileSize = min(width / 11, 160);
 
 
   // Load progression data
@@ -147,8 +157,8 @@ function setup() {
   level = max(1, getItem('level'));
   world = max(1, getItem('world'));
   unlockedLevel = getItem('unlockedLevel');
-  if (unlockedLevel == null) { unlockedLevel = [1, 1, 1]; }
-
+  if (unlockedLevel == null) { unlockedLevel = [1, 1, 1, 1]; } // Level is unlocked for all worlds
+  levelsWorld = world;
 
   // Load level data from js file
 
@@ -171,8 +181,25 @@ function setup() {
       }
     }
 
-    //prepareLevelData();
+    // Set overall progress percentage
+
+    let perc = 0;
+
+    for (let i = 0; i < unlockedLevel.length; i++) {
+
+      perc += ((unlockedLevel[i] - 1) / levelData[i].length);
+    }
+
+    let temp = ceil((perc * 100) / unlockedLevel.length);
+    temp = temp.toString().split("");
+    overallPerc = "";
+
+    for (let i = 0; i < temp.length; i++) {
+
+      overallPerc += temp[i] + " ";
+    }
   };
+
   script.src = 'levels.js';
   document.head.appendChild(script);
 
@@ -197,10 +224,19 @@ function setup() {
   //cc = color("#ff9999"); // Light Red/Pink
   //cc = color('rgba(250, 255, 148, 1)'); // Yellow/Lime
   //cc = color('rgba(151, 213, 255, 1)'); // Light Blue
-  cc = color('rgba(146, 255, 185, 1)'); // Light Blue
+  //cc = color('rgba(146, 255, 185, 1)'); // Light Blue
 
   //ccbg = color("#25252b"); // Gray
   ccbg = color("#111114"); // Gray 2
+
+  worldColours = [
+    color("#ff9999"),
+    color("#de97ff"),
+    color("#faff94"),
+    color("#94bdff")
+  ];
+
+  cc = worldColours[levelsWorld - 1];
 
   bgSaved = 0;
 
@@ -235,20 +271,23 @@ function mousePressed() {
       // Is the puzzle still unsolved? If not you shouldn't be able to move the pieces anymore.
       if (gameState == 1) {
 
-        // Is the cursor on a tile?
-        if (selected.length != 0) {
-          for (let i = 0; i < puzzlePieces.length; i++) {
+        if (puzzleAnimTimer == 0) {
 
-            // Is there a puzzle piece on the selected tile?
-            if (puzzlePieces[i][0] == (selected[0])) {
-              if (puzzlePieces[i][1] == (selected[1])) {
+          // Is the cursor on a tile?
+          if (selected.length != 0) {
+            for (let i = 0; i < puzzlePieces.length; i++) {
 
-                // Initiate clicked sequence!
-                clicked = 1;
-                clickedPuzzlePiece = i;
-                clickX = mouseX;
-                clickY = mouseY;
-                dragAmount = 0;
+              // Is there a puzzle piece on the selected tile?
+              if (puzzlePieces[i][0] == (selected[0])) {
+                if (puzzlePieces[i][1] == (selected[1])) {
+
+                  // Initiate clicked sequence!
+                  clicked = 1;
+                  clickedPuzzlePiece = i;
+                  clickX = mouseX;
+                  clickY = mouseY;
+                  dragAmount = 0;
+                }
               }
             }
           }
@@ -286,108 +325,111 @@ function mouseReleased() {
       // Has a puzzle piece been clicked?
       if (clicked == 1) {
 
-        // Is the cursor on a tile?
-        if (selected.length != 0) {
+        if (gameState == 1) {
 
-          // Cycle through puzzle pieces to make some checks
-          for (let i = 0; i < puzzlePieces.length; i++) {
+          // Is the cursor on a tile?
+          if (selected.length != 0) {
 
-            // Is there a puzzle piece on the currently selected tile?
-            if (puzzlePieces[i][0] == (selected[0])) {
-              if (puzzlePieces[i][1] == (selected[1])) {
+            // Cycle through puzzle pieces to make some checks
+            for (let i = 0; i < puzzlePieces.length; i++) {
 
-                // If its a click...
-                if (dragAmount == 0) {
+              // Is there a puzzle piece on the currently selected tile?
+              if (puzzlePieces[i][0] == (selected[0])) {
+                if (puzzlePieces[i][1] == (selected[1])) {
 
-                  if (mouseButton === LEFT) {
+                  // If its a click...
+                  if (dragAmount == 0) {
 
-                    if (levelData[world - 1][level - 1][5][0] || designMode) {
+                    if (mouseButton === LEFT) {
 
-                      // Rotate Puzzle Piece
-                      rotatePuzzlePiece(i, 1);
-                      useStep();
-                      setTimeout(function() { isSolved(); }, 200);
+                      if (levelData[world - 1][level - 1][5][0] || designMode) {
+
+                        // Rotate Puzzle Piece
+                        rotatePuzzlePiece(i, 1);
+                        setTimeout(function() { useStep(); isSolved(); }, 200);
+                        puzzleAnimTimer = 10;
+                      }
+
+                    } else {
+
+                      if (designMode) {
+
+                        if (mouseButton === RIGHT) {
+
+                          event.preventDefault();
+                          puzzlePieces.splice(i, 1);
+                        }
+                      }
                     }
 
+                  // If its a drag...
                   } else {
 
-                    if (designMode) {
+                    // Prevent dropping piece back on its og place
+                    if (clickedPuzzlePiece != i) {
 
-                      if (mouseButton === RIGHT) {
+                      // Is the dragged piece marked as "being moved" ? (otherwise it's a non-movable piece)
+                      if (puzzlePieces[clickedPuzzlePiece][3] == 1) {
 
-                        event.preventDefault();
-                        puzzlePieces.splice(i, 1);
-                      }
-                    }
-                  }
+                        // Is the currently selected puzzle piece a movable piece?
+                        if (isMovablePiece(i, 0, 0) == 1) {
 
-                // If its a drag...
-                } else {
+                          animateUIElement([[tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]], 0], [tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]], 1]], [tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][0], tileData[puzzlePieces[i][0]][puzzlePieces[i][1]]][1], [tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]][0], tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]][1]], 10, 0);
 
-                  // Prevent dropping piece back on its og place
-                  if (clickedPuzzlePiece != i) {
-
-                    // Is the dragged piece marked as "being moved" ? (otherwise it's a non-movable piece)
-                    if (puzzlePieces[clickedPuzzlePiece][3] == 1) {
-
-                      // Is the currently selected puzzle piece a movable piece?
-                      if (isMovablePiece(i, 0, 0) == 1) {
-
-                        animateUIElement([[tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]], 0], [tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]], 1]], [tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][0], tileData[puzzlePieces[i][0]][puzzlePieces[i][1]]][1], [tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]][0], tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]][1]], 10, 0);
-
-                        // Move selected piece to dragged piece's og position
-                        puzzlePieces[i][0] = puzzlePieces[clickedPuzzlePiece][0];
-                        puzzlePieces[i][1] = puzzlePieces[clickedPuzzlePiece][1];
+                          // Move selected piece to dragged piece's og position
+                          puzzlePieces[i][0] = puzzlePieces[clickedPuzzlePiece][0];
+                          puzzlePieces[i][1] = puzzlePieces[clickedPuzzlePiece][1];
+                        }
                       }
                     }
                   }
                 }
               }
             }
-          }
 
-          // If it's a drag
-          if (dragAmount > 0) {
+            // If it's a drag
+            if (dragAmount > 0) {
 
-            // Prevent dropping piece back on its og place
-            if ((puzzlePieces[clickedPuzzlePiece][0] != (selected[0])) || (puzzlePieces[clickedPuzzlePiece][1] != (selected[1]))) {
+              // Prevent dropping piece back on its og place
+              if ((puzzlePieces[clickedPuzzlePiece][0] != (selected[0])) || (puzzlePieces[clickedPuzzlePiece][1] != (selected[1]))) {
 
-              // Is the dragged piece marked as "being moved" ? (otherwise it's a non-movable piece)
-              if (puzzlePieces[clickedPuzzlePiece][3] == 1) {
+                // Is the dragged piece marked as "being moved" ? (otherwise it's a non-movable piece)
+                if (puzzlePieces[clickedPuzzlePiece][3] == 1) {
 
-                // Is the currently selected puzzle piece a movable piece? (or an empty tile)
-                if (isMovablePiece(-1, selected[0], selected[1]) == 1) {
+                  // Is the currently selected puzzle piece a movable piece? (or an empty tile)
+                  if (isMovablePiece(-1, selected[0], selected[1]) == 1) {
 
-                  // Update tile data
-                  tileIndexes[selected[0]][selected[1]] = [selected[0], selected[1]];
-                  tileData[selected[0]][selected[1]][4] = clickedPuzzlePiece;
-                  tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]][4] = -1;
+                    // Update tile data
+                    tileIndexes[selected[0]][selected[1]] = [selected[0], selected[1]];
+                    tileData[selected[0]][selected[1]][4] = clickedPuzzlePiece;
+                    tileData[puzzlePieces[clickedPuzzlePiece][0]][puzzlePieces[clickedPuzzlePiece][1]][4] = -1;
 
-                  // Move puzzle piece to selected tile
-                  puzzlePieces[clickedPuzzlePiece][0] = selected[0];
-                  puzzlePieces[clickedPuzzlePiece][1] = selected[1];
-                  puzzlePieces[clickedPuzzlePiece][3] = 0;
-                  clickedPuzzlePiece = -1;
-                  clicked = 0;
-                  useStep();
-                  isSolved();
+                    // Move puzzle piece to selected tile
+                    puzzlePieces[clickedPuzzlePiece][0] = selected[0];
+                    puzzlePieces[clickedPuzzlePiece][1] = selected[1];
+                    puzzlePieces[clickedPuzzlePiece][3] = 0;
+                    clickedPuzzlePiece = -1;
+                    clicked = 0;
+                    useStep();
+                    isSolved();
 
-                  // If we're in design mode, update endpoints too
+                    // If we're in design mode, update endpoints too
 
-                  updateEndpoints();
+                    updateEndpoints();
+                  }
                 }
               }
+
+              dragAmount = 0;
             }
-
-            dragAmount = 0;
           }
-        }
 
-        if (clickedPuzzlePiece != -1) {
+          if (clickedPuzzlePiece != -1) {
 
-          puzzlePieces[clickedPuzzlePiece][3] = 0; // Gives non-critical error (cannot set property after finishing level) ***** FIX *****
-          clickedPuzzlePiece = -1;
-          clicked = 0;
+            puzzlePieces[clickedPuzzlePiece][3] = 0; // Gives non-critical error (cannot set property after finishing level) ***** FIX *****
+            clickedPuzzlePiece = -1;
+            clicked = 0;
+          }
         }
       }
     }
@@ -406,6 +448,7 @@ function prepareLevelData() {
   // Create COPY of (not reference to) the levelData array to avoid modifying it
 
   puzzlePieces = [pp.length];
+  finishedPuzzlePath = [pp.length];
 
   for (i = 0; i < pp.length; i++) { // Cycle through puzzle pieces
 
@@ -458,7 +501,7 @@ function prepareLevelData() {
 
   let smallerDimension = min(width, height);
   //tileSize = min(((bgTileSize * uiScale) / 3) * 2, ((bgTileSize * uiScale) / (tiles - 2)) * 2); // the size a single tile occupies (tiles themselves can be smaller)
-  tileSize = min((smallerDimension * 0.8) / (tiles + 2), (smallerDimension * 0.14));
+  tileSize = min((smallerDimension * 0.8) / (tiles + 2), (smallerDimension * 0.15));
   endPieceSize = min(50 * uiScale, tileSize / 4);
   selected = [];
   clicked = 0;
@@ -468,6 +511,7 @@ function prepareLevelData() {
   clickY = 0;
   dragAmount = 0;
   gameState = 1;
+  cc = worldColours[world - 1];
   puzzlePieceColour = cc;
   puzzlePieceOp = [255];
   endPieceOp = [255];
@@ -503,30 +547,13 @@ function prepareLevelData() {
 
       tileData[i][y][0] = (((width / 2) - (((tiles / 2) + 0.5) * tileSize)) + (tileSize * (i + 1)));
       tileData[i][y][1] = (((height / 2) - (((tiles / 2) + 0.5) * tileSize)) + (tileSize * (y + 1)));
-      tileData[i][y][2] = -1; // Opacity
+      tileData[i][y][2] = 0; // Opacity
       tileData[i][y][3] = 1; // Scale
       tileData[i][y][4] = -1; // Puzzle Piece Id (-1 = no piece on tile)
       //tileData[i][y][3] = [i, y]; // Save original grid position to keep track of position changes
     }
   }
 
-  // Cycle through the tile grid again and generate tile opacity values based on distance from centre tile
-
-  for (let i = 1; i < (tiles - 1); i++) {
-    for (let y = 1; y < (tiles - 1); y++) {
-
-      let posX = tileData[i][y][0]; // Store x position
-      let posY = tileData[i][y][1]; // Store y position
-
-      let distX = abs(tileData[mid][mid][0] - posX);
-      let distY = abs(tileData[mid][mid][1] - posY);
-      let distance = max(distX, distY);
-      let centX = tileData[mid][mid][0];
-      let centY = tileData[mid][mid][1];
-
-      tileData[i][y][2] = ((255 - map(dist(centX, centY, posX, posY), 0, mid * tileSize, 120, 240)));
-    }
-  }
 
   // Apply line shifts
 
@@ -625,7 +652,7 @@ function isMovablePiece(piece, x, y) {
 
   // Testing out movable endpoints (meaning everything is movable and this function would become obsolete)
 
-  /*
+
   if (piece > -1) { // Checks provided puzzle piece
 
     for (let i = 0; i < 2; i++) {
@@ -645,7 +672,7 @@ function isMovablePiece(piece, x, y) {
         if (designMode == 0) { clickedOnMovablePiece = 0; }
       }
     }
-  }*/
+  }
 
   return clickedOnMovablePiece;
 }
@@ -660,9 +687,9 @@ function useStep() {
       steps -= 1;
 
       if (steps < 1) {
-        gameState = 3;
 
-        animateUIElement([[uiData[2][6][2][1], 4], [uiData[2][6][2][1], 5], [uiData[2][6][2][1], 9], [uiData[2][6][2][2], 4]], [(bgTileSize / 2) * uiScale, (bgTileSize / 2) * uiScale, 0, 0], [bgTileSize * uiScale, bgTileSize * uiScale, 5, 255], 15, 0);
+        gameState = 3;
+        animateUIElement([[uiData[2][0][19][1], 4], [uiData[2][0][19][1], 5], [uiData[2][0][19][1], 12]], [200 * uiScale, 200 * uiScale, 100], [360 * uiScale, 360 * uiScale, 0], 26, 0);
       }
     }
   }
@@ -676,47 +703,43 @@ function rotatePuzzlePiece(i, animate) {
     if (puzzlePieces[i][2][y] != "Mid") {
 
       let pos = posRotTab.indexOf(puzzlePieces[i][2][y]);
-      let pos2 = 0;
-      let pos3 = 0;
 
       pos = (pos + 2) % 8;
       puzzlePieces[i][2][y] = posRotTab[pos];
 
-      if (puzzlePieces[i][4] != 0) {
-
-        if (puzzlePieces[i][4][y] != undefined) {
-
-          pos2 = posRotTab.indexOf(puzzlePieces[i][4][y][0]);
-          pos3 = posRotTab.indexOf(puzzlePieces[i][4][y][1]);
-          pos2 = (pos2 + 2) % 8;
-          pos3 = (pos3 + 2) % 8;
-          puzzlePieces[i][4][y][0] = posRotTab[pos2];
-          puzzlePieces[i][4][y][1] = posRotTab[pos3];
-        }
-      }
-
       if (animate) {
 
-        //animateUIElement([[puzzlePieces[i], 4]], [-45], [0], 7, 0);
-        //console.log(puzzlePieces[i][5][y]);
         animateUIElement([[puzzlePieces[i][5][y], 0]], [puzzlePieces[i][5][y][0]], [positions[posRotTab[pos]][0]], 10, 0);
         animateUIElement([[puzzlePieces[i][5][y], 1]], [puzzlePieces[i][5][y][1]], [positions[posRotTab[pos]][1]], 10, 0);
 
-        if (puzzlePieces[i][4] != 0) {
+      } else { updatePPPoints(); }
+    }
+  }
 
-          if (puzzlePieces[i][4][y] != undefined) {
+  if (puzzlePieces[i][4] != 0) {
 
-            if (puzzlePieces[i][4][y] != -1) {
+    for (let y = 0; y < puzzlePieces[i][4].length; y++) {
 
-              animateUIElement([[puzzlePieces[i][6][y][0], 0]], [puzzlePieces[i][6][y][0][0]], [positions[posRotTab[pos2]][0]], 10, 0);
-              animateUIElement([[puzzlePieces[i][6][y][0], 1]], [puzzlePieces[i][6][y][0][1]], [positions[posRotTab[pos2]][1]], 10, 0);
+      if (puzzlePieces[i][4][y] != -1) {
 
-              animateUIElement([[puzzlePieces[i][6][y][1], 0]], [puzzlePieces[i][6][y][1][0]], [positions[posRotTab[pos3]][0]], 10, 0);
-              animateUIElement([[puzzlePieces[i][6][y][1], 1]], [puzzlePieces[i][6][y][1][1]], [positions[posRotTab[pos3]][1]], 10, 0);
+        for (let z = 0; z < 2; z++) {
+
+          if (puzzlePieces[i][4][y][z] != "Mid") {
+
+            let pos = 0;
+
+            pos = posRotTab.indexOf(puzzlePieces[i][4][y][z]);
+            pos = (pos + 2) % 8;
+            puzzlePieces[i][4][y][z] = posRotTab[pos];
+
+            if (animate) {
+
+              animateUIElement([[puzzlePieces[i][6][y][z], 0]], [puzzlePieces[i][6][y][z][0]], [positions[posRotTab[pos]][0]], 10, 0);
+              animateUIElement([[puzzlePieces[i][6][y][z], 1]], [puzzlePieces[i][6][y][z][1]], [positions[posRotTab[pos]][1]], 10, 0);
             }
           }
         }
-      } else { updatePPPoints(); }
+      }
     }
   }
 }
@@ -738,6 +761,8 @@ function isSolved() {
       if (debug) { console.log("//////////////// isSolved ////////////////"); }
 
       let aSize = puzzlePieces.length;
+      finishedPuzzlePath.length = 0;
+      finishedPuzzlePath = [0];
       let exitMainLoop = 0;
       let exitSecLoop = 0;
 
@@ -840,6 +865,7 @@ function isSolved() {
                   pI = y;
                   exitMainLoop = 0;
                   exitSecLoop = 1;
+                  finishedPuzzlePath.push(y);
 
                   if (y == (aSize - 1)) { // Last endpoint (finished)
 
@@ -874,20 +900,20 @@ function levelComplete() {
   if (debug) { console.log("//////////////// Level Finished! ////////////////"); }
 
   gameState = 2;
-  //puzzlePieceColour = 255;
 
-  //animateUIElement([[puzzlePieceOp, 0], [endPieceOp, 0]], [255, 255], [0, 0], 30, 0);
-  //animateUIElement([[uiData[2][1][2][1], 4], [uiData[2][1][2][1], 5], [uiData[2][1][2][1], 9], [uiData[2][1][2][2], 4]], [(bgTileSize / 2) * uiScale, (bgTileSize / 2) * uiScale, 0, 0], [bgTileSize * uiScale, bgTileSize * uiScale, 5, 255], 15, 0);
+  // Animate steps highlight circle
 
-  for (let x = 0; x < tiles; x++) {
+  //animateUIElement([[uiData[2][0][19][1], 4], [uiData[2][0][19][1], 5], [uiData[2][0][19][1], 12]], [200 * uiScale, 200 * uiScale, 100], [360 * uiScale, 360 * uiScale, 0], 26, 0);
 
-    for (let y = 0; y < tiles; y++) {
+  // Animate path
 
-      if (tileData[x][y][2] != -1) {
+  for (let i = 0; i < finishedPuzzlePath.length; i++) {
 
-        //animateUIElement([[tileData[x][y], 2], [tileData[x][y], 3]], [tileData[x][y][2], 1], [0, 0], Math.round(random(5, 30)), 0);
-      }
-    }
+    tX = puzzlePieces[finishedPuzzlePath[i]][0];
+    tY = puzzlePieces[finishedPuzzlePath[i]][1];
+
+    animateUIElement([[tileData[tX][tY], 2], [tileData[tX][tY], 3]], [0, 1.5], [12, 1], 16, 0, 7 * (i + 0));
+    animateUIElement([[tileData[tX][tY], 2]], [12], [0], 72, 0, (6 * (i + 0)) + 36);
   }
 
   if (typeof levelData[world - 1][level] !== "undefined") { // Check if there is a next level
@@ -956,6 +982,14 @@ function nextLevel() {
 function draw() {
 
   background(ccbg);
+
+  let imgAR1 = 1600 / 1080;
+  let imgAR2 = 1080 / 1600;
+
+  let ww = max(width, height * imgAR1);
+  let hh = max(height, width * imgAR2);
+
+  //image(mountainscapeBG, (width / 2) - (ww / 2), (height / 2) - (hh / 2), ww, hh);
 
 
   uiHover = 0;
@@ -1036,13 +1070,10 @@ function draw() {
 
                         for (z = 0; z < (a[1][15]()); z++) {
 
-                          //console.log(a[x][y]);
                           a[x][y].push(temp);
                         }
                       }
                     }
-
-                    //console.log(a[x][y]);
                   }
                 }
               }
@@ -1053,6 +1084,7 @@ function draw() {
               boxH = a[1][5];
               boxOp = a[1][9];
               if (typeof boxOp === "object") { boxOp = a[1][9][((v * hNum) + h)]; }
+              if (typeof boxOp === "function") { boxOp = boxOp(); }
               boxOutlineOp = a[1][12];
               if (a[4] != undefined) { imgOp = a[4][3]; }
 
@@ -1156,7 +1188,6 @@ function draw() {
                   cccc = color(ccc, ccc, ccc, boxOp);
                 }
 
-                //console.log(cccc);
                 fill(cccc);
 
                 //if (a[0] == 2) { if (uiSelected == a) { fill(a[1][8], a[3][1]()); } }
@@ -1207,10 +1238,24 @@ function draw() {
 
                 // Draw element text
 
+                let ccc = a[2][3];
+                let cccc = ccc;
+
+                if (typeof ccc === "object") {
+
+                  cccc = color(ccc.levels[0], ccc.levels[1], ccc.levels[2], a[2][4]);
+
+                } else {
+
+                  cccc = color(ccc, ccc, ccc, a[2][4]);
+                }
+
+                fill(cccc);
+
                 textFont(fontRegular);
                 if (a[2][7] != undefined) { textFont(a[2][7]); }
                 textSize(a[2][2]);
-                if (a[2][4] != -1) { fill(a[2][3], a[2][4]); } else { fill(a[2][3]); }
+                //if (a[2][4] != -1) { fill(a[2][3], a[2][4]); } else { fill(a[2][3]); }
                 noStroke();
                 textAlign(LEFT, TOP);
 
@@ -1227,10 +1272,13 @@ function draw() {
 
                 if (a[4][0] == 1) { // Is image element active?
 
-                  let hA = (((boxW * (1 + (a[1][1] == 4))) * a[4][4]) - (a[4][2] / 2)); // Horizontal aligning
-                  let vA = (((boxH * (1 + (a[1][1] == 4))) * a[4][5]) - (a[4][2] / 2)); // Vertical aligning
+                  let ww = a[4][2];
+                  let hh = a[4][2];
+                  if (a[4][3] != 0) { hh = a[4][3]; }
+                  let hA = (((boxW * (1 + (a[1][1] == 4))) * a[4][4]) - (ww / 2)); // Horizontal aligning
+                  let vA = (((boxH * (1 + (a[1][1] == 4))) * a[4][5]) - (hh / 2)); // Vertical aligning
 
-                  image(a[4][1], hA - ((boxW * (1 + (a[1][1] == 4))) * hAlign), vA - ((boxH * (1 + (a[1][1] == 4))) * vAlign), a[4][2], a[4][2]); // ***** Cause fatal error in firefox only *****
+                  image(a[4][1], hA - ((boxW * (1 + (a[1][1] == 4))) * hAlign), vA - ((boxH * (1 + (a[1][1] == 4))) * vAlign), ww, hh); // ***** Causes fatal error in firefox only *****
                 }
               }
 
@@ -1245,6 +1293,33 @@ function draw() {
 
     // Run active animations
     if (activeUIAnims.length > 0) { animateUIElement(); }
+
+
+    // Main Menu
+
+    if (state < 2) {
+
+      let hNum = floor(width / menuTileSize);
+      let vNum = floor(height / menuTileSize);
+      hNum -= hNum % 2;
+      vNum -= vNum % 2;
+      let xOff = (width / 2) - (menuTileSize * ((hNum / 2) - 0.5));
+      let yOff = (height / 2) - (menuTileSize * ((vNum / 2) - 0.5));
+
+      for (let x = 0; x < hNum; x++) {
+
+        let xx = xOff + (x * menuTileSize);
+
+        image(gradientLineV, xx, yOff, 1, menuTileSize * (vNum - 1));
+      }
+
+      for (let y = 0; y < vNum; y++) {
+
+        let yy = yOff + (y * menuTileSize);
+
+        image(gradientLineH, xOff, yy, menuTileSize * (hNum - 1), 1);
+      }
+    }
 
 
     // Levels Menu
@@ -1310,8 +1385,6 @@ function draw() {
 
             if (i < (tiles - 1)) {
 
-              //line(startX + (tileSize * (i + 1)), startY, startX + (tileSize * (i + 1)), startY + ((tiles + len) * tileSize));
-              //line(startX, startY + (tileSize * (i + 1)), startX + ((tiles + len) * tileSize), startY + (tileSize * (i + 1)));
               image(gradientLineV, startX + (tileSize * (i + 1)), startY, 1, (tiles + len) * tileSize);
               image(gradientLineH, startX, startY + (tileSize * (i + 1)), (tiles + len) * tileSize, 1);
 
@@ -1330,7 +1403,7 @@ function draw() {
 
             for (let y = 0; y < tiles; y++) {
 
-              noFill();
+              fill(255, tileData[i][y][2]);
 
               // Check for mouse selection
 
@@ -1338,17 +1411,20 @@ function draw() {
               let posY = tileData[i][y][1]; // Store y position
               let scale = tileSpread;
 
-              if ((abs(mouseX - posX) < (tileSize / 2)) && (abs(mouseY - posY) < (tileSize / 2))) {
+              if (gameState == 1) {
 
-                //scale = tileSpread * hoverGrowth; // If cursor is on tile resize it (hover effect)
-                selected = [i, y]; // Save index of selected tile
+                if ((abs(mouseX - posX) < (tileSize / 2)) && (abs(mouseY - posY) < (tileSize / 2))) {
 
-                fill(255, 8);
-                noStroke();
+                  //scale = tileSpread * hoverGrowth; // If cursor is on tile resize it (hover effect)
+                  selected = [i, y]; // Save index of selected tile
+
+                  fill(255, 8);
+                  noStroke();
+                }
               }
 
-
               // Draw tiles
+
               push();
               translate(posX, posY);
 
@@ -1362,118 +1438,121 @@ function draw() {
 
           // Draw puzzle pieces
 
-          strokeWeight((5 / (tiles / 5)) * uiScale);
           strokeCap(ROUND);
           strokeJoin(ROUND);
 
-          for (let i = 0; i < puzzlePieces.length; i++) {
+          let ePDrawPos = [];
 
-            let posX = tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][0];
-            let posY = tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][1];
+          for (let z = 1; z > -1; z--) { // First loop for move previews, second for normal pieces
 
-            if (puzzlePieces[i][3] == 1) {
+            strokeWeight(6 * uiScale);
 
-              posX = mouseX + (posX - clickX);
-              posY = mouseY + (posY - clickY);
-            }
+            for (let i = 0; i < puzzlePieces.length; i++) {
 
-            // Animate rotation
+              let posX = tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][0];
+              let posY = tileData[puzzlePieces[i][0]][puzzlePieces[i][1]][1];
 
-            push();
-            translate(posX, posY);
-            angleMode(DEGREES);
-            //rotate(puzzlePieces[i][4]);
+              if (puzzlePieces[i][3] == 1) {
 
-            let lerpNum = 0.9;
-            let drawDot = 1;
-            let drawRot = 0;
-            let drawMov = 0;
-            let drawX = 0;
-
-            if ((puzzlePieces[i][0] == selected[0]) && (puzzlePieces[i][1] == selected[1])) { // If hovering over
-
-              if (levelData[world - 1][level - 1][5][0]) { // If rotation is enabled
-
-                drawDot = 0;
-                drawRot = 1;
+                posX = mouseX + (posX - clickX);
+                posY = mouseY + (posY - clickY);
               }
 
-              lerpNum = 0.5;
-            }
 
-            if (dragAmount > 0) { // If a piece is being dragged *** Needs a better treshold (also in mouse-release)
+              push();
+              translate(posX, posY);
+              angleMode(DEGREES);
+              //rotate(puzzlePieces[i][4]);
 
-              if (i == clickedPuzzlePiece) { // If this piece being being dragged
+              let lerpNum = 0.9;
+              let drawDot = 1;
+              let drawRot = 0;
+              let drawMov = 0;
+              let drawX = 0;
 
-                if (isMovablePiece(i)) {
+              if ((puzzlePieces[i][0] == selected[0]) && (puzzlePieces[i][1] == selected[1])) { // If hovering over
+
+                if (levelData[world - 1][level - 1][5][0]) { // If rotation is enabled
 
                   drawDot = 0;
-                  drawMov = 1;
+                  drawRot = 1;
                 }
 
-              } else if (lerpNum == 0.5) { // If another piece is being dragged onto this one
+                lerpNum = 0.5;
+              }
 
-                if (isMovablePiece(i) == 0) {
+              if (dragAmount > 0) { // If a piece is being dragged *** Needs a better treshold (also in mouse-release)
 
-                  drawX = 1;
+                if (i == clickedPuzzlePiece) { // If this piece being being dragged
+
+                  if (isMovablePiece(i)) {
+
+                    drawDot = 0;
+                    drawMov = 1;
+                  }
+
+                } else if (lerpNum == 0.5) { // If another piece is being dragged onto this one
+
+                  if (isMovablePiece(i) == 0) {
+
+                    drawX = 1;
+                  }
+                }
+
+                drawRot = 0;
+              }
+
+              if (drawDot) { // Draw tile centre dot
+
+                fill(lerpColor(cc, ccbg, lerpNum));
+                noStroke();
+                circle(0, 0, tileSize / 8);
+              }
+
+              if (drawRot) {
+
+                image(rotateTileIcon, - (tileSize / 3.2), - (tileSize / 3.2), tileSize / 1.6, tileSize / 1.6);
+              }
+
+              noFill();
+
+              let offX = 0;
+              let offY = 0;
+              let lShiftHov = 0;
+              let cRotHov = 0;
+              let cT;
+
+              if (cornerRotHover[0] != -1) {
+
+                cT = (tiles + 1) / 2;
+
+                if (abs((((cT + 1) / 2) + (((cT + 1) / 2) * cornerRotHover[0])) - (puzzlePieces[i][0] + 1)) <= ((cT) / 2)) { // If piece x is in range of corner
+
+                  if (abs((((cT + 1) / 2) + (((cT + 1) / 2) * cornerRotHover[1])) - (puzzlePieces[i][1] + 1)) <= ((cT) / 2)) { // If piece y in range of corner
+
+                    cRotHov = 1;
+                  }
                 }
               }
 
-              drawRot = 0;
-            }
+              if (lineShiftHover[2] != 0) {
 
-            if (drawDot) { // Draw tile centre dot
+                if (puzzlePieces[i][0] == lineShiftHover[1]) { // In selected column
 
-              fill(lerpColor(cc, ccbg, lerpNum));
-              noStroke();
-              circle(0, 0, tileSize / 8);
-            }
+                  if ((tileData[lineShiftHover[1]][(tiles - 1) * (Math.max(0, lineShiftHover[2]))][4]) == -1) { // If it's able to move
 
-            if (drawRot) {
+                    lShiftHov = 1;
+                  }
 
-              image(rotateTileIcon, - (tileSize / 3.2), - (tileSize / 3.2), tileSize / 1.6, tileSize / 1.6);
-            }
+                } else if (puzzlePieces[i][1] == lineShiftHover[0]) { // In selected row
 
-            noFill();
+                  if ((tileData[(tiles - 1) * (Math.max(0, lineShiftHover[2]))][lineShiftHover[0]][4]) == -1) { // If it's able to move
 
-            let offX = 0;
-            let offY = 0;
-            let lShiftHov = 0;
-            let cRotHov = 0;
-            let cT;
-
-            if (cornerRotHover[0] != -1) {
-
-              cT = (tiles + 1) / 2;
-
-              if (abs((((cT + 1) / 2) + (((cT + 1) / 2) * cornerRotHover[0])) - (puzzlePieces[i][0] + 1)) <= ((cT) / 2)) { // If piece x is in range of corner
-
-                if (abs((((cT + 1) / 2) + (((cT + 1) / 2) * cornerRotHover[1])) - (puzzlePieces[i][1] + 1)) <= ((cT) / 2)) { // If piece y in range of corner
-
-                  cRotHov = 1;
+                    lShiftHov = 1;
+                  }
                 }
               }
-            }
 
-            if (lineShiftHover[2] != 0) {
-
-              if (puzzlePieces[i][0] == lineShiftHover[1]) { // In selected column
-
-                if ((tileData[lineShiftHover[1]][(tiles - 1) * (Math.max(0, lineShiftHover[2]))][4]) == -1) { // If it's able to move
-
-                  lShiftHov = 1;
-                }
-
-              } else if (puzzlePieces[i][1] == lineShiftHover[0]) { // In selected row
-
-                if ((tileData[(tiles - 1) * (Math.max(0, lineShiftHover[2]))][lineShiftHover[0]][4]) == -1) { // If it's able to move
-
-                  lShiftHov = 1;
-                }
-              }
-            }
-
-            for (let z = (puzzlePieces[i][3] || lShiftHov || cRotHov); z > -1; z--) {
 
               offX = 0;
               offY = 0;
@@ -1484,8 +1563,9 @@ function draw() {
 
               } else { // Low opacity 2nd path for original position when moving piece
 
-                let ccc = color(cc.levels[0], cc.levels[1], cc.levels[2], 25);
-                stroke(ccc);
+                //let ccc = color(cc.levels[0], cc.levels[1], cc.levels[2], 25);
+                //stroke(ccc);
+                stroke(lerpColor(cc, ccbg, 0.9));
 
                 if (cRotHov) {
 
@@ -1592,23 +1672,36 @@ function draw() {
 
                   line(x1, y1, x4, y4);
                 }
+
+                if ((i == 0) || (i == (puzzlePieces.length - 1))) {
+
+                  ePDrawPos.push([posX, posY, x1, y1]);
+                }
               }
+
+              if (drawMov) {
+
+                image(moveIcon, - (tileSize / 3), - (tileSize / 3), tileSize / 1.5, tileSize / 1.5);
+              }
+
+              pop();
             }
 
-            if (drawMov) {
+            if (z) {
 
-              image(moveIcon, - (tileSize / 3), - (tileSize / 3), tileSize / 1.5, tileSize / 1.5);
+              let ccc = color(255);
+
+              fill(lerpColor(ccc, ccbg, 0.9));
+              stroke(ccbg);
+              strokeWeight(3.6);
+
+              circle(ePDrawPos[0][0] + ePDrawPos[0][2], ePDrawPos[0][1] + ePDrawPos[0][3], 24);
+              circle(ePDrawPos[1][0] + ePDrawPos[1][2], ePDrawPos[1][1] + ePDrawPos[1][3], 24);
             }
-
-            pop();
           }
 
 
           // Draw end pieces
-
-          fill(255, endPieceOp[0]);
-          stroke(ccbg);
-          strokeWeight(3.6);
 
           for (let i = 0; i < 2; i++) {
 
@@ -1623,8 +1716,23 @@ function draw() {
               posY = mouseY + (posY - clickY);
             }
 
-            circle(posX - (tileSize / 2) + puzzlePieces[ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[ePI][5][0][1] * tileSize, 24);
+            fill(cc, endPieceOp[0]);
+            stroke(ccbg);
+            strokeWeight(4);
+
+            circle(posX - (tileSize / 2) + puzzlePieces[ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[ePI][5][0][1] * tileSize, 30);
+
+            fill(255, endPieceOp[0]);
+            stroke(ccbg);
+            strokeWeight(4);
+
+            circle(posX - (tileSize / 2) + puzzlePieces[ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[ePI][5][0][1] * tileSize, 15);
           }
+
+
+          // Reduce puzzleAnimTimer by 1
+
+          puzzleAnimTimer = max(0, puzzleAnimTimer - 1);
         }
       }
     }
@@ -1828,6 +1936,7 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
     let yy = 0;
     let tempA = [cornerTiles];
     let tD;
+    let puzzlePiecesMoved = 0;
 
     for (let x = 0; x < cornerTiles; x++) {
 
@@ -1868,6 +1977,7 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
 
             puzzlePieces[tempA[x][y][4]][0] = newX;
             puzzlePieces[tempA[x][y][4]][1] = newY;
+            puzzlePiecesMoved++;
 
             rotatePuzzlePiece(tempA[x][y][4], animate);
 
@@ -1877,9 +1987,12 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
       }
     }
 
-    updateEndpoints();
-    useStep();
-    setTimeout(function() { isSolved(); }, 200);
+    if (puzzlePiecesMoved > 0) {
+
+      updateEndpoints();
+      setTimeout(function() { useStep(); isSolved(); }, 200);
+      puzzleAnimTimer = 15;
+    }
   }
 }
 
@@ -2426,7 +2539,7 @@ function saveLevelChanges() {
 }
 
 
-function animateUIElement(elements, start, end, time, reset, id) {
+function animateUIElement(elements, start, end, time, reset, delay) {
 
   if (elements != undefined) { // Add new anim
 
@@ -2448,21 +2561,15 @@ function animateUIElement(elements, start, end, time, reset, id) {
         spd[i] = (end[i] - start[i]) / time;
       }
 
-      for (let y = 0; y < elements.length; y++) { // Cycle through elements (variables to animate in one batch)
-
-        let elem = elements[y][0];
-        let elemIndex = elements[y][1];
-
-        elem[elemIndex] = start[y];
-      }
+      if (delay == undefined) { delay = 0; }
 
       if (reset == 0) {
 
-        activeUIAnims.push([elements, end, spd, time, end]);
+        activeUIAnims.push([elements, end, spd, time, start, end, delay]);
 
       } else {
 
-        activeUIAnims.push([elements, end, spd, time, start]);
+        activeUIAnims.push([elements, end, spd, time, start, start, delay]);
       }
     }
 
@@ -2470,34 +2577,49 @@ function animateUIElement(elements, start, end, time, reset, id) {
 
     for (let i = 0; i < activeUIAnims.length; i++) { // Cycle through anims
 
-      activeUIAnims[i][3]--; // Decrease time left for anim
+      if (activeUIAnims[i][6] < 1) { // If delay is over
 
-      //console.log("***** ANIM *****");
+        activeUIAnims[i][3]--; // Decrease anim time left
 
-      if (activeUIAnims[i][3] > 0) {
+        if (activeUIAnims[i][6] == 0) {
 
-        for (let y = 0; y < activeUIAnims[i][0].length; y++) { // Cycle through elements (variables to animate in one batch)
+          for (let y = 0; y < activeUIAnims[i][0].length; y++) { // Cycle through elements (variables to animate in one batch)
 
-          let elem = activeUIAnims[i][0][y][0];
-          let elemIndex = activeUIAnims[i][0][y][1];
+            let elem = activeUIAnims[i][0][y][0];
+            let elemIndex = activeUIAnims[i][0][y][1];
 
-          elem[elemIndex] += activeUIAnims[i][2][y];
+            elem[elemIndex] = activeUIAnims[i][4][y]; // Set starting state
 
-          //console.log(y + " : " + elem[elemIndex] + " + " + activeUIAnims[i][2][y]);
+             activeUIAnims[i][6]--; /* Decrease delay time left */
+          }
         }
 
-      } else {
+        if (activeUIAnims[i][3] > 0) { // If anima has time left
 
-        for (let y = 0; y < activeUIAnims[i][0].length; y++) { // Cycle through elements (variables to animate in one batch)
+          for (let y = 0; y < activeUIAnims[i][0].length; y++) { // Cycle through elements (variables to animate in one batch)
 
-          let elem = activeUIAnims[i][0][y][0];
-          let elemIndex = activeUIAnims[i][0][y][1];
+            let elem = activeUIAnims[i][0][y][0];
+            let elemIndex = activeUIAnims[i][0][y][1];
 
-          elem[elemIndex] = activeUIAnims[i][4][y];
+            elem[elemIndex] += activeUIAnims[i][2][y];
+
+            //console.log(y + " : " + elem[elemIndex] + " + " + activeUIAnims[i][2][y]);
+          }
+
+        } else {
+
+          for (let y = 0; y < activeUIAnims[i][0].length; y++) { // Cycle through elements (variables to animate in one batch)
+
+            let elem = activeUIAnims[i][0][y][0];
+            let elemIndex = activeUIAnims[i][0][y][1];
+
+            elem[elemIndex] = activeUIAnims[i][5][y];
+          }
+
+          activeUIAnims.splice(i, 1);
         }
 
-        activeUIAnims.splice(i, 1);
-      }
+      } else { activeUIAnims[i][6]--; /* Decrease delay time left */ }
     }
   }
 }
