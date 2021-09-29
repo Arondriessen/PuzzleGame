@@ -1143,9 +1143,9 @@ levels = [
       [ // Puzzle Pieces
 
         [ // Path 1
-          [1, 3, ["Mid", "Right"], 0],
+          [2, 3, ["Mid", "Top"], 0],
           [3, 1, ["Top", "Mid", "Bottom"], 0],
-          [4, 3, ["Top", "Mid", "Bottom"], 0],
+          [4, 3, ["Top", "Mid", "Right"], 0],
           [3, 5, ["Top", "Mid", "Bottom"], 0],
           [5, 3, ["Mid", "Left"], 0]
         ]
@@ -1156,7 +1156,7 @@ levels = [
         [5, 3]
       ],
 
-      3, // Number of Moves
+      4, // Number of Moves
 
       [ // Puzzle Mechanics Enabled
         0, // Piece Rotation (0 = Off, 1 = On)
