@@ -1022,7 +1022,7 @@ ui = [
           /* 05 */ 2 * uiScale, // height
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ function() { return worldColours[levelsWorld - 1]; }, // colour
+          /* 08 */ function() { return worldColours[levelsWorld - 1][0]; }, // colour
           /* 09 */ 255, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -1065,7 +1065,7 @@ ui = [
           /* 05 */ menuTileSize, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ function() { return worldColours[0]; }, // colour
+          /* 08 */ function() { return worldColours[0][0]; }, // colour
           /* 09 */ function() { return ((levelsWorld == 1) * 10); }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -1079,7 +1079,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ "W 1", // text
           /* 02 */ 24, // text-size
-          /* 03 */ function() { return worldColours[0]; }, // text-colour
+          /* 03 */ function() { return worldColours[0][0]; }, // text-colour
           /* 04 */ function() { return (50 + ((levelsWorld == 1) * 205)); }, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5, // text-v-align
@@ -1109,7 +1109,7 @@ ui = [
           /* 05 */ menuTileSize, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ function() { return worldColours[1]; }, // colour
+          /* 08 */ function() { return worldColours[1][0]; }, // colour
           /* 09 */ function() { return ((levelsWorld == 2) * 10); }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -1123,7 +1123,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ "W 2", // text
           /* 02 */ 24, // text-size
-          /* 03 */ function() { return worldColours[1]; }, // text-colour
+          /* 03 */ function() { return worldColours[1][0]; }, // text-colour
           /* 04 */ function() { return (50 + ((levelsWorld == 2) * 205)); }, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5, // text-v-align
@@ -1153,7 +1153,7 @@ ui = [
           /* 05 */ menuTileSize, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ function() { return worldColours[2]; }, // colour
+          /* 08 */ function() { return worldColours[2][0]; }, // colour
           /* 09 */ function() { return ((levelsWorld == 3) * 10); }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -1167,7 +1167,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ "W 3", // text
           /* 02 */ 24, // text-size
-          /* 03 */ function() { return worldColours[2]; }, // text-colour
+          /* 03 */ function() { return worldColours[2][0]; }, // text-colour
           /* 04 */ function() { return (50 + ((levelsWorld == 3) * 205)); }, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5, // text-v-align
@@ -1197,7 +1197,7 @@ ui = [
           /* 05 */ menuTileSize, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ function() { return worldColours[3]; }, // colour
+          /* 08 */ function() { return worldColours[3][0]; }, // colour
           /* 09 */ function() { return ((levelsWorld == 4) * 10); }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -1211,7 +1211,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ "W 4", // text
           /* 02 */ 24, // text-size
-          /* 03 */ function() { return worldColours[3]; }, // text-colour
+          /* 03 */ function() { return worldColours[3][0]; }, // text-colour
           /* 04 */ function() { return (50 + ((levelsWorld == 4) * 205)); }, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5, // text-v-align
@@ -1272,7 +1272,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 30 * uiScale, // text-size
-          /* 03 */ function() { return worldColours[0]; }, // text-colour
+          /* 03 */ function() { return worldColours[0][0]; }, // text-colour
           /* 04 */ function() { return 25 + (levelData[0][((v * hNum) + h)][0] * 225); }, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5, // text-v-align
@@ -1302,7 +1302,7 @@ ui = [
           /* 05 */ (menuTileSize / 2), // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ function() { return worldColours[0]; }, // colour
+          /* 08 */ function() { return worldColours[0][0]; }, // colour
           /* 09 */ function() { if (unlockedLevel[0] > ((v * hNum) + h + 1)) { return 15; } else { return 0; } }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -1390,7 +1390,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 30 * uiScale, // text-size
-          /* 03 */ function() { return worldColours[1]; }, // text-colour
+          /* 03 */ function() { return worldColours[1][0]; }, // text-colour
           /* 04 */ function() { return 25 + (levelData[1][((v * hNum) + h)][0] * 225); }, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5, // text-v-align
@@ -1420,7 +1420,7 @@ ui = [
           /* 05 */ (menuTileSize / 2), // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ function() { return worldColours[1]; }, // colour
+          /* 08 */ function() { return worldColours[1][0]; }, // colour
           /* 09 */ function() { if (unlockedLevel[1] > ((v * hNum) + h + 1)) { return 15; } else { return 0; } }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -1508,7 +1508,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 30 * uiScale, // text-size
-          /* 03 */ function() { return worldColours[2]; }, // text-colour
+          /* 03 */ function() { return worldColours[2][0]; }, // text-colour
           /* 04 */ function() { return 25 + (levelData[2][((v * hNum) + h)][0] * 225); }, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5, // text-v-align
@@ -1538,7 +1538,7 @@ ui = [
           /* 05 */ (menuTileSize / 2), // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ function() { return worldColours[2]; }, // colour
+          /* 08 */ function() { return worldColours[2][0]; }, // colour
           /* 09 */ function() { if (unlockedLevel[2] > ((v * hNum) + h + 1)) { return 15; } else { return 0; } }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -1626,7 +1626,7 @@ ui = [
           /* 00 */ 1, // state (0 = off, 1 = on)
           /* 01 */ function() { return ((v * hNum) + h + 1); }, // text
           /* 02 */ 30 * uiScale, // text-size
-          /* 03 */ function() { return worldColours[3]; }, // text-colour
+          /* 03 */ function() { return worldColours[3][0]; }, // text-colour
           /* 04 */ function() { return 25 + (levelData[3][((v * hNum) + h)][0] * 225); }, // text-alpha
           /* 05 */ 0.5, // text-h-align
           /* 06 */ 0.5, // text-v-align
@@ -1656,7 +1656,7 @@ ui = [
           /* 05 */ (menuTileSize / 2), // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ function() { return worldColours[3]; }, // colour
+          /* 08 */ function() { return worldColours[3][0]; }, // colour
           /* 09 */ function() { if (unlockedLevel[3] > ((v * hNum) + h + 1)) { return 15; } else { return 0; } }, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -2648,6 +2648,49 @@ ui = [
           /* 04 */ 0, // text-alpha
           /* 05 */ 0, // text-h-align
           /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 20 */ Info Text Box
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ function() { return (levelData[world - 1][level - 1][8] != undefined); }, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)// Is the cursor on a tile?
+          /* 02 */ width / 2, // x pos
+          /* 03 */ height + 1, // y pos
+          /* 04 */ function() { return (tiles + 0) * tileSize; }, // width
+          /* 05 */ 90 * uiScale, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 1, // outline (0 = no, 1 = yes)
+          /* 11 */ 255, // outline-colour
+          /* 12 */ 25, // outline-alpha
+          /* 13 */ 1, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ function() { return (levelData[world - 1][level - 1][8] != undefined); }, // state (0 = off, 1 = on)
+          /* 01 */ function() { return levelData[world - 1][level - 1][8]; }, // text
+          /* 02 */ 14, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ 120, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
         ],
 
         [ // /* 03 */ Button Events
