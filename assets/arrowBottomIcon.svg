@@ -3,11 +3,7 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 18 18" style="enable-background:new 0 0 18 18;" xml:space="preserve">
 <style type="text/css">
-	.st0{opacity:0.10;fill:#FFFFFF;enable-background:new    ;}
+	.st0{fill:#FFFFFF;enable-background:new    ;}
 </style>
-<g id="Layer_2_1_">
-	<g id="Layer_1-2">
-		<polygon class="st0" points="0,2.7 15.3,2.7 15.3,18 18,18 18,0 0,0 		"/>
-	</g>
-</g>
+<polygon class="st0" points="16.6,7.6 9,15.2 1.4,7.6 0,9 9,17.9 18,9 "/>
 </svg>
