@@ -22,6 +22,10 @@ gameMechanicNames = [
 ];
 worldColours = [];
 puzzleAnimTimer = 0;
+sTVolume = 0.1;
+sTOn = 1;
+lShiftHighlightOp = 20;
+cTHighlightOp = 20;
 
 
 // Menu Data
@@ -128,6 +132,16 @@ function preload() {
   levelsIcon = loadImage('assets/levelsIcon.svg');
   nextLevelIcon = loadImage('assets/nextLevelIcon.png');
   xIcon = loadImage('assets/xIcon.png');
+  soundOn = loadImage('assets/soundOn.png');
+  soundOff = loadImage('assets/soundOff.png');
+
+  soundFormats('mp3');
+
+  soundTrack1 = loadSound('assets/Peaceful-Mind');
+  soundTrack2 = loadSound('assets/Mystical-Ocean-Puzzle-Game_v001');
+  soundTrack3 = loadSound('assets/Puzzle-Clues');
+  soundTrack4 = loadSound('assets/Mysterious-Puzzle_Looping');
+  soundTrack5 = loadSound('assets/Puzzle-Game_Looping');
 
   gameMechanicIcons = [
     rotateTileMechanic,
@@ -241,6 +255,14 @@ function setup() {
   cc = worldColours[levelsWorld - 1];
 
   bgSaved = 0;
+
+  //drawBG();
+
+  soundTrack = soundTrack5;
+
+  soundTrack.play();
+  soundTrack.setVolume(sTVolume);
+  soundTrack.loop();
 
   textFont(fontRegular);
 }
@@ -557,6 +579,25 @@ function prepareLevelData() {
   }
 
 
+  // Cycle through the tile grid again and genereate tile opacity values based on distance from centre tile
+
+  for (let i = 0; i < (tiles ); i++) {
+    for (let y = 0; y < (tiles); y++) {
+
+      let posX = tileData[i][y][0]; // Store x position
+      let posY = tileData[i][y][1]; // Store y position
+
+      let distX = abs(tileData[mid][mid][0] - posX);
+      let distY = abs(tileData[mid][mid][1] - posY);
+      let distance = max(distX, distY);
+      let centX = tileData[mid][mid][0];
+      let centY = tileData[mid][mid][1];
+
+      tileData[i][y][2] = ((map(dist(centX, centY, posX, posY), 0, (mid + 1) * tileSize, 100, 10)));
+    }
+  }
+
+
   // Apply line shifts
 
   if (levelData[world - 1][level - 1][5][2]) {
@@ -618,6 +659,8 @@ function prepareLevelData() {
 
   storeItem('level', level);
   storeItem('world', world);
+
+  drawBG();
 
   levelLoaded = 1;
 }
@@ -934,6 +977,8 @@ function levelComplete() {
 
   if (gameState == 1) {
 
+    // Animate steps-number/checkmark/fail-icon outline circle
+
     animateUIElement([[uiData[2][0][19][1], 4], [uiData[2][0][19][1], 5], [uiData[2][0][19][1], 12]], [200 * uiScale, 200 * uiScale, 100], [360 * uiScale, 360 * uiScale, 0], 26, 0);
   }
 
@@ -948,8 +993,8 @@ function levelComplete() {
       tX = puzzlePieces[p][finishedPuzzlePath[p][i]][0];
       tY = puzzlePieces[p][finishedPuzzlePath[p][i]][1];
 
-      animateUIElement([[tileData[tX][tY], 2], [tileData[tX][tY], 3]], [0, 1.5], [12, 1], 16, 0, 7 * (i + 0));
-      animateUIElement([[tileData[tX][tY], 2]], [12], [0], 72, 0, (6 * (i + 0)) + 36);
+      animateUIElement([[tileData[tX][tY], 2], [tileData[tX][tY], 3]], [0, 1.5], [tileData[tX][tY][2] + 0, 1], 16, 0, 7 * (i + 0));
+      //animateUIElement([[tileData[tX][tY], 2]], [tileData[tX][tY][2] + 0], [0], 72, 0, (6 * (i + 0)) + 36);
     }
   }
 
@@ -988,6 +1033,7 @@ function draw() {
 
   background(ccbg);
 
+
   let imgAR1 = 1600 / 1080;
   let imgAR2 = 1080 / 1600;
 
@@ -1000,6 +1046,12 @@ function draw() {
   uiHover = 0;
 
   if (uiLoaded == 1) { // Check if UI has loaded yet
+
+
+    if (state == 2) {
+
+      image(img, 0, 0);
+    }
 
 
     // Draw UI (Dynamic)
@@ -1306,8 +1358,6 @@ function draw() {
 
       let hNum = floor(width / menuTileSize);
       let vNum = floor(height / menuTileSize);
-      hNum -= hNum % 2;
-      vNum -= vNum % 2;
       let xOff = (width / 2) - (menuTileSize * ((hNum / 2) - 0.5));
       let yOff = (height / 2) - (menuTileSize * ((vNum / 2) - 0.5));
 
@@ -1408,7 +1458,7 @@ function draw() {
 
             for (let y = 0; y < tiles; y++) {
 
-              fill(255, tileData[i][y][2]);
+              fill(0, tileData[i][y][2]);
 
               // Check for mouse selection
 
@@ -1423,7 +1473,8 @@ function draw() {
                   //scale = tileSpread * hoverGrowth; // If cursor is on tile resize it (hover effect)
                   selected = [i, y]; // Save index of selected tile
 
-                  fill(255, 8);
+                  //scale *= 1.1;
+                  fill(0, 8);
                   noStroke();
                 }
               }
@@ -1490,7 +1541,7 @@ function draw() {
 
                 if (dragAmount > 0) { // If a piece is being dragged *** Needs a better treshold (also in mouse-release)
 
-                  if (i == clickedPuzzlePiece) { // If this piece being being dragged
+                  if (i == clickedPuzzlePiece[1]) { // If this piece being being dragged
 
                     if (isMovablePiece([p, i])) {
 
@@ -1513,13 +1564,14 @@ function draw() {
 
                   fill(lerpColor(worldColours[world - 1][p], ccbg, lerpNum));
                   noStroke();
-                  circle(0, 0, tileSize / 8);
+                  //circle(0, 0, tileSize / 8);
                 }
 
                 if (drawRot) {
 
                   image(rotateTileIcon, - (tileSize / 3.2), - (tileSize / 3.2), tileSize / 1.6, tileSize / 1.6);
                 }
+
 
                 noFill();
 
@@ -1528,6 +1580,7 @@ function draw() {
                 let lShiftHov = 0;
                 let cRotHov = 0;
                 let cT;
+                let drawPiece = abs(z - 1);
 
                 if (cornerRotHover[0] != -1) {
 
@@ -1538,6 +1591,7 @@ function draw() {
                     if (abs((((cT + 1) / 2) + (((cT + 1) / 2) * cornerRotHover[1])) - (puzzlePieces[p][i][1] + 1)) <= ((cT) / 2)) { // If piece y in range of corner
 
                       cRotHov = 1;
+                      drawPiece = 1;
                     }
                   }
                 }
@@ -1549,6 +1603,7 @@ function draw() {
                     if ((tileData[lineShiftHover[1]][(tiles - 1) * (Math.max(0, lineShiftHover[2]))][4]) == -1) { // If it's able to move
 
                       lShiftHov = 1;
+                      drawPiece = 1;
                     }
 
                   } else if (puzzlePieces[p][i][1] == lineShiftHover[0]) { // In selected row
@@ -1556,6 +1611,7 @@ function draw() {
                     if ((tileData[(tiles - 1) * (Math.max(0, lineShiftHover[2]))][lineShiftHover[0]][4]) == -1) { // If it's able to move
 
                       lShiftHov = 1;
+                      drawPiece = 1;
                     }
                   }
                 }
@@ -1573,7 +1629,7 @@ function draw() {
 
                   //let ccc = color(cc.levels[0], cc.levels[1], cc.levels[2], 25);
                   //stroke(ccc);
-                  stroke(lerpColor(worldColours[world - 1][p], ccbg, 0.9));
+                  stroke(lerpColor(worldColours[world - 1][p], ccbg, 0.6));
 
                   if (cRotHov) {
 
@@ -1598,92 +1654,104 @@ function draw() {
 
                   let x1 = offX - (tileSize / 2) + puzzlePieces[p][i][5][y][0] * tileSize;
                   let y1 = offY - (tileSize / 2) + puzzlePieces[p][i][5][y][1] * tileSize;
-                  let x4 = offX - (tileSize / 2) + puzzlePieces[p][i][5][y + 1][0] * tileSize;
-                  let y4 = offY - (tileSize / 2) + puzzlePieces[p][i][5][y + 1][1] * tileSize;
 
-                  if (z) {
+                  if (drawPiece) {
 
-                    if (cRotHov) {
-
-                      if (puzzlePieces[p][i][2][y] != "Mid") {
-
-                        let pos = posRotTab.indexOf(puzzlePieces[p][i][2][y]);
-
-                        pos = positions[posRotTab[(pos + 2) % 8]];
-
-                        x1 = offX - (tileSize / 2) + pos[0] * tileSize;
-                        y1 = offY - (tileSize / 2) + pos[1] * tileSize;
-                      }
-
-                      if (puzzlePieces[p][i][2][y + 1] != "Mid") {
-
-                        let pos2 = posRotTab.indexOf(puzzlePieces[p][i][2][y + 1]);
-
-                        pos2 = positions[posRotTab[(pos2 + 2) % 8]];
-
-                        x4 = offX - (tileSize / 2) + pos2[0] * tileSize;
-                        y4 = offY - (tileSize / 2) + pos2[1] * tileSize;
-                      }
-                    }
-                  }
-
-                  let drawBezier = 0;
-
-                  if (puzzlePieces[p][i][4] != 0) {
-
-                    if (puzzlePieces[p][i][4][y] != undefined) {
-
-                      if (puzzlePieces[p][i][4][y] != -1) {
-
-                        drawBezier = 1;
-                      }
-                    }
-                  }
-
-                  if (drawBezier) {
-
-                    let x2 = offX - (tileSize / 2) + puzzlePieces[p][i][6][y][0][0] * tileSize;
-                    let y2 = offY - (tileSize / 2) + puzzlePieces[p][i][6][y][0][1] * tileSize;
-                    let x3 = offX - (tileSize / 2) + puzzlePieces[p][i][6][y][1][0] * tileSize;
-                    let y3 = offY - (tileSize / 2) + puzzlePieces[p][i][6][y][1][1] * tileSize;
+                    let x4 = offX - (tileSize / 2) + puzzlePieces[p][i][5][y + 1][0] * tileSize;
+                    let y4 = offY - (tileSize / 2) + puzzlePieces[p][i][5][y + 1][1] * tileSize;
 
                     if (z) {
 
                       if (cRotHov) {
 
-                        if (puzzlePieces[p][i][2][y][0] != "Mid") {
+                        if (puzzlePieces[p][i][2][y] != "Mid") {
 
-                          let pos = posRotTab.indexOf(puzzlePieces[p][i][4][y][0]);
+                          let pos = posRotTab.indexOf(puzzlePieces[p][i][2][y]);
 
                           pos = positions[posRotTab[(pos + 2) % 8]];
 
-                          x2 = offX - (tileSize / 2) + pos[0] * tileSize;
-                          y2 = offY - (tileSize / 2) + pos[1] * tileSize;
+                          x1 = offX - (tileSize / 2) + pos[0] * tileSize;
+                          y1 = offY - (tileSize / 2) + pos[1] * tileSize;
                         }
 
-                        if (puzzlePieces[p][i][2][y][1] != "Mid") {
+                        if (puzzlePieces[p][i][2][y + 1] != "Mid") {
 
-                          let pos2 = posRotTab.indexOf(puzzlePieces[p][i][4][y][1]);
+                          let pos2 = posRotTab.indexOf(puzzlePieces[p][i][2][y + 1]);
 
                           pos2 = positions[posRotTab[(pos2 + 2) % 8]];
 
-                          x3 = offX - (tileSize / 2) + pos2[0] * tileSize;
-                          y3 = offY - (tileSize / 2) + pos2[1] * tileSize;
+                          x4 = offX - (tileSize / 2) + pos2[0] * tileSize;
+                          y4 = offY - (tileSize / 2) + pos2[1] * tileSize;
                         }
                       }
                     }
 
-                    //bezier(x1, y1, x1, y4, x1, y4, x4, y4);
-                    bezier(x1, y1, x2, y2, x3, y3, x4, y4);
+                    let drawBezier = 0;
 
-                  } else {
+                    if (puzzlePieces[p][i][4] != 0) {
 
-                    line(x1, y1, x4, y4);
+                      if (puzzlePieces[p][i][4][y] != undefined) {
+
+                        if (puzzlePieces[p][i][4][y] != -1) {
+
+                          drawBezier = 1;
+                        }
+                      }
+                    }
+
+                    if (drawBezier) {
+
+                      let x2 = offX - (tileSize / 2) + puzzlePieces[p][i][6][y][0][0] * tileSize;
+                      let y2 = offY - (tileSize / 2) + puzzlePieces[p][i][6][y][0][1] * tileSize;
+                      let x3 = offX - (tileSize / 2) + puzzlePieces[p][i][6][y][1][0] * tileSize;
+                      let y3 = offY - (tileSize / 2) + puzzlePieces[p][i][6][y][1][1] * tileSize;
+
+                      if (z) {
+
+                        if (cRotHov) {
+
+                          if (puzzlePieces[p][i][2][y][0] != "Mid") {
+
+                            let pos = posRotTab.indexOf(puzzlePieces[p][i][4][y][0]);
+
+                            pos = positions[posRotTab[(pos + 2) % 8]];
+
+                            x2 = offX - (tileSize / 2) + pos[0] * tileSize;
+                            y2 = offY - (tileSize / 2) + pos[1] * tileSize;
+                          }
+
+                          if (puzzlePieces[p][i][2][y][1] != "Mid") {
+
+                            let pos2 = posRotTab.indexOf(puzzlePieces[p][i][4][y][1]);
+
+                            pos2 = positions[posRotTab[(pos2 + 2) % 8]];
+
+                            x3 = offX - (tileSize / 2) + pos2[0] * tileSize;
+                            y3 = offY - (tileSize / 2) + pos2[1] * tileSize;
+                          }
+                        }
+                      }
+
+                      noFill();
+                      //bezier(x1, y1, x1, y4, x1, y4, x4, y4);
+                      bezier(x1, y1, x2, y2, x3, y3, x4, y4);
+
+                    } else {
+
+                      noFill();
+                      line(x1, y1, x4, y4);
+                    }
                   }
 
-                  if ((i == 0) || (i == (puzzlePieces[p].length - 1))) {
+                  if (z == 1) {
 
-                    ePDrawPos.push([posX, posY, x1, y1]);
+                    if (y == 0) {
+
+                      if ((i == 0) || (i == (puzzlePieces[p].length - 1))) {
+
+                        ePDrawPos[min(i, 1)] = [posX + x1, posY + y1];
+                      }
+                    }
                   }
                 }
 
@@ -1696,16 +1764,20 @@ function draw() {
               }
             }
 
-            if (z) {
+            if (z == 1) {
 
-              let ccc = color(255);
+              if (ePDrawPos.length > 0) {
 
-              fill(lerpColor(ccc, ccbg, 0.9));
-              stroke(ccbg);
-              strokeWeight(3.6);
+                let ccc = color(255);
 
-              circle(ePDrawPos[0][0] + ePDrawPos[0][2], ePDrawPos[0][1] + ePDrawPos[0][3], 24);
-              circle(ePDrawPos[1][0] + ePDrawPos[1][2], ePDrawPos[1][1] + ePDrawPos[1][3], 24);
+                fill(lerpColor(ccc, ccbg, 0.6));
+                stroke(ccbg);
+                strokeWeight(3.6);
+                noStroke();
+
+                circle(ePDrawPos[0][0], ePDrawPos[0][1], 20);
+                circle(ePDrawPos[1][0], ePDrawPos[1][1], 20);
+              }
             }
           }
 
@@ -1728,13 +1800,15 @@ function draw() {
               }
 
               fill(worldColours[world - 1][p], endPieceOp[0]);
-              stroke(ccbg);
+              //stroke(ccbg);
+              noStroke();
               strokeWeight(4);
 
-              circle(posX - (tileSize / 2) + puzzlePieces[p][ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[p][ePI][5][0][1] * tileSize, 30);
+              circle(posX - (tileSize / 2) + puzzlePieces[p][ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[p][ePI][5][0][1] * tileSize, 26);
 
               fill(255, endPieceOp[0]);
               stroke(ccbg);
+              //noStroke();
               strokeWeight(4);
 
               circle(posX - (tileSize / 2) + puzzlePieces[p][ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[p][ePI][5][0][1] * tileSize, 15);
@@ -1769,6 +1843,55 @@ function draw() {
 }
 
 
+function drawBG() {
+
+  // Draw background and save as image
+  textFont(fontRegular);
+
+  let s = max(width, height) * 1.2;
+  let lerpNum = 0;
+
+  for (let i = (s * 1); i > 0; i -= 10) {
+
+    iN = (i / s);
+    lerpNum = 1 - (1 - iN) * (1 - iN);
+    //let ccc = cc;
+    //if (ccc.constructor === Array) { ccc = ccc[0]; }
+    fill(lerpColor(cc, ccbg, (lerpNum / 2) + 0.5));
+    noStroke();
+    circle(width / 2, height / 2, i);
+  }
+
+  //img2 = get((width / 2) - (((bgTileSize * uiScale) / 2) * 1.44), (height / 2) - (((bgTileSize * uiScale) / 2) * 1.44), ((bgTileSize * uiScale) * 1.44), ((bgTileSize * uiScale) * 1.44));
+
+  //background(ccbg);
+
+  push();
+  translate(width / 2, height / 2);
+  angleMode(DEGREES);
+
+  /*for (let i = s; i > ((bgTileSize * 1.44) * uiScale); i -= (((bgTileSize * 1.44) * uiScale) / 4)) {
+    iN = (i / s);
+    //iN = (((i - (bgTileSize)) * (s / (s - bgTileSize))) / s);
+    //iN = ((i * ((s - bgTileSize) / s)) / s);
+    lerpNum = 1 - (1 - iN) * (1 - iN) * (1 - iN) * (1 - iN);
+    fill(lerpColor(cc, ccbg, lerpNum));
+    noStroke();
+    rotate(22.5);
+    square(-(i / 2) * 0.81, -(i / 2) * 0.81, i * 0.81);
+  }*/
+
+  //image(img2, - (((bgTileSize * uiScale) / 2) * 1.44), - (((bgTileSize * uiScale) / 2) * 1.44));
+
+  pop();
+
+  //fill(0, 100);
+  //rect(0, 0, width, height);
+
+  img = get();
+}
+
+
 function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
 
   // row = row number or -1 if moving a column
@@ -1797,6 +1920,7 @@ function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
 
         for (let i = ((tiles - 1) * dirNorm); i != ((tiles - 1) * dirRevNorm); i += dirRev) { // Loop through tiles in row
 
+          tileData[i][row][2] = tileData[i + dirRev][row][2]; // Copy puzzle piece reference from the tile in the opposite side of the movement direction
           tileData[i][row][4] = tileData[i + dirRev][row][4]; // Copy puzzle piece reference from the tile in the opposite side of the movement direction
 
           if (tileData[i][row][4] != -1) { // Check if there is a puzzle piece on this tile
@@ -1809,13 +1933,14 @@ function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
               puzzlePieces[tileData[i][row][4][0]][tileData[i][row][4][1]][1] = row;
             }
 
-            if (animate) { animateUIElement([[tileData[i][row], 0], [tileData[i][row], 1]], [tileData[i + dirRev][row][0], tileData[i + dirRev][row][1]], [tileData[i][row][0], tileData[i][row][1]], 10, 0); }
-
             puzzlePiecesMoved++;
             isGo = 1;
           }
+
+          if (animate) { animateUIElement([[tileData[i][row], 0], [tileData[i][row], 1]], [tileData[i + dirRev][row][0], tileData[i + dirRev][row][1]], [tileData[i][row][0], tileData[i][row][1]], 10, 0); }
         }
 
+        //tileData[((tiles - 1) * dirRevNorm)][row][2] = 255;
         tileData[((tiles - 1) * dirRevNorm)][row][4] = -1;
 
       } else {
@@ -1831,6 +1956,7 @@ function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
 
         for (let i = ((tiles - 1) * dirNorm); i != ((tiles - 1) * dirRevNorm); i += dirRev) { // Loop through tiles in row
 
+          tileData[column][i][2] = tileData[column][i + dirRev][2]; // Copy puzzle piece reference from the tile in the opposite side of the movement direction
           tileData[column][i][4] = tileData[column][i + dirRev][4]; // Copy puzzle piece reference from the tile in the opposite side of the movement direction
 
           if (tileData[column][i][4] != -1) { // Check if there is a puzzle piece on this tile
@@ -1850,6 +1976,7 @@ function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
           }
         }
 
+        //tileData[column][((tiles - 1) * dirRevNorm)][2] = 255;
         tileData[column][((tiles - 1) * dirRevNorm)][4] = -1;
 
       } else {
@@ -1860,6 +1987,7 @@ function shiftTileLine(row, column, dir, animate, movePuzzlePieces) {
 
     if (isGo) { // Check if tiles have room to move (if not, cancel)
 
+      puzzleAnimTimer = 15;
       updateEndpoints();
       useStep(); isSolved();
     }
@@ -1969,7 +2097,7 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
 
           tD = tileData[xx][yy];
           tD2 = tileData[newX][newY];
-          tempA[x][y] = [tD[0], tD[1], tD2[0], tD2[1], tD[4]];
+          tempA[x][y] = [tD[0], tD[1], tD2[0], tD2[1], tD[4], tD[2]];
         }
       }
     }
@@ -1986,6 +2114,7 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
           newX = cornerRotPositions[cornerX][cornerY][x][y][0];
           newY = cornerRotPositions[cornerX][cornerY][x][y][1];
 
+          tileData[newX][newY][2] = tempA[x][y][5];
           tileData[newX][newY][4] = tempA[x][y][4];
 
           if (tileData[newX][newY][4] != -1) {
@@ -1995,9 +2124,9 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
             puzzlePiecesMoved++;
 
             rotatePuzzlePiece(tempA[x][y][4], animate);
-
-            if (animate) { animateUIElement([[tileData[newX][newY], 0], [tileData[newX][newY], 1]], [tempA[x][y][0], tempA[x][y][1]], [tempA[x][y][2], tempA[x][y][3]], 15, 0); }
           }
+
+          if (animate) { animateUIElement([[tileData[newX][newY], 0], [tileData[newX][newY], 1]], [tempA[x][y][0], tempA[x][y][1]], [tempA[x][y][2], tempA[x][y][3]], 15, 0); }
         }
       }
     }
@@ -2006,7 +2135,7 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
 
       updateEndpoints();
       setTimeout(function() { useStep(); isSolved(); }, 200);
-      puzzleAnimTimer = 15;
+      puzzleAnimTimer = 20;
     }
   }
 }
