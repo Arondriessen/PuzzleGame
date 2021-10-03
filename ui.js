@@ -2112,8 +2112,8 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return ((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2; }, // x pos
           /* 03 */ function() { return (height - (260 * uiScale)); }, // y pos
           /* 04 */ function() { return tileSize; }, // width
@@ -2367,8 +2367,8 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2); }, // x pos
           /* 03 */ function() { return (260 * uiScale); }, // y pos
           /* 04 */ function() { return tileSize; }, // width
@@ -2700,7 +2700,315 @@ ui = [
           /* 02 */ 0, // onHoverOut event (0 = no event)
           /* 03 */ 0 // onClick event (0 = no event)
         ]
-      ]
+      ],
+
+      [ // /* 21 */ Sound Button
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2); }, // x pos
+          /* 03 */ function() { return height - (260 * uiScale); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 255, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ "//", // text
+          /* 02 */ 48 * uiScale, // text-size
+          /* 03 */ 255, // text-colour
+          /* 04 */ -1, // text-alpha
+          /* 05 */ 0.5, // text-h-align
+          /* 06 */ 0.5 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { if (uiHover2 != elementID) { animateUIElement([[uiData[2][0][21][1], 9], [uiData[2][0][21][4], 2], [uiData[2][0][22][1], 9]], [0, 54 * uiScale, 200], [5, 60 * uiScale, 0], btHovInSpd, 0); } menuState = 1; }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { animateUIElement([[uiData[2][0][21][1], 9], [uiData[2][0][21][4], 2], [uiData[2][0][22][1], 9]], [5, 60 * uiScale, 0], [0, 54 * uiScale, 200], btHovOutSpd, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { sTOn = !sTOn; soundTrack.setVolume(sTVolume * sTOn); } // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ function() { if (sTOn) { return soundOn; } else { return soundOff; }; }, // image
+          /* 02 */ 54 * uiScale, // image-size
+          /* 03 */ 0, // image-height
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 22 */ Sound Button Hover
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2); }, // x pos
+          /* 03 */ function() { return height - (260 * uiScale); }, // y pos
+          /* 04 */ function() { return tileSize; }, // width
+          /* 05 */ function() { return tileSize; }, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ ccbg, // colour
+          /* 09 */ 150, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ]
+      ],
+
+      [ // /* 23 */ Menu Button Box Outline Left
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2) - (tileSize / 2); }, // x pos
+          /* 03 */ function() { return height - (260 * uiScale); }, // y pos
+          /* 04 */ 1, // width
+          /* 05 */ function() { return tileSize * 2; }, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ gradientLineV, // image
+          /* 02 */ 1, // image-width (or size)
+          /* 03 */ function() { return tileSize * 2; }, // image-height
+          /* 04 */ 0, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 24 */ Menu Button Box Outline Right
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2) + (tileSize / 2); }, // x pos
+          /* 03 */ function() { return height - (260 * uiScale); }, // y pos
+          /* 04 */ 1, // width
+          /* 05 */ function() { return tileSize * 2; }, // height
+          /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ gradientLineV, // image
+          /* 02 */ 1, // image-width (or size)
+          /* 03 */ function() { return tileSize * 2; }, // image-height
+          /* 04 */ 0, // image-h-align
+          /* 05 */ 0.5, // image-v-align
+        ]
+      ],
+
+      [ // /* 25 */ Menu Button Box Outline Top
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2); }, // x pos
+          /* 03 */ function() { return height - (260 * uiScale) - (tileSize / 2); }, // y pos
+          /* 04 */ function() { return tileSize * 2; }, // width
+          /* 05 */ 1, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ gradientLineH, // image
+          /* 02 */ function() { return tileSize * 2; }, // image-width (or size)
+          /* 03 */ 1, // image-height
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0, // image-v-align
+        ]
+      ],
+
+      [ // /* 26 */ Menu Button Box Outline Bottom
+
+        1, // /* 00 */ Type (1 = single, 2 = list)
+
+        [ // /* 01 */ Box
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
+          /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2); }, // x pos
+          /* 03 */ function() { return height - (260 * uiScale) + (tileSize / 2); }, // y pos
+          /* 04 */ function() { return tileSize * 2; }, // width
+          /* 05 */ 1, // height
+          /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
+          /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
+          /* 08 */ 0, // colour
+          /* 09 */ 0, // alpha
+          /* 10 */ 0, // outline (0 = no, 1 = yes)
+          /* 11 */ 0, // outline-colour
+          /* 12 */ 0, // outline-alpha
+          /* 13 */ 0, // outline-width
+          /* 14 */ 0 // rot-angle
+        ],
+
+        [ // /* 02 */ Text
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // text
+          /* 02 */ 0, // text-size
+          /* 03 */ 0, // text-colour
+          /* 04 */ 0, // text-alpha
+          /* 05 */ 0, // text-h-align
+          /* 06 */ 0 // text-v-align
+        ],
+
+        [ // /* 03 */ Button Events
+
+          /* 00 */ 0, // state (0 = off, 1 = on)
+          /* 01 */ 0, // onHoverIn event (0 = no event)
+          /* 02 */ 0, // onHoverOut event (0 = no event)
+          /* 03 */ 0 // onClick event (0 = no event)
+        ],
+
+        [ // /* 04 */ Image
+
+          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 01 */ gradientLineH, // image
+          /* 02 */ function() { return tileSize * 2; }, // image-width (or size)
+          /* 03 */ 1, // image-height
+          /* 04 */ 0.5, // image-h-align
+          /* 05 */ 0, // image-v-align
+        ]
+      ],
     ],
 
     [ // /* 01 */ Level Completed
@@ -2766,7 +3074,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 3, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2); }, // x pos
           /* 03 */ height / 2, // y pos
@@ -3418,9 +3726,9 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [-1, uiSelectedIndex - 1, -1]; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [0, 230], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { lineShiftHover[2] = 0; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [2, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex - 1, -1, 1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [-1, uiSelectedIndex - 1, -1]; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [0, 230], [lShiftHighlightOp, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { lineShiftHover[2] = 0; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][5][1][9], uiSelectedIndex - 1]], [lShiftHighlightOp, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { if (puzzleAnimTimer == 0) { shiftTileLine(-1, uiSelectedIndex - 1, -1, 1, 1); } } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -3483,9 +3791,9 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [uiSelectedIndex - 1, -1, 1]; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [0, 230], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { lineShiftHover[2] = [0]; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [2, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(uiSelectedIndex - 1, -1, 1, 1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [uiSelectedIndex - 1, -1, 1]; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [0, 230], [lShiftHighlightOp, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { lineShiftHover[2] = [0]; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][6][1][9], uiSelectedIndex - 1]], [lShiftHighlightOp, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { if (puzzleAnimTimer == 0) { shiftTileLine(uiSelectedIndex - 1, -1, 1, 1, 1); } } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -3548,9 +3856,9 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [-1, uiSelectedIndex - 1, 1]; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [0, 230], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { lineShiftHover[2] = 0; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [2, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(-1, uiSelectedIndex - 1, 1, 1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [-1, uiSelectedIndex - 1, 1]; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [0, 230], [lShiftHighlightOp, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { lineShiftHover[2] = 0; animateUIElement([[uiData[2][3][9][1][9], uiSelectedIndex - 1], [uiData[2][3][7][1][9], uiSelectedIndex - 1]], [lShiftHighlightOp, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { if (puzzleAnimTimer == 0) { shiftTileLine(-1, uiSelectedIndex - 1, 1, 1, 1); } } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -3613,9 +3921,9 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [uiSelectedIndex - 1, -1, -1]; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [0, 230], [2, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { lineShiftHover[2] = 0; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [2, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
-          /* 03 */ function() { shiftTileLine(uiSelectedIndex - 1, -1, -1, 1, 1); } // onClick event (0 = no event)
+          /* 01 */ function() { boxOp = 8; if (uiHover2 != elementID) { lineShiftHover = [uiSelectedIndex - 1, -1, -1]; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [0, 230], [lShiftHighlightOp, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { lineShiftHover[2] = 0; animateUIElement([[uiData[2][3][10][1][9], uiSelectedIndex - 1], [uiData[2][3][8][1][9], uiSelectedIndex - 1]], [lShiftHighlightOp, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 03 */ function() { if (puzzleAnimTimer == 0) { shiftTileLine(uiSelectedIndex - 1, -1, -1, 1, 1); } } // onClick event (0 = no event)
         ],
 
         [ // /* 04 */ Image
@@ -3635,7 +3943,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ function() { return (height / 2) - (tileSize * (Math.ceil(tiles / 2))); }, // y pos
@@ -3690,7 +3998,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return (width / 2) + (tileSize * (Math.ceil(tiles / 2))); }, // x pos
           /* 03 */ height / 2, // y pos
@@ -3745,7 +4053,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ width / 2, // x pos
           /* 03 */ function() { return (height / 2) + (tileSize * (Math.ceil(tiles / 2))); }, // y pos
@@ -3800,7 +4108,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle, 4 = rotated rect)
           /* 02 */ function() { return (width / 2) - (tileSize * (Math.ceil(tiles / 2))); }, // x pos
           /* 03 */ height / 2, // y pos
@@ -3863,7 +4171,7 @@ ui = [
           /* 05 */ function() { return tileSize * tiles; }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 255, // colour
+          /* 08 */ 0, // colour
           /* 09 */ [-1, 0], // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -3918,7 +4226,7 @@ ui = [
           /* 05 */ function() { return tileSize; }, // height
           /* 06 */ 0.5, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0.5, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 255, // colour
+          /* 08 */ 0, // colour
           /* 09 */ [-1, 0], // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -4001,8 +4309,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8;  uiData[2][4][5][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [0, 0]; animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [0, 230], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][5][4][0] = 0; animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [5, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][5][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [0, 0]; animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [0, 230], [cTHighlightOp, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][5][4][0] = 0; animateUIElement([[uiData[2][4][5][1], 9], [uiData[2][4][9][1], 9]], [cTHighlightOp, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { if (puzzleAnimTimer == 0) { rotateCornerTiles(0, 0, 1, 1); } } // onClick event (0 = no event)
         ],
 
@@ -4054,8 +4362,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8;  uiData[2][4][6][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [1, 0]; animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [0, 230], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][6][4][0] = 0; animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [5, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][6][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [1, 0]; animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [0, 230], [cTHighlightOp, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][6][4][0] = 0; animateUIElement([[uiData[2][4][6][1], 9], [uiData[2][4][10][1], 9]], [cTHighlightOp, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { if (puzzleAnimTimer == 0) { rotateCornerTiles(1, 0, 1, 1); } } // onClick event (0 = no event)
         ],
 
@@ -4107,8 +4415,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8;  uiData[2][4][7][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [1, 1]; animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [0, 230], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][7][4][0] = 0; animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [5, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][7][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [1, 1]; animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [0, 230], [cTHighlightOp, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][7][4][0] = 0; animateUIElement([[uiData[2][4][7][1], 9], [uiData[2][4][11][1], 9]], [cTHighlightOp, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { if (puzzleAnimTimer == 0) { rotateCornerTiles(1, 1, 1, 1); } } // onClick event (0 = no event)
         ],
 
@@ -4160,8 +4468,8 @@ ui = [
         [ // /* 03 */ Button Events
 
           /* 00 */ 1, // state (0 = off, 1 = on)
-          /* 01 */ function() { boxOp = 8;  uiData[2][4][8][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [0, 1]; animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [0, 230], [5, 0], 6, 0); } }, // onHoverIn event (0 = no event)
-          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][8][4][0] = 0; animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [5, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
+          /* 01 */ function() { boxOp = 8;  uiData[2][4][8][4][0] = 0; if (uiHover2 != elementID) { cornerRotHover = [0, 1]; animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [0, 230], [cTHighlightOp, 0], 6, 0); } }, // onHoverIn event (0 = no event)
+          /* 02 */ function() { cornerRotHover[0] = -1; uiData[2][4][8][4][0] = 0; animateUIElement([[uiData[2][4][8][1], 9], [uiData[2][4][12][1], 9]], [cTHighlightOp, 0], [0, 230], 6, 0); }, // onHoverOut event (0 = no event)
           /* 03 */ function() { if (puzzleAnimTimer == 0) { rotateCornerTiles(0, 1, 1, 1); } } // onClick event (0 = no event)
         ],
 
@@ -4190,7 +4498,7 @@ ui = [
           /* 05 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // height
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 255, // colour
+          /* 08 */ 0, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -4243,7 +4551,7 @@ ui = [
           /* 05 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // height
           /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 0, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 255, // colour
+          /* 08 */ 0, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -4296,7 +4604,7 @@ ui = [
           /* 05 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // height
           /* 06 */ 1, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 255, // colour
+          /* 08 */ 0, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -4349,7 +4657,7 @@ ui = [
           /* 05 */ function() { return (tileSize * ((tiles + 1) / 2)); }, // height
           /* 06 */ 0, // h-align (0 = left, 0.5 = centre, 1 = right)
           /* 07 */ 1, // v-align (0 = top, 0.5 = centre, 1 = bottom)
-          /* 08 */ 255, // colour
+          /* 08 */ 0, // colour
           /* 09 */ 0, // alpha
           /* 10 */ 0, // outline (0 = no, 1 = yes)
           /* 11 */ 0, // outline-colour
@@ -4394,7 +4702,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return (width / 2) - ((tileSize / 2) * tiles); }, // x pos
           /* 03 */ function() { return (height / 2) - ((tileSize / 2) * tiles); }, // y pos
@@ -4437,7 +4745,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return (width / 2) + ((tileSize / 2) * tiles); }, // x pos
           /* 03 */ function() { return (height / 2) - ((tileSize / 2) * tiles); }, // y pos
@@ -4480,7 +4788,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return (width / 2) + ((tileSize / 2) * tiles); }, // x pos
           /* 03 */ function() { return (height / 2) + ((tileSize / 2) * tiles); }, // y pos
@@ -4523,7 +4831,7 @@ ui = [
 
         [ // /* 01 */ Box
 
-          /* 00 */ 1, // state (0 = off, 1 = on)
+          /* 00 */ 0, // state (0 = off, 1 = on)
           /* 01 */ 1, // type (1 = rect, 2 = rounded rect, 3 = circle)
           /* 02 */ function() { return (width / 2) - ((tileSize / 2) * tiles); }, // x pos
           /* 03 */ function() { return (height / 2) + ((tileSize / 2) * tiles); }, // y pos

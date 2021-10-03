@@ -438,7 +438,7 @@ levels = [
       [ // Puzzle Pieces
 
         [ // Path 1
-          [1, 2, ["BottomLeft", "Right"], 0, [["Left", "Bottom"]]],
+          [1, 2, ["BottomLeft", "Right"], 0, [["Left", "Mid"]]],
           [2, 2, ["Top", "Bottom"], 0, [["TopLeft", "Left"]]],
           [3, 1, ["Left", "Mid", "Bottom"], 0],
           [2, 3, ["Top", "Bottom", "Right"], 0, [-1, ["BottomRight", "Right"]]],
