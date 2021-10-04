@@ -94,42 +94,48 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 
 
 function preload() {
+
+  // Fonts
+
   fontRegular = loadFont('assets/Lato-Regular.ttf');
   fontBold = loadFont('assets/Lato-Bold.ttf');
   fontItalic = loadFont('assets/Lato-Italic.ttf');
   fontLight = loadFont('assets/Lato-Light.ttf');
   fontLightItalic = loadFont('assets/Lato-LightItalic.ttf');
-  arrowLeftIcon = loadImage('assets/arrowLeftIcon.svg');
-  arrowTopIcon = loadImage('assets/arrowTopIcon.svg');
-  arrowBottomIcon = loadImage('assets/arrowBottomIcon.svg');
-  arrowRightIcon = loadImage('assets/arrowRightIcon.svg');
-  menuIconIMG = loadImage('assets/menuIconIMG.png');
+
+  // Images
+
+  // Menu
+
+  settingsIcon = loadImage('assets/settingsIcon.png');
+  playIcon = loadImage('assets/playIcon.png');
+  levelsIcon = loadImage('assets/levelsIcon.png');
+  //mountainscapeBG = loadImage('assets/mountainscapeBG.png');
+
+  // Levels Menu
+
+
+
+  // Puzzle
+
+  arrowLeftIcon = loadImage('assets/arrowLeftIcon.png');
+  arrowTopIcon = loadImage('assets/arrowTopIcon.png');
+  arrowBottomIcon = loadImage('assets/arrowBottomIcon.png');
+  arrowRightIcon = loadImage('assets/arrowRightIcon.png');
   rotCorner = loadImage('assets/rotCorner.png');
-  rotCornerTop = loadImage('assets/rotCornerTop.svg');
-  rotCornerRight = loadImage('assets/rotCornerRight.svg');
-  rotCornerBottom = loadImage('assets/rotCornerBottom.svg');
-  rotCornerLeft = loadImage('assets/rotCornerLeft.svg');
-  checkmarkIcon = loadImage('assets/checkmarkIcon.png');
-  lockedIcon = loadImage('assets/lockedIcon.svg');
-  arrowLeft = loadImage('assets/arrowLeft.svg');
-  arrowRight = loadImage('assets/arrowRight.svg');
-  arrowBottomLeft = loadImage('assets/arrowBottomLeft.svg');
+  rotateTileIcon = loadImage('assets/rotateTileIcon.png');
+  menuIconIMG = loadImage('assets/menuIconIMG.png');
   resetIcon = loadImage('assets/resetIcon.png');
-  checkmarkCircle = loadImage('assets/checkmarkCircle.svg');
-  xCircle = loadImage('assets/xCircle.svg');
+  checkmarkIcon = loadImage('assets/checkmarkIcon.png');
+  xCircle = loadImage('assets/xCircle.png');
   moveTileMechanic = loadImage('assets/moveTileMechanic.png');
   rotateTileMechanic = loadImage('assets/rotateTileMechanic.png');
   lineShiftingMechanic = loadImage('assets/lineShiftingMechanic.png');
   cornerRotationMechanic = loadImage('assets/cornerRotationMechanic.png');
-  moveIcon = loadImage('assets/moveIcon.svg');
-  gradientLineV = loadImage('assets/gradientLineV.svg');
-  gradientLineH = loadImage('assets/gradientLineH.svg');
-  rotateTileIcon = loadImage('assets/rotateTileIcon.svg');
-  rotateTileIcon2 = loadImage('assets/rotateTileIcon2.svg');
-  mountainscapeBG = loadImage('assets/mountainscapeBG.png');
-  settingsIcon = loadImage('assets/settingsIcon.svg');
-  playIcon = loadImage('assets/playIcon.svg');
-  levelsIcon = loadImage('assets/levelsIcon.svg');
+  rotCornerLeft = loadImage('assets/rotCornerLeft.png');
+  moveIcon = loadImage('assets/moveIcon.png');
+  gradientLineV = loadImage('assets/gradientLineV.png');
+  gradientLineH = loadImage('assets/gradientLineH.png');
   nextLevelIcon = loadImage('assets/nextLevelIcon.png');
   xIcon = loadImage('assets/xIcon.png');
   soundOn = loadImage('assets/soundOn.png');
@@ -263,6 +269,9 @@ function setup() {
   soundTrack.play();
   soundTrack.setVolume(sTVolume);
   soundTrack.loop();
+
+  /*var audio = new Audio('assets/Puzzle-Game_Looping.mp3');
+  audio.play();*/
 
   textFont(fontRegular);
 }
@@ -1358,6 +1367,8 @@ function draw() {
 
       let hNum = floor(width / menuTileSize);
       let vNum = floor(height / menuTileSize);
+      hNum += hNum % 2;
+      vNum += vNum % 2;
       let xOff = (width / 2) - (menuTileSize * ((hNum / 2) - 0.5));
       let yOff = (height / 2) - (menuTileSize * ((vNum / 2) - 0.5));
 
