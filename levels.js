@@ -49,7 +49,7 @@ levels = [
       [ // Puzzle Pieces
 
         [ // Path 1
-          [2, 1, ["TopLeft", "BottomLeft"], 0],
+          [2, 1, ["TopRight", "BottomLeft"], 0, [["TopLeft", "BottomLeft"]]],
           [3, 2, ["TopRight", "TopLeft", "BottomRight"], 0, [-1, ["Top", "Right"]]],
           [2, 3, ["BottomRight", "TopLeft"], 0, [["Right", "Top"]]]
         ]
@@ -464,7 +464,7 @@ levels = [
       ]
     ],
 
-    [   // Level 5
+    [   // Level 5 ***** REPLACE *****
 
       0, // State (0 = locked, 1 = unlocked)
 
@@ -473,20 +473,21 @@ levels = [
       [ // Puzzle Pieces
 
         [ // Path 1
-          [3, 2, ["Mid", "Bottom"], 0],
-          [4, 4, ["Top", "Mid", "Left"], 0],
-          [5, 3, ["Top", "Mid", "Bottom"], 0],
-          [3, 5, ["Left", "Mid", "Right"], 0],
-          [2, 5, ["Mid", "Right"], 0]
+          [3, 2, ["Mid", "Left"], 0],
+          [2, 1, ["Bottom", "Mid", "Right"], 0],
+          [2, 2, ["Top", "Mid", "Bottom"], 0],
+          [1, 3, ["Top", "Mid", "Right"], 0],
+          [3, 4, ["Left", "Mid", "Top"], 0],
+          [2, 3, ["Mid", "Bottom"], 0]
         ]
       ],
 
       [ // End-Pieces
         [3, 2],
-        [2, 5]
+        [2, 3]
       ],
 
-      3, // Number of Moves
+      2, // Number of Moves
 
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
@@ -499,6 +500,40 @@ levels = [
     ],
 
     [   // Level 6
+
+      0, // State (0 = locked, 1 = unlocked)
+
+      5, // Grid Size
+
+      [ // Puzzle Pieces
+
+        [ // Path 1
+          [3, 2, ["TopLeft", "BottomRight"], 0, [["TopLeft", "TopRight"]]],
+          [4, 4, ["Top", "Mid", "Left"], 0],
+          [5, 3, ["TopLeft", "Right"], 0, [["Left", "Mid"]]],
+          [3, 5, ["TopLeft", "Right"], 0, [["TopLeft", "Left"]]],
+          [2, 5, ["BottomLeft", "TopRight"], 0, [["BottomLeft", "TopLeft"]]]
+        ]
+      ],
+
+      [ // End-Pieces
+        [3, 2],
+        [2, 5]
+      ],
+
+      4, // Number of Moves
+
+      [ // Puzzle Mechanics Enabled
+        1, // Piece Rotation (0 = Off, 1 = On)
+        0, // Piece Movement (0 = Off, 1 = On)
+        1, // Row / Column Shifting (0 = Off, 1 = On)
+      ],
+
+      [ // Pre-Applied Line Shifts
+      ]
+    ],
+
+    [   // Level 7 ***** REPLACE *****
 
       0, // State (0 = locked, 1 = unlocked)
 
@@ -531,7 +566,7 @@ levels = [
       ]
     ],
 
-    [   // Level 7
+    [   // Level 8
 
       0, // State (0 = locked, 1 = unlocked)
 
@@ -540,11 +575,11 @@ levels = [
       [ // Puzzle Pieces
 
         [ // Path 1
-          [1, 4, ["Mid", "Top"], 0],
-          [2, 3, ["Bottom", "Mid", "Right"], 0],
-          [3, 4, ["Left", "Mid", "Top"], 0],
-          [3, 5, ["Left", "Mid", "Right"], 0],
-          [5, 3, ["Mid", "Bottom"], 0]
+          [1, 4, ["Left", "TopRight"], 0, [["Left", "BottomRight"]]],
+          [3, 4, ["BottomRight", "TopLeft", "TopRight"], 0, [["TopRight", "TopLeft"], ["BottomLeft", "TopRight"]]],
+          [2, 3, ["TopLeft", "BottomRight", "BottomLeft"], 0, [["BottomLeft", "BottomRight"], ["TopRight", "BottomLeft"]]],
+          [3, 5, ["TopLeft", "BottomRight"], 0, [["Top", "Bottom"]]],
+          [5, 3, ["Right", "BottomLeft"], 0, [["Right", "TopLeft"]]]
         ]
       ],
 
@@ -553,7 +588,7 @@ levels = [
         [5, 3]
       ],
 
-      4, // Number of Moves
+      5, // Number of Moves
 
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)
@@ -565,7 +600,7 @@ levels = [
       ]
     ],
 
-    [   // Level 8
+    [   // Level 9
 
       0, // State (0 = locked, 1 = unlocked)
 
@@ -589,41 +624,6 @@ levels = [
       ],
 
       3, // Number of Moves
-
-      [ // Puzzle Mechanics Enabled
-        1, // Piece Rotation (0 = Off, 1 = On)
-        1, // Piece Movement (0 = Off, 1 = On)
-        1, // Row / Column Shifting (0 = Off, 1 = On)
-      ],
-
-      [ // Pre-Applied Line Shifts
-      ]
-    ],
-
-    [   // Level 9
-
-      0, // State (0 = locked, 1 = unlocked)
-
-      5, // Grid Size
-
-      [ // Puzzle Pieces
-
-        [ // Path 1
-          [3, 2, ["Mid", "Left"], 0],
-          [2, 1, ["Bottom", "Mid", "Right"], 0],
-          [2, 2, ["Top", "Mid", "Bottom"], 0],
-          [1, 3, ["Top", "Mid", "Right"], 0],
-          [3, 4, ["Left", "Mid", "Top"], 0],
-          [2, 3, ["Mid", "Bottom"], 0]
-        ]
-      ],
-
-      [ // End-Pieces
-        [3, 2],
-        [2, 3]
-      ],
-
-      2, // Number of Moves
 
       [ // Puzzle Mechanics Enabled
         1, // Piece Rotation (0 = Off, 1 = On)

@@ -10,7 +10,7 @@ uiHover2 = "";
 elementID = "";
 uiSelected = "undefined";
 uiScale = 1;
-designMode = 0;
+designMode = 1;
 activeUIAnims = [];
 lineShiftHover = [-1, -1, 0];
 cornerRotHover = [-1, -1];
@@ -75,6 +75,24 @@ levelBTOffset = 110;
 menuTileSize = 0;
 
 
+// Puzzle UI Variables
+
+uiColL = 0;
+uiColR = 0;
+
+// Design Mode variables
+
+dMOff = 0;
+dMTempPoints = [];
+dMTempControlPoints = [];
+dMGridPos = 0;
+dMPointPos = "TopLeft";
+dMPointType = 0;
+dMPieceType = 1;
+dMPath = 0;
+dMCPCount = 0;
+
+
 // Animation Variables
 
 btFill = 0;
@@ -136,6 +154,8 @@ function preload() {
   moveIcon = loadImage('assets/moveIcon.png');
   gradientLineV = loadImage('assets/gradientLineV.png');
   gradientLineH = loadImage('assets/gradientLineH.png');
+  gradientLineVHalf = loadImage('assets/gradientLineVHalf.png');
+  gradientLineHHalf = loadImage('assets/gradientLineHHalf.png');
   nextLevelIcon = loadImage('assets/nextLevelIcon.png');
   xIcon = loadImage('assets/xIcon.png');
   soundOn = loadImage('assets/soundOn.png');
@@ -170,6 +190,7 @@ function setup() {
   uiScale = min(width, height) / 1300;
   btTxtSize =  btTxtSize * uiScale;
   menuTileSize = min(width / 11, 160);
+  dMOff = (height / 2) - (80 * uiScale);
 
 
   // Load progression data
@@ -252,7 +273,7 @@ function setup() {
   ccbg = color("#111114"); // Gray 2
 
   worldColours = [
-    [color("#ff9999")],
+    [color("#ff9999"), color("#bcff99")],
     [color("#de97ff")],
     [color("#faff94")],
     [color("#94bdff"), color("#bcff99"), color("#ff99bb")]
@@ -264,7 +285,7 @@ function setup() {
 
   //drawBG();
 
-  soundTrack = soundTrack5;
+  soundTrack = soundTrack2;
 
   soundTrack.play();
   soundTrack.setVolume(sTVolume);
@@ -386,7 +407,11 @@ function mouseReleased() {
                     if (mouseButton === RIGHT) {
 
                       event.preventDefault();
-                      puzzlePieces[i[0]].splice(i[1], 1);
+                      let pp = puzzlePieces[i[0]];
+                      let pp2 = pp[i[1]];
+                      tileData[pp2[0]][pp2[1]][4] = -1;
+                      pp.splice(i[1], 1);
+                      updatePuzzlePieceIDsInTileData();
                     }
                   }
                 }
@@ -534,7 +559,7 @@ function prepareLevelData() {
 
   let smallerDimension = min(width, height);
   //tileSize = min(((bgTileSize * uiScale) / 3) * 2, ((bgTileSize * uiScale) / (tiles - 2)) * 2); // the size a single tile occupies (tiles themselves can be smaller)
-  tileSize = min((smallerDimension * 0.8) / (tiles + 2), (smallerDimension * 0.15));
+  tileSize = min((smallerDimension * 0.88) / (tiles + 2), (smallerDimension * 0.15));
   endPieceSize = min(50 * uiScale, tileSize / 4);
   selected = [];
   clicked = 0;
@@ -549,6 +574,8 @@ function prepareLevelData() {
   puzzlePieceOp = [255];
   endPieceOp = [255];
   activeMechanics = [];
+  uiColL = ((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2;
+  uiColR = width - (((width / 2) - (((tiles + 2) / 2) * tileSize)) / 2);
 
   for (let i = 0; i < levelData[world - 1][level - 1][5].length; i++) {
 
@@ -1444,7 +1471,7 @@ function draw() {
 
             // Draw background grid
 
-            let len = 0;
+            let len = 2;
             if (levelData[world - 1][level - 1][5][2] || levelData[world - 1][level - 1][5][3]) { len = 2; }
             let startX = (width / 2) - (((tiles + len) / 2) * tileSize);
             let startY = (height / 2) - (((tiles + len) / 2) * tileSize);
@@ -1452,7 +1479,9 @@ function draw() {
             if (i < (tiles - 1)) {
 
               image(gradientLineV, startX + (tileSize * (i + 1)), startY, 1, (tiles + len) * tileSize);
+              image(gradientLineVHalf, startX + (tileSize * (i + 1.5)), startY, 1, (tiles + len) * tileSize);
               image(gradientLineH, startX, startY + (tileSize * (i + 1)), (tiles + len) * tileSize, 1);
+              image(gradientLineHHalf, startX, startY + (tileSize * (i + 1.5)), (tiles + len) * tileSize, 1);
 
             } else {
 
@@ -1462,6 +1491,9 @@ function draw() {
                 image(gradientLineH, startX, startY + (tileSize * (i + 1)), (tiles + len) * tileSize, 1);
                 image(gradientLineV, startX + (tileSize * (i + 2)), startY, 1, (tiles + len) * tileSize);
                 image(gradientLineH, startX, startY + (tileSize * (i + 2)), (tiles + len) * tileSize, 1);
+
+                image(gradientLineVHalf, startX + (tileSize * (i + 1.5)), startY, 1, (tiles + len) * tileSize);
+                image(gradientLineHHalf, startX, startY + (tileSize * (i + 1.5)), (tiles + len) * tileSize, 1);
               }
             }
 
@@ -1508,13 +1540,15 @@ function draw() {
           strokeCap(ROUND);
           strokeJoin(ROUND);
 
-          let ePDrawPos = [];
+          let ePDrawPos = [puzzlePieces.length];
 
           for (let z = 1; z > -1; z--) { // First loop for move previews, second for normal pieces
 
             strokeWeight(6 * uiScale);
 
             for (let p = 0; p < puzzlePieces.length; p++) {
+
+              ePDrawPos[p] = [];
 
               for (let i = 0; i < puzzlePieces[p].length; i++) {
 
@@ -1573,7 +1607,7 @@ function draw() {
 
                 if (drawDot) { // Draw tile centre dot
 
-                  fill(lerpColor(worldColours[world - 1][p], ccbg, lerpNum));
+                  fill(cc);
                   noStroke();
                   //circle(0, 0, tileSize / 8);
                 }
@@ -1760,7 +1794,7 @@ function draw() {
 
                       if ((i == 0) || (i == (puzzlePieces[p].length - 1))) {
 
-                        ePDrawPos[min(i, 1)] = [posX + x1, posY + y1];
+                        ePDrawPos[p][min(i, 1)] = [posX + x1, posY + y1];
                       }
                     }
                   }
@@ -1768,7 +1802,7 @@ function draw() {
 
                 if (drawMov) {
 
-                  image(moveIcon, - (tileSize / 3), - (tileSize / 3), tileSize / 1.5, tileSize / 1.5);
+                  image(moveIcon, - (tileSize / 2), - (tileSize / 2), tileSize / 1, tileSize / 1);
                 }
 
                 pop();
@@ -1777,17 +1811,23 @@ function draw() {
 
             if (z == 1) {
 
-              if (ePDrawPos.length > 0) {
+              for (let p = 0; p < puzzlePieces.length; p++) {
 
-                let ccc = color(255);
+                if (puzzlePieces[p].length > 1) {
 
-                fill(lerpColor(ccc, ccbg, 0.6));
-                stroke(ccbg);
-                strokeWeight(3.6);
-                noStroke();
+                  if (ePDrawPos[p].length > 0) {
 
-                circle(ePDrawPos[0][0], ePDrawPos[0][1], 20);
-                circle(ePDrawPos[1][0], ePDrawPos[1][1], 20);
+                    let ccc = worldColours[world - 1][p];
+
+                    fill(lerpColor(ccc, ccbg, 0.6));
+                    stroke(ccbg);
+                    strokeWeight(3.6);
+                    noStroke();
+
+                    circle(ePDrawPos[p][0][0], ePDrawPos[p][0][1], 20);
+                    circle(ePDrawPos[p][1][0], ePDrawPos[p][1][1], 20);
+                  }
+                }
               }
             }
           }
@@ -1797,32 +1837,35 @@ function draw() {
 
           for (let p = 0; p < puzzlePieces.length; p++) {
 
-            for (let i = 0; i < 2; i++) {
+            if (puzzlePieces[p].length > 1) { // Make sure the path has at least two endpoints (this can be false if a new is created in design mode)
 
-              let ePI = (puzzlePieces[p].length - 1) * i;
+              for (let i = 0; i < 2; i++) {
 
-              let posX = tileData[puzzlePieces[p][ePI][0]][puzzlePieces[p][ePI][1]][0];
-              let posY = tileData[puzzlePieces[p][ePI][0]][puzzlePieces[p][ePI][1]][1];
+                let ePI = (puzzlePieces[p].length - 1) * i;
 
-              if (puzzlePieces[p][ePI][3] == 1) {
+                let posX = tileData[puzzlePieces[p][ePI][0]][puzzlePieces[p][ePI][1]][0];
+                let posY = tileData[puzzlePieces[p][ePI][0]][puzzlePieces[p][ePI][1]][1];
 
-                posX = mouseX + (posX - clickX);
-                posY = mouseY + (posY - clickY);
+                if (puzzlePieces[p][ePI][3] == 1) {
+
+                  posX = mouseX + (posX - clickX);
+                  posY = mouseY + (posY - clickY);
+                }
+
+                fill(worldColours[world - 1][p], endPieceOp[0]);
+                //stroke(ccbg);
+                noStroke();
+                strokeWeight(4);
+
+                circle(posX - (tileSize / 2) + puzzlePieces[p][ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[p][ePI][5][0][1] * tileSize, 26);
+
+                fill(255, endPieceOp[0]);
+                stroke(ccbg);
+                //noStroke();
+                strokeWeight(4);
+
+                circle(posX - (tileSize / 2) + puzzlePieces[p][ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[p][ePI][5][0][1] * tileSize, 15);
               }
-
-              fill(worldColours[world - 1][p], endPieceOp[0]);
-              //stroke(ccbg);
-              noStroke();
-              strokeWeight(4);
-
-              circle(posX - (tileSize / 2) + puzzlePieces[p][ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[p][ePI][5][0][1] * tileSize, 26);
-
-              fill(255, endPieceOp[0]);
-              stroke(ccbg);
-              //noStroke();
-              strokeWeight(4);
-
-              circle(posX - (tileSize / 2) + puzzlePieces[p][ePI][5][0][0] * tileSize, posY - (tileSize / 2) + puzzlePieces[p][ePI][5][0][1] * tileSize, 15);
             }
           }
 
@@ -1831,6 +1874,11 @@ function draw() {
 
           puzzleAnimTimer = max(0, puzzleAnimTimer - 1);
         }
+      }
+
+      if (designMode) {
+
+        dMDrawTempPiecePreview();
       }
     }
 
@@ -2149,6 +2197,113 @@ function rotateCornerTiles(cornerX, cornerY, animate, movePuzzlePieces) {
       puzzleAnimTimer = 20;
     }
   }
+}
+
+
+function dMAddPieceToBoard() {
+
+  insPoint = (puzzlePieces[dMPath].length - 1) * dMPieceType;
+
+  if (dMPieceType < 2) {
+
+    puzzlePieces[dMPath].splice(insPoint, 0, [0, 0, dMTempPoints.slice(), 0, dMTempControlPoints.slice(), [], []]);
+    updatePuzzlePieceIDsInTileData();
+
+  } else {
+
+    insPoint = puzzlePieces[dMPath].length;
+    puzzlePieces[dMPath].push([0, 0, dMTempPoints.slice(), 0, dMTempControlPoints.slice(), [], []]);
+  }
+
+  updatePPPoints();
+  tileData[0][0][4] = [dMPath, insPoint];
+  dMTempPoints.length = 0;
+  dMTempControlPoints.length = 0;
+  dMCPCount = 0;
+}
+
+
+function dMDrawTempPiecePreview() {
+
+  let xx = uiColR - (60 * uiScale);
+  let yy = dMOff + (80 * uiScale);
+  let ww = 120 * uiScale;
+  let hh = 120 * uiScale;
+
+  let x1 = 0;
+  let y1 = 0;
+  let x2 = 0;
+  let y2 = 0;
+  let x3 = 0;
+  let y3 = 0;
+  let x4 = 0;
+  let y4 = 0;
+
+  for (let i = 0; i < dMTempPoints.length; i++) {
+
+    x1 = xx + (ww * positions[dMTempPoints[i]][0]);
+    y1 = yy + (hh * positions[dMTempPoints[i]][1]);
+
+    fill(255);
+    noStroke();
+    circle(x1, y1, 6);
+
+    if (i != (dMTempPoints.length - 1)) {
+
+      x4 = xx + (ww * positions[dMTempPoints[i + 1]][0]);
+      y4 = yy + (hh * positions[dMTempPoints[i + 1]][1]);
+      let drawBezier = 0;
+
+      if (dMTempControlPoints[i] != undefined) {
+
+        if (dMTempControlPoints[i].length > 0) {
+
+          x2 = xx + (ww * positions[dMTempControlPoints[i][0]][0]);
+          y2 = yy + (hh * positions[dMTempControlPoints[i][0]][1]);
+
+          stroke(255, 100);
+          strokeWeight(1);
+          noFill();
+          line(x1, y1, x2, y2);
+
+          fill(255, 100);
+          noStroke();
+          circle(x2, y2, 6);
+
+          if (dMTempControlPoints[i].length > 1) {
+
+            x3 = xx + (ww * positions[dMTempControlPoints[i][1]][0]);
+            y3 = yy + (hh * positions[dMTempControlPoints[i][1]][1]);
+
+            stroke(255, 100);
+            strokeWeight(1);
+            noFill();
+            line(x4, y4, x3, y3);
+
+            fill(255, 100);
+            noStroke();
+            circle(x3, y3, 6);
+
+            drawBezier = 1;
+          }
+        }
+      }
+
+      stroke(255);
+      strokeWeight(2);
+      noFill();
+
+      if (drawBezier) {
+
+        bezier(x1, y1, x2, y2, x3, y3, x4, y4);
+
+      } else {
+
+        line(x1, y1, x4, y4);
+      }
+    }
+  }
+
 }
 
 
@@ -2808,7 +2963,7 @@ function updatePuzzlePieceIDsInTileData() {
 
     for (let i = 0; i < puzzlePieces[p].length; i++) { // Cycle through puzzle pieces and save piece id in the array of the tile it sits on
 
-      tileData[puzzlePieces[p][i][1]][puzzlePieces[p][i][0]][4] = [p, i];
+      tileData[puzzlePieces[p][i][0]][puzzlePieces[p][i][1]][4] = [p, i];
     }
   }
 }
